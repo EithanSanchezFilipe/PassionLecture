@@ -1,4 +1,4 @@
-const editorModel = (sequelize, DataTypes) => {
+const EditorModel = (sequelize, DataTypes) => {
   return sequelize.define('t_editor', {
     id: {
       type: DataTypes.INTEGER,
@@ -11,4 +11,4 @@ const editorModel = (sequelize, DataTypes) => {
     },
   });
 };
-export { editorModel };
+export { EditorModel };

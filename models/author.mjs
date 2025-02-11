@@ -1,4 +1,4 @@
-const authorModel = (sequelize, DataTypes) => {
+const AuthorModel = (sequelize, DataTypes) => {
   return sequelize.define('t_author', {
     id: {
       type: DataTypes.INTEGER,
