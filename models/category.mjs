@@ -1,24 +1,14 @@
-const UserModel = (sequelize, DataTypes) => {
-  return sequelize.define('t_user', {
+const CategoryModel = (sequelize, DataTypes) => {
+  return sequelize.define('t_category', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: { msg: 'Ce username est déjà pris.' },
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: { msg: 'Cet email est déjà pris.' },
-    },
-    password: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   });
 };
-export { UserModel };
+export { CategoryModel };
