@@ -6,16 +6,24 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 // import sequelize from './db/sequelize.mjs';
 
+// Create app
+const app = express();
+app.use(express.json());
+app.use(cookieParser());
+
 // Import SSL certificate
 const sslcert = {key: fs.readFileSync(path.resolve('privkey.key'), 'utf8'),
                  cert: fs.readFileSync(path.resolve('cerificate.crt'), 'utf8')};
 
 // Import routes
+import userRoute from './routes/user.mjs';
+import bookRoute from './routes/book.mjs';
+// import authorRoute from './routes/author.mjs';
 
-// Create app
-const app = express();
-app.use(express.json());
-app.use(cookieParser());
+// Routes
+app.use('/user', userRoute);
+app.use('/book', bookRoute);
+// app.use('/author', authorRoute);
 
 // Test the connection
 // sequelize.authenticate();
