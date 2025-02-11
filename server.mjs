@@ -27,9 +27,6 @@ app.use('/user', userRoute);
 app.use('/book', bookRoute);
 // app.use('/author', authorRoute);
 
-// Test the connection
-sequelize.authenticate();
-
 const httpsServer = https.createServer(sslcert, app);
 
 httpsServer.listen(8080, () => {
