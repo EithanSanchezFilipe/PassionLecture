@@ -1,10 +1,10 @@
 import { Router } from "express";
-
+import {Login} from "../controller/user.mjs";
 const router = Router();
 
 
 // POST
-router.post('/login' , (req, res) => {res.send('Login route')});
+router.post('/login' , Login);
 router.post('/register', (req, res) => {res.send('Register route')});
 router.post('/logout', (req, res) => {res.send('Logout route')});
 router.post('/:id/book', (req, res) => {res.send('add book author routes')});
