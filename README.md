@@ -1,4 +1,4 @@
 ## PassionLecture
-#Authors
+# Authors
 Eithan Sanchez Filipe
 Ryan De Pina Correia
