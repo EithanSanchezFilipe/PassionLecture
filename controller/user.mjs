@@ -8,16 +8,14 @@ import {User} from '../db/sequelize.mjs';
 
 export function Login(req, res) {
     const { username, password } = req.body;
-  
+    if (!username || !password) {
+        return res.status(400).json({ message: " Les champs nom d'utilisateur et mot de passe sont obligatoires" });
+      }
     // Lire la clé privée à partir du fichier
-    const privkeyPromise = fs.promises.readFile(path.resolve('privkey.key'), 'utf8');
+    const privkey = fs.readFileSync(path.resolve('privkey.key'), 'utf8');
   
     // Trouver l'utilisateur dans la base de données
-    const userPromise = User.findOne({ where: { username: username } });
-  
-    // Utiliser Promise.all pour attendre les deux promesses en même temps
-    Promise.all([privkeyPromise, userPromise])
-      .then(([privkey, user]) => {
+ User.findOne({ where: { username: username } }).then((user) => {
         // Vérifier si l'utilisateur existe
         if (!user) {
           return res.status(404).json({ message: "Utilisateur non trouvé" });
@@ -44,8 +42,7 @@ export function Login(req, res) {
         console.error("Error during login:", error);
         return res.status(500).json({ message: "Erreur interne du serveur" });
       });
-  }
-
+}
 export async function Register(req, res) {
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
