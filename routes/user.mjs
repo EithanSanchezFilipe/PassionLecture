@@ -1,11 +1,9 @@
+
 import { Router } from 'express';
-import { Register } from '../controller/user.mjs';
+import { Register, Login } from '../controller/user.mjs';
 const router = Router();
 
-// POST
-router.post('/login', (req, res) => {
-  res.send('Login route');
-});
+router.post('/login' , Login);
 router.post('/register', Register);
 router.post('/logout', (req, res) => {
   res.send('Logout route');

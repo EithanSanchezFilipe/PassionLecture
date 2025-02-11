@@ -43,5 +43,5 @@ try {
   console.error('Unable to connect to the database:', error);
 }
 
-export default { sequelize };
-export { User, Editor, Category, Comment, Book, Author };
+export default sequelize
+export { User, Editor, Comment, Category, Book, Author, sequelize };
