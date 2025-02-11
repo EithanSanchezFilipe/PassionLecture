@@ -9,11 +9,21 @@ const UserModel = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: { msg: 'Ce username est déjà pris.' },
+      validate: {
+        notNull: {
+          msg: "Le nom d'utilisateur est une propriété obligatoire",
+        },
+      },
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: { msg: 'Cet email est déjà pris.' },
+      validate: {
+        notNull: {
+          msg: "L'email est une propriété obligatoire",
+        },
+      },
     },
     password: {
       type: DataTypes.STRING,

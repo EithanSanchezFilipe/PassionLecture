@@ -37,14 +37,11 @@ const BookModel = (sequelize, DataTypes) => {
       },
       summary: {
         type: DataTypes.STRING,
-        validate: {
-          notNull: {
-            msg: 'La déscription doit être fournie',
-          },
-        },
+        allowNull: false,
       },
       editionYear: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         validate: {
           isInt: {
             args: true,
@@ -59,7 +56,7 @@ const BookModel = (sequelize, DataTypes) => {
             msg: "L'année ne peut pas être dans le futur.",
           },
           notNull: {
-            msg: 'La date doit être fournie',
+            msg: "L'année d'edition est un propriété obligatoire",
           },
         },
       },
@@ -68,6 +65,7 @@ const BookModel = (sequelize, DataTypes) => {
       },
       pages: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         validate: {
           isInt: {
             args: true,
@@ -78,7 +76,7 @@ const BookModel = (sequelize, DataTypes) => {
             msg: 'Le nombre de pages doit être au moins 1.',
           },
           notNull: {
-            msg: 'Le nombre de pages est une propriété obligatoire.',
+            msg: 'Le nombre de pages est une propriété obligatoire',
           },
         },
       },

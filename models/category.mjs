@@ -8,6 +8,11 @@ const CategoryModel = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Le nom de la catégorie est une propriété obligatoire',
+        },
+      },
     },
   });
 };

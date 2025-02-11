@@ -1,4 +1,4 @@
-const commentModel = (sequelize, DataTypes) => {
+const CommentModel = (sequelize, DataTypes) => {
   return sequelize.define('t_comment', {
     note: {
       type: DataTypes.INTEGER,
@@ -20,4 +20,4 @@ const commentModel = (sequelize, DataTypes) => {
     },
   });
 };
-export { commentModel };
+export { CommentModel };

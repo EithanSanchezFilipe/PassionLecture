@@ -8,6 +8,11 @@ const EditorModel = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Le nom de l'editeur est une propriété obligatoire",
+        },
+      },
     },
   });
 };
