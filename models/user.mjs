@@ -1,19 +1,24 @@
-// import sequelize from "../db/sequelize.mjs";
-import { DataTypes, Sequelize } from "sequelize";
-
-User.init({
-    // Model attributes are defined here
+const UserModel = (sequelize, DataTypes) => {
+  return sequelize.define('t_user', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     username: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: { msg: 'Ce username est déjà pris.' },
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: { msg: 'Cet email est déjà pris.' },
     },
     password: {
-        type: DataTypes.STRING
-        // allowNull defaults to true
-    }
-}, {
-
-    // Other model options go here
-    sequelize, // We need to pass the connection instance
-    modelName: 'User' // We need to choose the model name
-});
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  });
+};
+export { UserModel };
