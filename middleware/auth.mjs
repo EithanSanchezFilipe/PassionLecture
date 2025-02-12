@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { privateKey } from '../server.mjs';
 const auth = (req, res, next) => {
   //vérifie que l'utilisateur possède un token
   const authorizationHeader = req.headers.authorization;
@@ -8,8 +9,7 @@ const auth = (req, res, next) => {
       .json({ message: "Vous n'avez pas fourni de jeton d'authentification" });
   }
   const token = authorizationHeader.split(' ')[1];
-  const privkey = fs.readFileSync(path.resolve('privkey.key'), 'utf8');
-  jwt.verify(token, privkey, (error, decodedToken) => {
+  jwt.verify(token, privateKey, (error, decodedToken) => {
     if (error) {
       const message = `L'utilisateur n'est pas autorisé à accéder à cette ressource.`;
       return res.status(401).json({ message, data: error });
