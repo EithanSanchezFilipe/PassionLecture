@@ -16,6 +16,18 @@ const CommentModel = (sequelize, DataTypes) => {
           args: 5,
           msg: 'La note maximale est 5',
         },
+        notNull: {
+          msg: 'La note est une propriété obligatoire',
+        },
+      },
+    },
+    message: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Le message est une propriété obligatoire',
+        },
       },
     },
   });
