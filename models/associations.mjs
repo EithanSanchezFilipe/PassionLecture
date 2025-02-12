@@ -33,5 +33,11 @@ const initAssociations = (User, Editor, Comment, Category, Book, Author) => {
   Book.belongsTo(Author, {
     foreignKey: 'author_fk',
   });
+  Book.belongsTo(User, {
+    foreignKey: 'user_fk',
+  });
+  User.hasMany(Book, {
+    foreignKey: 'user_fk',
+  });
 };
 export { initAssociations };
