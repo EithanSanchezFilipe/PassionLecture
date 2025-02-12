@@ -2,6 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import bcrypt from 'bcrypt';
+<<<<<<< Updated upstream
 import jwt from 'jsonwebtoken'; 
 import sequelize from '../db/sequelize.mjs';
 import {User} from '../db/sequelize.mjs';
@@ -10,6 +11,28 @@ export function Login(req, res) {
     const { username, password } = req.body;
     if (!username || !password) {
         return res.status(400).json({ message: " Les champs nom d'utilisateur et mot de passe sont obligatoires" });
+=======
+import jwt from 'jsonwebtoken';
+import { ValidationError, Op } from 'sequelize';
+import { User } from '../db/sequelize.mjs';
+import { privateKey } from '../server.mjs';
+
+export function Login(req, res) {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({
+      message:
+        " Les champs nom d'utilisateur et mot de passe sont obligatoires",
+    });
+  }
+
+  // Trouver l'utilisateur dans la base de données
+  User.findOne({ where: { username: username } })
+    .then((user) => {
+      // Vérifier si l'utilisateur existe
+      if (!user) {
+        return res.status(404).json({ message: 'Utilisateur non trouvé' });
+>>>>>>> Stashed changes
       }
     // Lire la clé privée à partir du fichier
     const privkey = fs.readFileSync(path.resolve('privkey.key'), 'utf8');
@@ -20,6 +43,7 @@ export function Login(req, res) {
         if (!user) {
           return res.status(404).json({ message: "Utilisateur non trouvé" });
         }
+<<<<<<< Updated upstream
   
         // Comparer le mot de passe avec celui stocké dans la base de données
         return bcrypt.compare(password, user.password)
@@ -41,6 +65,19 @@ export function Login(req, res) {
       .catch(error => {
         console.error("Error during login:", error);
         return res.status(500).json({ message: "Erreur interne du serveur" });
+=======
+
+        // Créer un token JWT
+        const accessToken = jwt.sign(
+          { id: user.id, username: user.username },
+          privateKey,
+          { expiresIn: '1h', algorithm: 'RS256' }
+        );
+
+        return res
+          .status(200)
+          .json({ message: 'Utilisateur connecté', token: accessToken });
+>>>>>>> Stashed changes
       });
 }
 export async function Register(req, res) {
@@ -58,6 +95,7 @@ export async function Register(req, res) {
         username: username,
         email: email,
         password: hashedPassword,
+<<<<<<< Updated upstream
       }).then((user) => {
         const privateKey = fs.readFileSync(path.resolve('privkey.key'), 'utf8');
         const token = jwt.sign(
@@ -66,6 +104,27 @@ export async function Register(req, res) {
           {
             expiresIn: '1h',
             algorithm: 'RS256',
+=======
+      })
+        .then((user) => {
+          const token = jwt.sign(
+            { username: user.username, id: user.id },
+            privateKey,
+            {
+              expiresIn: '1h',
+              algorithm: 'RS256',
+            }
+          );
+          res.status(200).json({
+            message: `L'utilisateur ${user.username} a bien été créé`,
+            token: token,
+          });
+        })
+        .catch((e) => {
+          //si c'est une erreur de validation renvoie le messgae personnalisé
+          if (e instanceof ValidationError) {
+            return res.status(400).json({ message: e.message });
+>>>>>>> Stashed changes
           }
         );
         res.status(200).json({

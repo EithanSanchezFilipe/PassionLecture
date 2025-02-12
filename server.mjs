@@ -11,9 +11,10 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
+const privateKey = fs.readFileSync(path.resolve('privkey.key'), 'utf8');
 // Import SSL certificate
 const sslcert = {
-  key: fs.readFileSync(path.resolve('privkey.key'), 'utf8'),
+  key: privateKey,
   cert: fs.readFileSync(path.resolve('cerificate.crt'), 'utf8'),
 };
 
@@ -32,3 +33,4 @@ const httpsServer = https.createServer(sslcert, app);
 httpsServer.listen(8080, () => {
   console.log('Server running on port https://localhost:8080');
 });
+export { privateKey };
