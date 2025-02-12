@@ -22,48 +22,51 @@ export function Login(req, res) {
       // Vérifier si l'utilisateur existe
       if (!user) {
         return res.status(404).json({ message: 'Utilisateur non trouvé' });
-
       }
 
       // Comparer le mot de passe avec celui stocké dans la base de données
-      return bcrypt.compare(password, user.password).then((isMatch) => {
-        if (!isMatch) {
-          return res.status(400).json({ message: 'Mot de passe incorrect' });
-        }
-  
-        // Comparer le mot de passe avec celui stocké dans la base de données
-        return bcrypt.compare(password, user.password)
-          .then(isMatch => {
+      return bcrypt
+        .compare(password, user.password)
+        .then((isMatch) => {
+          if (!isMatch) {
+            return res.status(400).json({ message: 'Mot de passe incorrect' });
+          }
+
+          // Comparer le mot de passe avec celui stocké dans la base de données
+          return bcrypt.compare(password, user.password).then((isMatch) => {
             if (!isMatch) {
-              return res.status(400).json({ message: "Mot de passe incorrect" });
+              return res
+                .status(400)
+                .json({ message: 'Mot de passe incorrect' });
             }
-  
+
             // Créer un token JWT
             const accessToken = jwt.sign(
               { id: user.id, username: user.username },
               privkey,
               { expiresIn: '1h', algorithm: 'RS256' }
             );
-  
-            return res.status(200).json({ message: "Utilisateur connecté", token: accessToken });
+
+            return res
+              .status(200)
+              .json({ message: 'Utilisateur connecté', token: accessToken });
           });
-      })
-      .catch(error => {
-        console.error("Error during login:", error);
-        return res.status(500).json({ message: "Erreur interne du serveur" });
+        })
+        .catch((error) => {
+          console.error('Error during login:', error);
+          return res.status(500).json({ message: 'Erreur interne du serveur' });
 
+          // Créer un token JWT
+          const accessToken = jwt.sign(
+            { id: user.id, username: user.username },
+            privateKey,
+            { expiresIn: '1h', algorithm: 'RS256' }
+          );
 
-        // Créer un token JWT
-        const accessToken = jwt.sign(
-          { id: user.id, username: user.username },
-          privateKey,
-          { expiresIn: '1h', algorithm: 'RS256' }
-        );
-
-        return res
-          .status(200)
-          .json({ message: 'Utilisateur connecté', token: accessToken });
-      });
+          return res
+            .status(200)
+            .json({ message: 'Utilisateur connecté', token: accessToken });
+        });
     })
     .catch((error) => {
       console.error('Error during login:', error);
@@ -85,8 +88,8 @@ export async function Register(req, res) {
         username: username,
         email: email,
         password: hashedPassword,
-
-      }).then((user) => {
+      })
+        .then((user) => {
           const token = jwt.sign(
             { username: user.username, id: user.id },
             privateKey,
