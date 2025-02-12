@@ -117,3 +117,18 @@ export async function Register(req, res) {
       });
     });
 }
+export function Profile(req, res) {
+  const id = req.user.id;
+  User.findByPk(id, { attributes: { exclude: ['password'] } })
+    .then((user) => {
+      res
+        .status(200)
+        .json({ message: "L'utilisateur a bien été récupéré", user: user });
+    })
+    .catch((e) => {
+      res.status(500).json({
+        message:
+          "L'utilisateur n'a pas pu être récupéré. Veuillez réessayer plus tard",
+      });
+    });
+}
