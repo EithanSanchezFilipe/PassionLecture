@@ -1,25 +1,28 @@
-const initAssociations = (User, Editor, Comment, Category, Book, Author) => {
+const initAssociations = async (
+  User,
+  Editor,
+  Comment,
+  Category,
+  Book,
+  Author
+) => {
+  User.hasMany(Comment, {
+    foreignKey: 'user_fk',
+  });
+  Comment.belongsTo(User, {
+    foreignKey: 'user_fk',
+  });
+  Book.hasMany(Comment, {
+    foreignKey: 'book_fk',
+  });
+  Comment.belongsTo(Book, {
+    foreignKey: 'book_fk',
+  });
   Book.belongsTo(Category, {
     foreignKey: 'category_fk',
   });
   Category.hasMany(Book, {
     foreignKey: 'category_fk',
-  });
-  User.belongsToMany(Book, {
-    through: Comment,
-    foreignKey: 'user_fk',
-  });
-
-  Book.belongsToMany(User, {
-    through: Comment,
-    foreignKey: 'book_fk',
-  });
-  Comment.belongsTo(User, {
-    foreignKey: 'user_fk',
-  });
-
-  Comment.belongsTo(Book, {
-    foreignKey: 'book_fk',
   });
   Book.belongsTo(Editor, {
     foreignKey: 'editor_fk',

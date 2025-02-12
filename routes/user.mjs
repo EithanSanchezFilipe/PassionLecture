@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { Register, Login } from '../controller/user.mjs';
+import { auth } from '../middleware/auth.mjs';
+import { Register, Login, Profile } from '../controller/user.mjs';
 const router = Router();
 
 router.post('/login', Login);
@@ -8,15 +9,7 @@ router.post('/logout', (req, res) => {
   res.send('Logout route');
 });
 // GET
-router.get('/profile', (req, res) => {
-  res.send('Profile route');
-});
-router.get('/profile/comment', (req, res) => {
-  res.send('comment user route');
-});
-router.get('/profile/rating', (req, res) => {
-  res.send('rating user route');
-});
+router.get('/profile', auth, Profile);
 // DELETE
 router.delete('/delete/:id', (req, res) => {
   res.send('Delete route');
