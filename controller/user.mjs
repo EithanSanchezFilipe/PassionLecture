@@ -128,3 +128,28 @@ export function Profile(req, res) {
       });
     });
 }
+export function Delete(req, res) {
+  const id = req.user.id;
+  User.findByPk(id)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({
+          message:
+            "L'utilisateur demandé n'existe pas. Merci de réessayer avec un autre token.",
+        });
+      }
+      user.destroy().then((_) => {
+        res.status(200).json({
+          message: `L'utilisateur ${user.username} a bien été supprimé !`,
+        });
+      });
+    })
+    .catch((e) => {
+      // Définir un message d'erreur pour l'utilisateur de l'API REST
+      console.error(e);
+      res.status(500).json({
+        message:
+          "Le produit n'a pas pu être supprimé. Merci de réessayer dans quelques instants.",
+      });
+    });
+}
