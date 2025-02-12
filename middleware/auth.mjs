@@ -22,6 +22,7 @@ const auth = (req, res, next) => {
       const message = `L'identifiant de l'utilisateur est invalide`;
       return res.status(401).json({ message });
     } else {
+      req.user = decodedToken;
       next();
     }
   });
