@@ -18,18 +18,18 @@ const sequelize = new Sequelize('db_passion_lecture', 'root', 'root', {
   },
 });
 
-const User = UserModel(sequelize, DataTypes);
 const Editor = EditorModel(sequelize, DataTypes);
-const Comment = CommentModel(sequelize, DataTypes);
 const Category = CategoryModel(sequelize, DataTypes);
-const Book = BookModel(sequelize, DataTypes);
 const Author = AuthorModel(sequelize, DataTypes);
+const User = UserModel(sequelize, DataTypes);
+const Book = BookModel(sequelize, DataTypes);
+const Comment = CommentModel(sequelize, DataTypes);
 
-initAssociations(User, Editor, Comment, Category, Book, Author);
+await initAssociations(User, Editor, Comment, Category, Book, Author);
 // Test the connection
 
 sequelize
-  .sync({ force: true })
+  .sync({ alter: true })
   .then((_) => {
     console.log('The database has been synchronized');
   })
@@ -43,5 +43,5 @@ try {
   console.error('Unable to connect to the database:', error);
 }
 
-export default sequelize
+export default sequelize;
 export { User, Editor, Comment, Category, Book, Author, sequelize };

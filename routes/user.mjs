@@ -10,9 +10,6 @@ router.post('/logout', (req, res) => {
 });
 // GET
 router.get('/profile', auth, Profile);
-router.get('/profile/comment', (req, res) => {
-  res.send('comment user route');
-});
 // DELETE
 router.delete('/delete/:id', (req, res) => {
   res.send('Delete route');
