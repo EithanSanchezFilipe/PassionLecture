@@ -1,5 +1,7 @@
-import { User, Book, Comment } from '../db/sequelize.mjs';
-import { Op } from 'sequelize';
+import { Book, Comment } from "../db/sequelize.mjs";
+import { ValidationError } from "sequelize";
+import { Op } from "sequelize";
+
 export async function AddBook(req, res) {
   const { name, author, price, summary, editionYear, pages } = req.body;
   const book = await Book.create({
@@ -13,11 +15,11 @@ export async function AddBook(req, res) {
     .then((book) => {
       res.status(201).json(book);
     })
-    .catch((error) => {
-      res.status(500).json({
-        message: "Erreur lors de l'ajout du livre",
-        error,
-      });
+    .catch((e) => {
+      //si c'est une erreur de validation renvoie le messgae personnalisé
+      if (e instanceof ValidationError) {
+        return res.status(400).json({ message: e.message });
+      }
     });
 }
 export async function ReachBook(req, res) {
@@ -34,13 +36,13 @@ export async function ReachBook(req, res) {
       })
       .catch((error) => {
         res.status(500).json({
-          message: 'Erreur lors de la recherche du livre',
+          message: "Erreur lors de la recherche du livre",
           error,
         });
       });
   } else {
     res.status(400).json({
-      message: 'ID du livre non fourni',
+      message: "ID du livre non fourni",
     });
   }
 }
@@ -57,7 +59,7 @@ export async function AllBooks(req, res) {
     return Book.findAll({
       //select * from product where name like %...%
       where: { name: { [Op.like]: `%${req.query.name}%` } },
-      order: [['name', 'ASC']],
+      order: [["name", "ASC"]],
       limit: limit,
     }).then((book) => {
       const message = `Il y a ${book.length} produits qui correspondent au terme de la recherche`;
@@ -69,7 +71,7 @@ export async function AllBooks(req, res) {
     //prends la valeur trouver et la renvoie en format json avec un message de succès
     .then((book) => {
       // Définir un message de succès pour l'utilisateur de l'API REST
-      const message = 'La liste des produits a bien été récupérée.';
+      const message = "La liste des produits a bien été récupérée.";
       res.status(201).json({ message, book });
     })
     //si le serveur n'arrive pas a récuperer les données il renvoie une erreur 500
@@ -82,19 +84,18 @@ export async function AllBooks(req, res) {
 }
 
 export async function DeleteBook(req, res) {
-  const id = req.params;
-  Book.findOne({ where: { id } }).then((book) => {
-    book
-      .destroy()
-      .then(() => {
-        res.status(204).send();
-      })
-      .catch((error) => {
-        res.status(500).json({
-          message: 'Erreur lors de la suppression du livre',
-          error,
-        });
-      });
+  Book.findByPk(req.params.id).then((deletedbook) => {
+    if (deletedbook === null) {
+      const message =
+        "Le produit demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
+      return res.status(404).json({ message });
+    }
+    return Book.destroy({
+      where: { id: deletedbook.id },
+    }).then((_) => {
+      const message = `Le produit ${deletedbook.name} a bien été supprimé !`;
+      res.status(201).json({ message, deletedbook });
+    });
   });
 }
 export async function RatingBook(req, res) {
