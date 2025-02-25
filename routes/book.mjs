@@ -1,31 +1,26 @@
-import { Router } from 'express';
+import { Router } from "express";
 import {
   AddBook,
+  UpdateBook,
   DeleteBook,
+  DeleteCommentBook,
   ReachBook,
   RatingBook,
   AllBooks,
-} from '../controller/book.mjs';
-import { auth } from '../middleware/auth.mjs';
+} from "../controller/book.mjs";
+import { auth } from "../middleware/auth.mjs";
 const router = Router();
 
 // POST
-router.post('/add', AddBook);
-router.post('/:id/rating', auth, RatingBook);
-router.post('/:id/comment', (req, res) => {
-  res.send('comment book route');
-});
+router.post("/add", AddBook);
+router.post("/:id/rating", auth, RatingBook);
 // GET
-router.get('/search', AllBooks);
-router.get('/:id', ReachBook);
+router.get("/search", AllBooks);
+router.get("/:id", ReachBook);
 // DELETE
-router.delete('/delete/:id', DeleteBook);
-router.delete('/:id/comments/:comment_id', (req, res) => {
-  res.send('Delete comment route');
-});
+router.delete("/delete/:id", DeleteBook);
+router.delete("/delete/comment/:id", DeleteCommentBook);
 // PUT
-router.put('/:id', (req, res) => {
-  res.send('One book route');
-});
+router.put("/:id", UpdateBook);
 
 export default router;
