@@ -84,6 +84,11 @@ export async function AllBooks(req, res) {
 }
 
 export async function DeleteBook(req, res) {
+  if (book.user_fk.id !== req.user.id) {
+    return res.status(403).json({
+      message: "Vous n'êtes pas autorisé à modifier ce livre",
+    });
+  }
   Book.findByPk(req.params.id).then((deletedbook) => {
     if (!deletedbook) {
       const message =
@@ -142,6 +147,11 @@ export async function DeleteCommentBook(req, res) {
 export function UpdateBook(req, res) {
   const id = req.params.id;
   const data = { ...req.body };
+  if (book.user_fk.id !== req.user.id) {
+    return res.status(403).json({
+      message: "Vous n'êtes pas autorisé à modifier ce livre",
+    });
+  }
   Book.findByPk(id)
     .then((book) => {
       if (!book) {

@@ -1,5 +1,5 @@
 const UserModel = (sequelize, DataTypes) => {
-  return sequelize.define('t_user', {
+  return sequelize.define("t_user", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -18,7 +18,7 @@ const UserModel = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: { msg: 'Cet email est déjà pris.' },
+      unique: { msg: "Cet email est déjà pris." },
       validate: {
         notNull: {
           msg: "L'email est une propriété obligatoire",
@@ -29,6 +29,11 @@ const UserModel = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    admin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
   });
 };
