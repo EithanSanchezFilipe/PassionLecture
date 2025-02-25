@@ -1,5 +1,5 @@
-import { User, Book, Comment } from "../db/sequelize.mjs";
-import { Op } from "sequelize";
+import { User, Book, Comment } from '../db/sequelize.mjs';
+import { Op } from 'sequelize';
 export async function AddBook(req, res) {
   const { name, author, price, summary, editionYear, pages } = req.body;
   const book = await Book.create({
@@ -34,13 +34,13 @@ export async function ReachBook(req, res) {
       })
       .catch((error) => {
         res.status(500).json({
-          message: "Erreur lors de la recherche du livre",
+          message: 'Erreur lors de la recherche du livre',
           error,
         });
       });
   } else {
     res.status(400).json({
-      message: "ID du livre non fourni",
+      message: 'ID du livre non fourni',
     });
   }
 }
@@ -57,7 +57,7 @@ export async function AllBooks(req, res) {
     return Book.findAll({
       //select * from product where name like %...%
       where: { name: { [Op.like]: `%${req.query.name}%` } },
-      order: [["name", "ASC"]],
+      order: [['name', 'ASC']],
       limit: limit,
     }).then((book) => {
       const message = `Il y a ${book.length} produits qui correspondent au terme de la recherche`;
@@ -69,7 +69,7 @@ export async function AllBooks(req, res) {
     //prends la valeur trouver et la renvoie en format json avec un message de succès
     .then((book) => {
       // Définir un message de succès pour l'utilisateur de l'API REST
-      const message = "La liste des produits a bien été récupérée.";
+      const message = 'La liste des produits a bien été récupérée.';
       res.status(201).json({ message, book });
     })
     //si le serveur n'arrive pas a récuperer les données il renvoie une erreur 500
@@ -83,7 +83,7 @@ export async function AllBooks(req, res) {
 
 export async function DeleteBook(req, res) {
   const id = req.params;
-  const book = await Book.findOne({ where: { id } }).then((book) => {
+  Book.findOne({ where: { id } }).then((book) => {
     book
       .destroy()
       .then(() => {
@@ -91,32 +91,36 @@ export async function DeleteBook(req, res) {
       })
       .catch((error) => {
         res.status(500).json({
-          message: "Erreur lors de la suppression du livre",
+          message: 'Erreur lors de la suppression du livre',
           error,
         });
       });
   });
 }
 export async function RatingBook(req, res) {
-  const id = req.params;
-  const rating = req.body;
-  const book = await Book.findByPk(
-    { where: { id } },
-    { include: Comment }
-  ).then((book) => {
-    book.comment = rating;
-    book
-      .save()
-      .then(() => {
-        res.status(200).json(book);
-      })
-      .catch((error) => {
-        res.status(500).json({
-          message: "Erreur lors de l'ajout de note du livre",
-          error,
-        });
+  const id = req.params.id;
+  const { note, message } = req.body;
+  console.log(req.body);
+  const userId = req.user.id;
+  Comment.create({
+    user_fk: userId,
+    book_id: id,
+    note: note,
+    message: message,
+  })
+    .then((comment) => {
+      return res.status(200).json({
+        message: `le livre dont l'id vaut ${id} a bien été commenté`,
+        data: comment,
       });
-  });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({
+        message: "Erreur lors de l'ajout de note du livre",
+        error,
+      });
+    });
 }
 
 // export async function CommentBook(req, res){
