@@ -4,7 +4,6 @@ import { privateKey } from '../server.mjs';
 const auth = (req, res, next) => {
   //vérifie que l'utilisateur possède un token stocké dans les cookies
   const token = req.cookies.token;
-  console.log(token);
   if (!token) {
     return res
       .status(400)

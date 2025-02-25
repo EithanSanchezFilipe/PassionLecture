@@ -6,14 +6,13 @@ import {
   Profile,
   Delete,
   Update,
+  Logout,
 } from '../controller/user.mjs';
 const router = Router();
 
 router.post('/login', Login);
 router.post('/register', Register);
-router.post('/logout', (req, res) => {
-  res.send('Logout route');
-});
+router.post('/logout', auth, Logout);
 // GET
 router.get('/profile', auth, Profile);
 // DELETE
