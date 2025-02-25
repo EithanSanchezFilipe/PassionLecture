@@ -85,7 +85,7 @@ export async function AllBooks(req, res) {
 
 export async function DeleteBook(req, res) {
   Book.findByPk(req.params.id).then((deletedbook) => {
-    if (deletedbook === null) {
+    if (!deletedbook) {
       const message =
         "Le produit demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
       return res.status(404).json({ message });
@@ -124,18 +124,43 @@ export async function RatingBook(req, res) {
     });
 }
 
-// export async function CommentBook(req, res){
-//     const {id} =req.params;
-//     const {comment} = req.body;
-//     const book = await Book.findByPK({id}).then((book) => {
-//         book.comment = comment;
-//         book.save().then(() => {
-//             res.status(200).json(book);
-//         }).catch((error) => {
-//             res.status(500).json({
-//                 message: "Erreur lors de l'ajout de commentaire du livre",
-//                 error,
-//             });
-//         });
-//     });
-// }
+export async function DeleteCommentBook(req, res) {
+  Comment.findByPk(req.params.id).then((deletecomment) => {
+    if (!deletecomment) {
+      const message =
+        "Le commentaire demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
+      return res.status(404).json({ message });
+    }
+    return Comment.destroy({
+      where: { id: deletecomment.id },
+    }).then((_) => {
+      const message = `Le commentaire ${deletecomment.name} a bien été supprimé !`;
+      res.status(201).json({ message, deletecomment });
+    });
+  });
+}
+export function UpdateBook(req, res) {
+  const id = req.params.id;
+  const data = { ...req.body };
+  Book.findByPk(id)
+    .then((book) => {
+      if (!book) {
+        res
+          .status(400)
+          .json({ message: `Le Livre avec l'id ${id} n'existe pas` });
+      }
+      book.update(data).then((bookupdate) => {
+        return res.status(200).json({
+          message: "Le livre a bien été mis à jour",
+          data: bookupdate,
+        });
+      });
+    })
+    .catch((e) => {
+      console.error(e);
+      res.status(500).json({
+        message:
+          "Le livre n'a pas pu être mis à jour. Merci de réessayer dans quelques instants.",
+      });
+    });
+}
