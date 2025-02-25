@@ -22,7 +22,7 @@ const BookModel = (sequelize, DataTypes) => {
             msg: 'Le nom ne peut pas être vide.',
           },
           notNull: {
-            msg: 'Le nom est un propriété obligatoire',
+            msg: 'Le nom est une propriété obligatoire',
           },
         },
       },
@@ -56,7 +56,7 @@ const BookModel = (sequelize, DataTypes) => {
             msg: "L'année ne peut pas être dans le futur.",
           },
           notNull: {
-            msg: "L'année d'edition est un propriété obligatoire",
+            msg: "L'année d'edition est une propriété obligatoire",
           },
         },
       },
