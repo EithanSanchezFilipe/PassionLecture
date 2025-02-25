@@ -1,14 +1,15 @@
 import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
 import { privateKey } from '../server.mjs';
 const auth = (req, res, next) => {
-  //vérifie que l'utilisateur possède un token
-  const authorizationHeader = req.headers.authorization;
-  if (!authorizationHeader) {
+  //vérifie que l'utilisateur possède un token stocké dans les cookies
+  const token = req.cookies.token;
+  console.log(token);
+  if (!token) {
     return res
       .status(400)
       .json({ message: "Vous n'avez pas fourni de jeton d'authentification" });
   }
-  const token = authorizationHeader.split(' ')[1];
   jwt.verify(token, privateKey, (error, decodedToken) => {
     if (error) {
       const message = `L'utilisateur n'est pas autorisé à accéder à cette ressource.`;
