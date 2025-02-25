@@ -22,9 +22,14 @@ export async function AddBook(req, res) {
 }
 export async function ReachBook(req, res) {
   const id = req.params.id;
-  if (!id == null) {
-    const book = await Book.findOne({ where: { id } })
+  if (id) {
+    const book = await Book.findOne({ where: { id: id } })
       .then((book) => {
+        if (!book) {
+          return res.status(404).json({
+            message: "Le livre n'existe pas",
+          });
+        }
         res.status(200).json(book);
       })
       .catch((error) => {
@@ -35,13 +40,13 @@ export async function ReachBook(req, res) {
       });
   } else {
     res.status(400).json({
-      message: "Le livre n'existe pas",
+      message: "ID du livre non fourni",
     });
   }
 }
 export async function AllBooks(req, res) {
   if (req.query.name) {
-    if (req.query.name.length < 1) {
+    if (req.query.name.length < 2) {
       const message = `Le terme de la recherche doit contenir au moins 2 caractères`;
       return res.status(400).json({ message });
     }
@@ -51,7 +56,7 @@ export async function AllBooks(req, res) {
     }
     return Book.findAll({
       //select * from product where name like %...%
-      where: { name: { [Op.iLike]: `%${req.query.name}%` } },
+      where: { name: { [Op.like]: `%${req.query.name}%` } },
       order: [["name", "ASC"]],
       limit: limit,
     }).then((book) => {
