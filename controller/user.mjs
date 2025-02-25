@@ -38,15 +38,20 @@ export function Login(req, res) {
           }
 
           // Créer un token JWT
-          const accessToken = jwt.sign(
+          const token = jwt.sign(
             { id: user.id, username: user.username },
             privateKey,
             { expiresIn: '1h', algorithm: 'RS256' }
           );
-
+          res.cookie('token', token, {
+            httpOnly: true,
+            sameSite: 'strict',
+            secure: true,
+            maxAge: 24 * 60 * 60 * 1000,
+          });
           return res
             .status(200)
-            .json({ message: 'Utilisateur connecté', token: accessToken });
+            .json({ message: 'Utilisateur connecté', token: token });
         });
       })
       .catch((error) => {
@@ -84,6 +89,12 @@ export async function Register(req, res) {
               algorithm: 'RS256',
             }
           );
+          res.cookie('token', token, {
+            httpOnly: true,
+            sameSite: 'strict',
+            secure: true,
+            maxAge: 24 * 60 * 60 * 1000,
+          });
           res.status(200).json({
             message: `L'utilisateur ${user.username} a bien été créé`,
             token: token,
