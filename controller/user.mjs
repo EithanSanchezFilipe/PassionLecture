@@ -153,3 +153,30 @@ export function Delete(req, res) {
       });
     });
 }
+export function Update(req, res) {
+  const id = req.params.id;
+  const data = { ...req.body };
+  User.findByPk(id, {
+    attributes: { exclude: ['password'] },
+  })
+    .then((user) => {
+      if (!user) {
+        res
+          .status(400)
+          .json({ message: `L'utilisateur dont l'id vaut ${id} n'existe pas` });
+      }
+      user.update(data).then((updatedUser) => {
+        return res.status(200).json({
+          message: "L'utilisateur a bien été mis à jour",
+          data: updatedUser,
+        });
+      });
+    })
+    .catch((e) => {
+      console.error(e);
+      res.status(500).json({
+        message:
+          "Le produit n'a pas pu être mis à jour. Merci de réessayer dans quelques instants.",
+      });
+    });
+}
