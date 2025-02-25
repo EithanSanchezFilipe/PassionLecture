@@ -191,3 +191,15 @@ export function Update(req, res) {
       });
     });
 }
+
+export function Logout(req, res) {
+  res.clearCookie('token', {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: true,
+    maxAge: 0,
+  });
+  return res
+    .status(200)
+    .json({ message: 'Vous vous êtes déconnecté avec succès' });
+}
