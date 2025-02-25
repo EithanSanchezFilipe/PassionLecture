@@ -1,6 +1,12 @@
 import { Router } from 'express';
 import { auth } from '../middleware/auth.mjs';
-import { Register, Login, Profile, Delete } from '../controller/user.mjs';
+import {
+  Register,
+  Login,
+  Profile,
+  Delete,
+  Update,
+} from '../controller/user.mjs';
 const router = Router();
 
 router.post('/login', Login);
@@ -12,8 +18,6 @@ router.post('/logout', (req, res) => {
 router.get('/profile', auth, Profile);
 // DELETE
 router.delete('/delete/', auth, Delete);
-router.put('/profile/:id', (req, res) => {
-  res.send('Profile route');
-});
+router.put('/profile/:id', auth, Update);
 
 export default router;
