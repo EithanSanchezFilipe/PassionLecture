@@ -7,6 +7,50 @@ import { ValidationError } from 'sequelize';
 import { User, Comment } from '../db/sequelize.mjs';
 import { privateKey } from '../server.mjs';
 
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   delete:
+ *     tags: [Products]
+ *     security:
+ *       - cookieAuth: []
+ *     summary: Supprime un produit.
+ *     description: Supprime un produit avec son ID.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: L'ID du produit à supprimer.
+ *     responses:
+ *       200:
+ *         description: Utilisateur créé.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       description: L'ID du produit supprimé.
+ *                       example: 1
+ *                     name:
+ *                       type: string
+ *                       description: Le nom du produit supprimé.
+ *                       example: Big Mac
+ *                     price:
+ *                       type: number
+ *                       description: Le prix du produit.
+ *                       example: 5.99
+ *                     category_fk:
+ *                       type: integer
+ *                       description: L'ID de la catégorie du produit.
+ *                       example: 1
+ */
 export function Login(req, res) {
   const { username, password } = req.body;
   if (!username || !password) {

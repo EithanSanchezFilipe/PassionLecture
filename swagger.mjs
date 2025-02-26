@@ -1,5 +1,4 @@
 import swaggerJSDoc from 'swagger-jsdoc';
-import { Author, Editor, User } from './db/sequelize.mjs';
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -10,15 +9,15 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:8080',
+        url: 'https://localhost:8080',
       },
     ],
     components: {
       securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
+        cookieAuth: {
+          type: 'apiKey',
+          in: 'cookie',
+          name: 'Token',
         },
       },
       schemas: {
@@ -208,9 +207,13 @@ const options = {
         // Ajoutez d'autres schémas ici si nécessaire
       },
     },
-    security: [{}],
+    security: [
+      {
+        cookieAuth: [],
+      },
+    ],
   },
-  apis: ['/controller/*.mjs'], // Chemins vers vos fichiers de route
+  apis: ['./routes/*.mjs'], // Chemins vers vos fichiers de route
 };
 const swaggerSpec = swaggerJSDoc(options);
 export { swaggerSpec };
