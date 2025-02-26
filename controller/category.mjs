@@ -20,15 +20,15 @@ export async function Create(req, res) {
 }
 export async function Delete(req, res) {
   Category.findByPk(req.params.id).then((deletedcategory) => {
-    if (!deletedbook) {
+    if (!deletedcategory) {
       const message =
         "Le produit demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
       return res.status(404).json({ message });
     }
-    return Book.destroy({
+    return Category.destroy({
       where: { id: deletedcategory.id },
     }).then((_) => {
-      const message = `Le produit ${deletedcategory.name} a bien été supprimé !`;
+      const message = `La categorie ${deletedcategory.name} a bien été supprimé !`;
       res.status(201).json({ message, deletedcategory });
     });
   });

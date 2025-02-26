@@ -7,10 +7,7 @@ const router = Router();
 // POST
 router.post("/add", auth, Create);
 // GET
-router.get("/book/:id", FindByCategory);
-router.get("/:id", (req, res) => {
-  res.send("One category route");
-});
+router.get("/book", FindByCategory);
 //DELETE
 router.delete("/delete/:id", auth, Delete);
 

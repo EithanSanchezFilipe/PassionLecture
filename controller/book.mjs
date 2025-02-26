@@ -1,9 +1,11 @@
-import { Book, Comment } from "../db/sequelize.mjs";
+import { Book, Category, Comment } from "../db/sequelize.mjs";
 import { ValidationError } from "sequelize";
 import { Op } from "sequelize";
 
 export async function Create(req, res) {
-  const { name, author, price, summary, editionYear, pages } = req.body;
+  const { name, author, price, summary, editionYear, pages, category_fk } =
+    req.body;
+  const userId = req.user.id;
   const book = await Book.create({
     name,
     author,
@@ -11,6 +13,8 @@ export async function Create(req, res) {
     summary,
     editionYear,
     pages,
+    user_fk: userId,
+    category_fk,
   })
     .then((book) => {
       res.status(201).json(book);
