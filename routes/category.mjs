@@ -1,12 +1,17 @@
 import { Router } from "express";
+import { Create, FindByCategory, Delete } from "../controller/category.mjs";
+import { auth } from "../middleware/auth.mjs";
 
 const router = Router();
 
 // POST
-router.post('/add', (req, res) => {res.send('Add route')});
-
+router.post("/add", auth, Create);
 // GET
-router.get('/',(req, res) => {res.send('All category route')});
-router.get('/:id',(req, res) => {res.send('One category route')});
+router.get("/book/:id", FindByCategory);
+router.get("/:id", (req, res) => {
+  res.send("One category route");
+});
+//DELETE
+router.delete("/delete/:id", auth, Delete);
 
 export default router;
