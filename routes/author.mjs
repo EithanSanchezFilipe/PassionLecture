@@ -257,6 +257,5 @@ router.put("/:id", auth, Update);
  *                   type: string
  *                   example: "Le prénom de l'auteur est requis."
  */
-
 router.get("/book", FindByAuthor);
 export default router;

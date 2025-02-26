@@ -112,7 +112,7 @@ router.post("/:id/rating", auth, Rating);
  *       401:
  *         description: Unauthorized
  */
-router.get("/search", auth, All);
+router.get("/search", All);
 /**
  * @swagger
  * /book/{id}:
