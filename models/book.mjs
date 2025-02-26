@@ -15,8 +15,8 @@ const BookModel = (sequelize, DataTypes) => {
         },
         validate: {
           is: {
-            args: /^[A-Za-z\s]*$/,
-            msg: 'Seules les lettres et les espaces sont autorisées',
+            args: /^[\p{L}\p{P}\s\d]*$/u,
+            msg: 'Seules les lettres, les accents, les espaces, les virgules et les points sont autorisés',
           },
           notEmpty: {
             msg: 'Le nom ne peut pas être vide.',
@@ -29,9 +29,9 @@ const BookModel = (sequelize, DataTypes) => {
       passage: {
         type: DataTypes.STRING,
         validate: {
-          isUrl: {
-            args: true,
-            msg: "L'URL fournie n'est pas valide.",
+          is: {
+            args: /^[\p{L}\p{P}\s\d]*$/u,
+            msg: 'Seules les lettres, les accents, les espaces, les virgules et les points sont autorisés',
           },
         },
       },
@@ -46,10 +46,6 @@ const BookModel = (sequelize, DataTypes) => {
           isInt: {
             args: true,
             msg: "L'année doit être un entier valide.",
-          },
-          min: {
-            args: 1900,
-            msg: "L'année doit être supérieure ou égale à 1900.",
           },
           max: {
             args: new Date().getFullYear(),
