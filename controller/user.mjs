@@ -7,56 +7,11 @@ import { ValidationError } from 'sequelize';
 import { User, Comment } from '../db/sequelize.mjs';
 import { privateKey } from '../server.mjs';
 
-/**
- * @swagger
- * /api/products/{id}:
- *   delete:
- *     tags: [Products]
- *     security:
- *       - cookieAuth: []
- *     summary: Supprime un produit.
- *     description: Supprime un produit avec son ID.
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         schema:
- *           type: integer
- *         description: L'ID du produit à supprimer.
- *     responses:
- *       200:
- *         description: Utilisateur créé.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 data:
- *                   type: object
- *                   properties:
- *                     id:
- *                       type: integer
- *                       description: L'ID du produit supprimé.
- *                       example: 1
- *                     name:
- *                       type: string
- *                       description: Le nom du produit supprimé.
- *                       example: Big Mac
- *                     price:
- *                       type: number
- *                       description: Le prix du produit.
- *                       example: 5.99
- *                     category_fk:
- *                       type: integer
- *                       description: L'ID de la catégorie du produit.
- *                       example: 1
- */
 export function Login(req, res) {
   const { username, password } = req.body;
   if (!username || !password) {
     return res.status(400).json({
-      message:
-        " Les champs nom d'utilisateur et mot de passe sont obligatoires",
+      message: "Les champs nom d'utilisateur et mot de passe sont obligatoires",
     });
   }
 
@@ -99,11 +54,7 @@ export function Login(req, res) {
         });
       })
       .catch((error) => {
-        console.error('Error during login:', error);
-        return res.status(500).json({ message: 'Erreur interne du serveur' });
-      })
-      .catch((error) => {
-        console.error('Error during login:', error);
+        console.error(error);
         return res.status(500).json({ message: 'Erreur interne du serveur' });
       });
   });
@@ -204,7 +155,7 @@ export function Delete(req, res) {
       console.error(e);
       res.status(500).json({
         message:
-          "Le produit n'a pas pu être supprimé. Merci de réessayer dans quelques instants.",
+          "L'utilisateur n'a pas pu être supprimé. Merci de réessayer dans quelques instants.",
       });
     });
 }
@@ -231,19 +182,23 @@ export function Update(req, res) {
       console.error(e);
       res.status(500).json({
         message:
-          "Le produit n'a pas pu être mis à jour. Merci de réessayer dans quelques instants.",
+          "L'utilisateur n'a pas pu être mis à jour. Merci de réessayer dans quelques instants.",
       });
     });
 }
 
 export function Logout(req, res) {
-  res.clearCookie('token', {
-    httpOnly: true,
-    sameSite: 'strict',
-    secure: true,
-    maxAge: 0,
-  });
-  return res
-    .status(200)
-    .json({ message: 'Vous vous êtes déconnecté avec succès' });
+  try {
+    res.clearCookie('token', {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: true,
+      maxAge: 0,
+    });
+    return res
+      .status(200)
+      .json({ message: 'Vous vous êtes déconnecté avec succès' });
+  } catch (e) {
+    return res.status(500).json({ message: 'Erreur interne du serveur' });
+  }
 }
