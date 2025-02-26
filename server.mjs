@@ -27,17 +27,15 @@ const sslcert = {
 };
 
 // Import routes
-import userRoute from './routes/user.mjs';
-import bookRoute from './routes/book.mjs';
-import categoryRoute from './routes/category.mjs';
-
-// import authorRoute from './routes/author.mjs';
-
+import userRoute from "./routes/user.mjs";
+import bookRoute from "./routes/book.mjs";
+import categoryRoute from "./routes/category.mjs";
+import authorRoute from "./routes/author.mjs";
 // Routes
-app.use('/user', userRoute);
-app.use('/book', bookRoute);
-app.use('/category', categoryRoute);
-// app.use('/author', authorRoute);
+app.use("/user", userRoute);
+app.use("/book", bookRoute);
+app.use("/category", categoryRoute);
+app.use("/author", authorRoute);
 
 const httpsServer = https.createServer(sslcert, app);
 
