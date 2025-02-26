@@ -20,7 +20,7 @@ const router = Router();
  *       - bearerAuth: []
  *     tags:
  *       - Books
- *     summary: Create a new book
+ *     summary: Créer un nouveau livre
  *     requestBody:
  *       required: true
  *       content:
@@ -47,11 +47,13 @@ const router = Router();
  *                 type: integer
  *     responses:
  *       201:
- *         description: Book created successfully
+ *         description: Book créer avec succès
  *       401:
- *         description: Unauthorized
+ *         description: Pas autorisé
  *       400:
- *         description: Validation error
+ *         description: erreur de validation
+ *       500:
+ *         description: erreur serveur
  */
 router.post("/add", auth, Create);
 /**
@@ -62,7 +64,7 @@ router.post("/add", auth, Create);
  *       - bearerAuth: []
  *     tags:
  *       - Books
- *     summary: Add rating to a book
+ *     summary: Ajouter une note à un livre
  *     parameters:
  *       - in: path
  *         name: id
@@ -84,9 +86,13 @@ router.post("/add", auth, Create);
  *                 type: string
  *     responses:
  *       200:
- *         description: Rating added successfully
+ *         description: Note ajoutée avec succès
  *       401:
- *         description: Unauthorized
+ *         description: Pas autorisé
+ *       400:
+ *        description: erreur de validation
+ *       500:
+ *        description: erreur serveur
  */
 
 router.post("/:id/rating", auth, Rating);
@@ -99,18 +105,22 @@ router.post("/:id/rating", auth, Rating);
  *       - bearerAuth: []
  *     tags:
  *       - Books
- *     summary: Search books
+ *     summary: Rechercher un/des livre(s)
  *     parameters:
  *       - in: query
  *         name: name
  *         schema:
  *           type: string
- *         description: Search by book name
+ *         description: Rechercher un livre par son nom
  *     responses:
  *       200:
- *         description: List of books
+ *         description: Liste des livres
  *       401:
- *         description: Unauthorized
+ *         description: Pas autorisé
+ *       404:
+ *         description: Livre non trouvé
+ *       500:
+ *         description: erreur serveur
  */
 router.get("/search", All);
 /**
@@ -121,7 +131,7 @@ router.get("/search", All);
  *       - bearerAuth: []
  *     tags:
  *       - Books
- *     summary: Get book by ID
+ *     summary: Rechercher un livre par son ID
  *     parameters:
  *       - in: path
  *         name: id
@@ -130,11 +140,13 @@ router.get("/search", All);
  *           type: integer
  *     responses:
  *       200:
- *         description: Book details
+ *         description: avoir le détail d'un livre
  *       404:
- *         description: Book not found
+ *         description: Livre non trouvé
  *       401:
- *         description: Unauthorized
+ *         description: Pas autorisé
+ *       500:
+ *         description: erreur serveur
  */
 
 router.get("/:id", auth, Reach);
@@ -147,7 +159,7 @@ router.get("/:id", auth, Reach);
  *       - bearerAuth: []
  *     tags:
  *       - Books
- *     summary: Delete a book
+ *     summary: Supprimé un livre
  *     parameters:
  *       - in: path
  *         name: id
@@ -156,11 +168,13 @@ router.get("/:id", auth, Reach);
  *           type: integer
  *     responses:
  *       200:
- *         description: Book deleted successfully
+ *         description: Livre supprimé avec succès
  *       404:
- *         description: Book not found
+ *         description: Livre non trouvé
  *       401:
- *         description: Unauthorized
+ *         description: Pas autorisé
+ *       500:
+ *         description: erreur serveur
  */
 
 router.delete("/delete/:id", auth, Delete);
@@ -172,7 +186,7 @@ router.delete("/delete/:id", auth, Delete);
  *       - bearerAuth: []
  *     tags:
  *       - Books
- *     summary: Delete a comment
+ *     summary: Supprimé le commentaire d'un livre
  *     parameters:
  *       - in: path
  *         name: id
@@ -181,11 +195,13 @@ router.delete("/delete/:id", auth, Delete);
  *           type: integer
  *     responses:
  *       200:
- *         description: Comment deleted successfully
+ *         description: Commentaire supprimé avec succès
  *       404:
- *         description: Comment not found
+ *         description: Commentaire pas trouvé
  *       401:
- *         description: Unauthorized
+ *         description: Pas autorisé
+ *       500:
+ *         description: erreur serveur
  */
 router.delete("/delete/comment/:id", auth, DeleteComment);
 // PUT
@@ -197,7 +213,7 @@ router.delete("/delete/comment/:id", auth, DeleteComment);
  *       - bearerAuth: []
  *     tags:
  *       - Books
- *     summary: Update a book
+ *     summary: Mettre un jour un livre existant
  *     parameters:
  *       - in: path
  *         name: id
@@ -225,11 +241,13 @@ router.delete("/delete/comment/:id", auth, DeleteComment);
  *                 type: integer
  *     responses:
  *       200:
- *         description: Book updated successfully
+ *         description: Livre mis à jour avec succès
  *       404:
- *         description: Book not found
+ *         description: Livre non trouvé
  *       401:
- *         description: Unauthorized
+ *         description: Pas autorisé
+ *       500:
+ *         description: erreur serveur
  */
 
 router.put("/:id", auth, Update);
