@@ -30,12 +30,12 @@ await initAssociations(User, Editor, Comment, Category, Book, Author);
 // Test the connection
 
 sequelize
-  .sync({ force: true })
+  .sync({ alter: true })
   .then((_) => {
-    initCat();
+    /*initCat();
     initEdi();
     initAut();
-    initBook();
+    initBook();*/
     console.log('The database has been synchronized');
   })
   .catch((e) => {

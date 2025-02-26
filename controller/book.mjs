@@ -1,12 +1,21 @@
-import { Book, Category, Comment } from "../db/sequelize.mjs";
-import { ValidationError } from "sequelize";
-import { Op } from "sequelize";
+import { Book, Category, Comment } from '../db/sequelize.mjs';
+import { ValidationError } from 'sequelize';
+import { Op } from 'sequelize';
 
 export async function Create(req, res) {
-  const { name, author, price, summary, editionYear, pages, category_fk } =
-    req.body;
+  const {
+    name,
+    author,
+    price,
+    summary,
+    editionYear,
+    pages,
+    category_fk,
+    author_fk,
+    editor_fk,
+  } = req.body;
   const userId = req.user.id;
-  const book = await Book.create({
+  Book.create({
     name,
     author,
     price,
@@ -15,12 +24,15 @@ export async function Create(req, res) {
     pages,
     user_fk: userId,
     category_fk,
+    author_fk,
+    editor_fk,
   })
     .then((book) => {
       res.status(201).json(book);
     })
     .catch((e) => {
       //si c'est une erreur de validation renvoie le messgae personnalisé
+      console.error(e);
       if (e instanceof ValidationError) {
         return res.status(400).json({ message: e.message });
       }
@@ -40,13 +52,13 @@ export async function Reach(req, res) {
       })
       .catch((error) => {
         res.status(500).json({
-          message: "Erreur lors de la recherche du livre",
+          message: 'Erreur lors de la recherche du livre',
           error,
         });
       });
   } else {
     res.status(400).json({
-      message: "ID du livre non fourni",
+      message: 'ID du livre non fourni',
     });
   }
 }
@@ -63,7 +75,7 @@ export async function All(req, res) {
     return Book.findAll({
       //select * from product where name like %...%
       where: { name: { [Op.like]: `%${req.query.name}%` } },
-      order: [["name", "ASC"]],
+      order: [['name', 'ASC']],
       limit: limit,
     }).then((book) => {
       const message = `Il y a ${book.length} produits qui correspondent au terme de la recherche`;
@@ -75,7 +87,7 @@ export async function All(req, res) {
     //prends la valeur trouver et la renvoie en format json avec un message de succès
     .then((book) => {
       // Définir un message de succès pour l'utilisateur de l'API REST
-      const message = "La liste des produits a bien été récupérée.";
+      const message = 'La liste des produits a bien été récupérée.';
       res.status(201).json({ message, book });
     })
     //si le serveur n'arrive pas a récuperer les données il renvoie une erreur 500
@@ -165,7 +177,7 @@ export function Update(req, res) {
       }
       book.update(data).then((bookupdate) => {
         return res.status(200).json({
-          message: "Le livre a bien été mis à jour",
+          message: 'Le livre a bien été mis à jour',
           data: bookupdate,
         });
       });
