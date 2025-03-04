@@ -1,6 +1,6 @@
-import { Category, Book } from "../db/sequelize.mjs";
-import { ValidationError } from "sequelize";
-import { Op } from "sequelize";
+import { Category, Book } from '../db/sequelize.mjs';
+import { ValidationError } from 'sequelize';
+import { Op } from 'sequelize';
 
 // Ajouter une catégorie
 export async function Create(req, res) {
@@ -51,13 +51,13 @@ export async function FindByCategory(req, res) {
       })
       .catch((error) => {
         res.status(500).json({
-          message: "Erreur lors de la recherche de la catégorie",
+          message: 'Erreur lors de la recherche de la catégorie',
           error,
         });
       });
   } else {
     res.status(400).json({
-      message: "Nom de la catégorie non fourni",
+      message: 'Nom de la catégorie non fourni',
     });
   }
 }
