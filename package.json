@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server.mjs",
   "scripts": {
-    "start": "nodemon server.mjs -L"
+    "start": "nodemon server.mjs -L",
+    "test": "vitest --config ./vitest.config.js"
   },
   "keywords": [],
   "author": "",
@@ -22,9 +23,11 @@
     "path": "^0.12.7",
     "sequelize": "^6.37.5",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "vite": "^6.2.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "vitest": "^3.0.7"
   }
 }
