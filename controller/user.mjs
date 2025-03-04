@@ -3,8 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { ValidationError } from 'sequelize';
-import { User, Comment } from '../db/sequelize.mjs';
+import { Model, ValidationError } from 'sequelize';
+import { User, Comment, Book, Category } from '../db/sequelize.mjs';
 import { privateKey } from '../server.mjs';
 
 export function Login(req, res) {
@@ -113,7 +113,17 @@ export function Profile(req, res) {
   const id = req.user.id;
   User.findByPk(id, {
     attributes: { exclude: ['password'] },
-    include: [Comment],
+    include: [
+      Comment,
+      {
+        model: Book,
+        include: {
+          model: Category,
+          attributes: ['name'],
+        },
+        attributes: ['id', 'name'],
+      },
+    ],
   })
     .then((user) => {
       if (!user) {

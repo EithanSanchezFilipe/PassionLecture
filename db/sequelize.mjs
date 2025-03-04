@@ -32,11 +32,12 @@ await initAssociations(User, Editor, Comment, Category, Book, Author);
 sequelize
   .sync({ alter: true })
   .then((_) => {
-    // initCat();
-    // initEdi();
-    // initAut();
-    // initBook();
-    console.log("The database has been synchronized");
+
+    /*initCat();
+    initEdi();
+    initAut();
+    initBook();*/
+    console.log('The database has been synchronized');
   })
   .catch((e) => {
     console.log(`The database couldn't be synchronized`, e);

@@ -1,9 +1,9 @@
 const books = [
   {
     id: 1,
-    titre: "Le Mystère de la Chambre Jaune",
+    titre: 'Le Mystère de la Chambre Jaune',
     extrait:
-      "Il était une fois, dans une vieille maison de campagne, un cri perça la nuit...",
+      'Il était une fois, dans une vieille maison de campagne, un cri perça la nuit...',
     resume:
       "Dans ce roman policier, le jeune détective François de la Roche résout une série de mystères autour d'une chambre mystérieuse.",
     annee_edition: 1907,
@@ -14,7 +14,7 @@ const books = [
   },
   {
     id: 2,
-    titre: "Les Misérables",
+    titre: 'Les Misérables',
     extrait:
       "Il dort. Quoique le sort fût pour lui bien étrange, il ne vivait que pour le bien d'autrui.",
     resume:
@@ -27,8 +27,8 @@ const books = [
   },
   {
     id: 3,
-    titre: "1984",
-    extrait: "War is peace. Freedom is slavery. Ignorance is strength.",
+    titre: '1984',
+    extrait: 'War is peace. Freedom is slavery. Ignorance is strength.',
     resume:
       "Dans une société dystopique contrôlée par un régime totalitaire, Winston Smith cherche à s'échapper de l’emprise de Big Brother. Un roman de science-fiction politique puissant.",
     annee_edition: 1949,
@@ -43,7 +43,7 @@ const books = [
     extrait:
       "Quand vous voulez vraiment quelque chose, tout l'Univers conspire à vous aider à l'obtenir.",
     resume:
-      "L’histoire de Santiago, un jeune berger andalou, en quête d’un trésor caché. Un voyage initiatique qui parle de rêves, de destin et de la quête de soi.",
+      'L’histoire de Santiago, un jeune berger andalou, en quête d’un trésor caché. Un voyage initiatique qui parle de rêves, de destin et de la quête de soi.',
     annee_edition: 1988,
     nombre_de_pages: 208,
     id_categorie: 4,
@@ -54,59 +54,59 @@ const books = [
 const categories = [
   {
     id: 1,
-    nom: "Roman Policier",
+    nom: 'Roman Policier',
   },
   {
     id: 2,
-    nom: "Roman Historique",
+    nom: 'Roman Historique',
   },
   {
     id: 3,
-    nom: "Science-Fiction",
+    nom: 'Science-Fiction',
   },
   {
     id: 4,
-    nom: "Aventure",
+    nom: 'Aventure',
   },
 ];
 const authors = [
   {
     id: 1,
-    prenom: "Gaston",
-    nom: "Leroux",
+    prenom: 'Gaston',
+    nom: 'Leroux',
   },
   {
     id: 2,
-    prenom: "Victor",
-    nom: "Hugo",
+    prenom: 'Victor',
+    nom: 'Hugo',
   },
   {
     id: 3,
-    prenom: "George",
-    nom: "Orwell",
+    prenom: 'George',
+    nom: 'Orwell',
   },
   {
     id: 4,
-    prenom: "Paulo",
-    nom: "Coelho",
+    prenom: 'Paulo',
+    nom: 'Coelho',
   },
 ];
 const editors = [
   {
     id: 1,
-    nom: "Éditions Félix",
+    nom: 'Éditions Félix',
   },
   {
     id: 2,
-    nom: "Éditions Classiques",
+    nom: 'Éditions Classiques',
   },
   {
     id: 3,
-    nom: "Secker & Warburg",
+    nom: 'Secker & Warburg',
   },
   {
     id: 4,
-    nom: "HarperCollins",
+    nom: 'HarperCollins',
   },
 ];
 export { books, categories, authors, editors };
