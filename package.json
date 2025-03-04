@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server.mjs",
   "scripts": {
-    "start": "nodemon server.mjs -L"
+    "start": "nodemon server.mjs -L",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +26,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "vitest": "^3.0.7"
   }
 }
