@@ -1,0 +1,63 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: nodejs.dockerfile
+    container_name: passion_lecture_app
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=db_passion_lecture
+      - DB_PORT=3306
+    volumes:
+      - ./app:/home/node/app # Monter le répertoire de l'application
+      - /home/node/app/node_modules # Volume pour node_modules (empêche les conflits avec l'hôte)
+      - dbdata:/var/lib/mysql # Volume pour persister les données de la DB
+    ports:
+      - "8080:8080" # Expose le port 8080 pour l'application Node.js
+    networks:
+      - app-network
+    depends_on:
+      - db # Assure que la base de données soit prête avant de démarrer l'app
+
+  db:
+    image: mysql:8.0.30
+    container_name: db_container
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_passion_lecture
+    restart: always
+    host: "db_container"
+    ports:
+      - "6033:3306" # Le port 3306 est mappé en interne au conteneur uniquement
+    volumes:
+      - dbdata:/var/lib/mysql # Volume persistant pour les données de la DB
+    networks:
+      - app-network
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.0
+    container_name: phpmyadmin_container
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - "8081:80" # Mappe le port 80 du container phpMyAdmin vers 8081 sur l'hôte
+    networks:
+      - app-network
+    depends_on:
+      - db # Assure que la DB est prête avant de démarrer phpMyAdmin
+
+volumes:
+  dbdata: # Volume persistant pour les données de la DB
+
+networks:
+  app-network:
+    driver: bridge

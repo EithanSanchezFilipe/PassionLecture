@@ -10,9 +10,9 @@ import { books, authors, editors, categories } from "./data-mock.mjs";
 
 // Create a new instance of Sequelize with the connection string to our database
 const sequelize = new Sequelize("db_passion_lecture", "root", "root", {
-  host: "localhost",
+  host: "db",
   dialect: "mysql",
-  port: 6033,
+  port: 3306,
   logging: false, // Set to console.log to see SQL queries in console
   define: {
     freezeTableName: true,
@@ -32,12 +32,11 @@ await initAssociations(User, Editor, Comment, Category, Book, Author);
 sequelize
   .sync({ alter: true })
   .then((_) => {
-
     /*initCat();
     initEdi();
     initAut();
     initBook();*/
-    console.log('The database has been synchronized');
+    console.log("The database has been synchronized");
   })
   .catch((e) => {
     console.log(`The database couldn't be synchronized`, e);

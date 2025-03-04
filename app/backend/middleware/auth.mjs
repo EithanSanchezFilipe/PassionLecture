@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken';
-import cookieParser from 'cookie-parser';
-import { privateKey } from '../server.mjs';
+import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
+import { privateKey } from "../../server.mjs";
 const auth = (req, res, next) => {
   //vérifie que l'utilisateur possède un token stocké dans les cookies
   const token = req.cookies.token;
