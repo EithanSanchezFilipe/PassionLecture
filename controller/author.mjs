@@ -1,11 +1,11 @@
-import { Author, Book } from "../db/sequelize.mjs";
-import { ValidationError } from "sequelize";
-import { Op } from "sequelize";
+import { Author, Book } from '../db/sequelize.mjs';
+import { ValidationError } from 'sequelize';
+import { Op } from 'sequelize';
 
 // Ajouter une catégorie
 export async function Create(req, res) {
   const { firstname, lastname } = req.body;
-  const author = await Author.create({
+  Author.create({
     firstname,
     lastname,
   })
@@ -39,7 +39,7 @@ export async function Update(req, res) {
   const id = req.params.id;
   const { firstname, lastname } = req.body;
   if (id) {
-    const author = await Author.findOne({ where: { id: id } })
+    Author.findOne({ where: { id: id } })
       .then((author) => {
         if (!author) {
           return res.status(404).json({
@@ -67,7 +67,7 @@ export async function Update(req, res) {
 export async function FindByAuthor(req, res) {
   const { firstname } = req.query;
   if (firstname) {
-    const author = await Author.findOne({
+    Author.findOne({
       where: { firstname },
       include: [Book],
     })
@@ -81,7 +81,7 @@ export async function FindByAuthor(req, res) {
       })
       .catch((error) => {
         res.status(500).json({
-          message: "Erreur lors de la recherche des auteurs",
+          message: 'Erreur lors de la recherche des auteurs',
           error,
         });
       });
