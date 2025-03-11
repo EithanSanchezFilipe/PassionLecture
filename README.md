@@ -22,7 +22,7 @@ Avant de commencer, assurez-vous d'avoir installé :
    ```sh
    npm install
 
-3. **Lancer le conteneur docker** <br>
+3. **Lancer le conteneur docker**  
    Ouvrez le terminal dans le dossier docker puis exécutez :
    ```cmd
    docker-compose up -d
@@ -35,6 +35,12 @@ Avant de commencer, assurez-vous d'avoir installé :
 
 ## Documentation
 
-1. **Journal de travail** <br>
-   Eithan Sanchez Filipe: <br>
-      [Journal de travail](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa78gum_eduvaud_ch/EXyTaG0eWktAltjx45jCM6sBtY5Tc4lE-WQMA7lrDXvYRw?e=YTKTRd)
+1. **Journal de travail**  
+   Eithan Sanchez Filipe: [Journal de travail](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa78gum_eduvaud_ch/EXyTaG0eWktAltjx45jCM6sBtY5Tc4lE-WQMA7lrDXvYRw?e=YTKTRd)
+
+2. **MCD/MLD**  
+   [MCD](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/db/MCD.png)  
+   [MLD](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/db/MLD.png)
+
+3. Schéma d'interactions  
+   [Schéma](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/doc/Schema-interaction.png)
