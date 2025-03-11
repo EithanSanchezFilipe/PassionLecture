@@ -22,7 +22,12 @@ Avant de commencer, assurez-vous d'avoir installé :
    ```sh
    npm install
 
-2. **Démarrer le projet**  
+3. **Lancer le conteneur docker**
+   ouvrez le terminal dans le dossier docker puis exécutez :
+   ```cmd
+   docker-compose up -d
+
+4. **Démarrer le projet**  
    Lancez l'application en mode développement :
    ```sh
    npm run start
