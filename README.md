@@ -14,7 +14,8 @@ Avant de commencer, assurez-vous d'avoir installé :
 1. **Cloner le dépôt**  
    Ouvrez un terminal et exécutez :
    ```sh
-   git clone <URL_DU_DEPOT>
+   git clone https://github.com/EithanSanchezFilipe/PassionLecture.git
+   cd PassionLecture
 
 2. **Installer les dépendances**  
    Exécutez la commande :
