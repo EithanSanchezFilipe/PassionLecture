@@ -36,8 +36,10 @@ export async function Delete(req, res) {
 // Trouver un livre par sa catégorie
 export async function FindByCategory(req, res) {
   const { name } = req.query;
+  let limit = 10;
+  if (req.limit) limit = req.limit;
   if (name) {
-    const category = await Category.findOne({
+    Category.findOne({
       where: { name },
       include: [Book],
     })
@@ -50,14 +52,24 @@ export async function FindByCategory(req, res) {
         res.status(200).json(category);
       })
       .catch((error) => {
-        res.status(500).json({
+        return res.status(500).json({
           message: 'Erreur lors de la recherche de la catégorie',
           error,
         });
       });
   } else {
-    res.status(400).json({
-      message: 'Nom de la catégorie non fourni',
-    });
+    Category.findAll({ limit: limit })
+      .then((categories) => {
+        return res.status(200).json({
+          message: 'Les catégories on bien été recuperer',
+          data: categories,
+        });
+      })
+      .catch((e) => {
+        return res.status(500).json({
+          message: 'Erreur lors de la recherche de la catégorie',
+          e,
+        });
+      });
   }
 }
