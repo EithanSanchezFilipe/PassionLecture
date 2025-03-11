@@ -1,9 +1,10 @@
 import { User, Book, Category, Editor, Author } from '../db/sequelize.mjs';
+import { Op } from 'sequelize';
 export function Search(req, res) {
   const { query, searchType } = req.query;
   let model;
   let name = 'name';
-  switch (search) {
+  switch (searchType) {
     case 'user':
       model = User;
       name = 'username';

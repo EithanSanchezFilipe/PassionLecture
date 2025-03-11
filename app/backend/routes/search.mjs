@@ -46,3 +46,4 @@ const router = Router();
  *                   example: "Nom manquant"
  */
 router.get('/', Search);
+export default router;
