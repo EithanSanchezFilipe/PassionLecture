@@ -23,7 +23,7 @@ Avant de commencer, assurez-vous d'avoir installé :
    npm install
 
 3. **Lancer le conteneur docker**
-   ouvrez le terminal dans le dossier docker puis exécutez :
+   Ouvrez le terminal dans le dossier docker puis exécutez :
    ```cmd
    docker-compose up -d
 
