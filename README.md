@@ -22,7 +22,7 @@ Avant de commencer, assurez-vous d'avoir installé :
    ```sh
    npm install
 
-3. **Lancer le conteneur docker**
+3. **Lancer le conteneur docker** <br>
    Ouvrez le terminal dans le dossier docker puis exécutez :
    ```cmd
    docker-compose up -d
@@ -33,8 +33,8 @@ Avant de commencer, assurez-vous d'avoir installé :
    npm run start
    Le projet sera accessible à l'adresse indiquée dans le terminal
 
-##Documentation
+## Documentation
 
-1. **Journal de travail**
-   Eithan Sanchez Filipe:
+1. **Journal de travail** <br>
+   Eithan Sanchez Filipe: <br>
       [Journal de travail](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa78gum_eduvaud_ch/EXyTaG0eWktAltjx45jCM6sBtY5Tc4lE-WQMA7lrDXvYRw?e=YTKTRd)
