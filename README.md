@@ -27,8 +27,14 @@ Avant de commencer, assurez-vous d'avoir installé :
    ```cmd
    docker-compose up -d
 
-4. **Démarrer le projet**  
+5. **Démarrer le projet**  
    Lancez l'application en mode développement :
    ```sh
    npm run start
    Le projet sera accessible à l'adresse indiquée dans le terminal
+
+##Documentation
+
+1. **Journal de travail**
+   Eithan Sanchez Filipe:
+      [Journal de travail](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa78gum_eduvaud_ch/EXyTaG0eWktAltjx45jCM6sBtY5Tc4lE-WQMA7lrDXvYRw?e=YTKTRd)
