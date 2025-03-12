@@ -37,7 +37,7 @@ Avant de commencer, assurez-vous d'avoir installé :
 
 1. **Journal de travail**  
    Eithan Sanchez Filipe: [Journal de travail](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa78gum_eduvaud_ch/EXyTaG0eWktAltjx45jCM6sBtY5Tc4lE-WQMA7lrDXvYRw?e=YTKTRd)  
-   Ryan De Pina Correia: [Journal de travail](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa70iyc_eduvaud_ch/EZ_skRjDMcNLultbTqKePqMBa-MXJGmZgQaU5-C5C8ypYQ?e=eKhie6)
+   Ryan De Pina Correia: [Journal de travail](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa70iyc_eduvaud_ch/EZ_skRjDMcNLultbTqKePqMBa-MXJGmZgQaU5-C5C8ypYQ?e=2itHLm)
 
 2. **MCD/MLD**  
    [MCD](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/db/MCD.png)  
