@@ -78,7 +78,7 @@ export async function All(req, res) {
       order: [['name', 'ASC']],
       limit: limit,
     }).then((book) => {
-      const message = `Il y a ${book.length} produits qui correspondent au terme de la recherche`;
+      const message = `Il y a ${book.length} livres qui correspondent au terme de la recherche`;
       res.status(200).json({ message, book });
     });
   }
@@ -87,28 +87,28 @@ export async function All(req, res) {
     //prends la valeur trouver et la renvoie en format json avec un message de succès
     .then((book) => {
       // Définir un message de succès pour l'utilisateur de l'API REST
-      const message = 'La liste des produits a bien été récupérée.';
+      const message = 'Les livres ont bien été récupérée.';
       res.status(201).json({ message, book });
     })
     //si le serveur n'arrive pas a récuperer les données il renvoie une erreur 500
     .catch((e) => {
       // Définir un message d'erreur pour l'utilisateur de l'API REST
       const message =
-        "La liste des produits n'a pas pu être récupérée. Merci de réessayer dans quelques instants.";
+        "La liste des livres n'a pas pu être récupérée. Merci de réessayer dans quelques instants.";
       res.status(500).json({ message, data: error });
     });
 }
 export async function Delete(req, res) {
-  if (book.user_fk.id !== req.user.id) {
-    return res.status(403).json({
-      message: "Vous n'êtes pas autorisé à modifier ce livre",
-    });
-  }
   Book.findByPk(req.params.id).then((deletedbook) => {
     if (!deletedbook) {
       const message =
         "Le produit demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
       return res.status(404).json({ message });
+    }
+    if (deletedbook.user_fk !== req.user.id) {
+      return res.status(403).json({
+        message: "Vous n'êtes pas autorisé à effacer ce livre",
+      });
     }
     return Book.destroy({
       where: { id: deletedbook.id },
@@ -144,34 +144,40 @@ export async function Rating(req, res) {
     });
 }
 export async function DeleteComment(req, res) {
-  Comment.findByPk(req.params.id).then((deletecomment) => {
-    if (!deletecomment) {
-      const message =
-        "Le commentaire demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
-      return res.status(404).json({ message });
-    }
-    return Comment.destroy({
-      where: { id: deletecomment.id },
-    }).then((_) => {
-      const message = `Le commentaire ${deletecomment.name} a bien été supprimé !`;
-      res.status(201).json({ message, deletecomment });
+  Comment.findByPk(req.params.id)
+    .then((comment) => {
+      if (!comment) {
+        const message =
+          "Le commentaire demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
+        return res.status(404).json({ message });
+      }
+      comment.destroy().then((deletecomment) => {
+        const message = `Le commentaire a bien été supprimé !`;
+        return res.status(201).json({ message, deletecomment });
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({
+        message: 'Erreur lors de la suppression du commentaire',
+        error,
+      });
     });
-  });
 }
 export function Update(req, res) {
   const id = req.params.id;
   const data = { ...req.body };
-  if (book.user_fk.id !== req.user.id) {
-    return res.status(403).json({
-      message: "Vous n'êtes pas autorisé à modifier ce livre",
-    });
-  }
   Book.findByPk(id)
     .then((book) => {
       if (!book) {
         res
           .status(400)
           .json({ message: `Le Livre avec l'id ${id} n'existe pas` });
+      }
+      if (book.user_fk !== req.user.id) {
+        return res.status(403).json({
+          message: "Vous n'êtes pas autorisé à modifier ce livre",
+        });
       }
       book.update(data).then((bookupdate) => {
         return res.status(200).json({
