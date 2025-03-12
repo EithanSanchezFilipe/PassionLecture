@@ -26,7 +26,7 @@ services:
 
   db:
     image: mysql:8.0.30
-    container_name: db_container
+    container_name: db_passion_lecture_container
     environment:
       MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: root
@@ -41,7 +41,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin:5.2.0
-    container_name: phpmyadmin_container
+    container_name: phpmyadmin_passion_lecture_container
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
