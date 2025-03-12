@@ -5,10 +5,10 @@ import { auth } from '../middleware/auth.mjs';
 const router = Router();
 
 // POST
-router.post('/add', auth, Create);
+router.post('/', auth, Create);
 // GET
-router.get('/book', FindByCategory);
+router.get('/:id/books', FindByCategory);
 //DELETE
-router.delete('/delete/:id', auth, Delete);
+router.delete('/:id', auth, Delete);
 
 export default router;

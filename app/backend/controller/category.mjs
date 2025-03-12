@@ -5,7 +5,7 @@ import { Op } from 'sequelize';
 // Ajouter une catégorie
 export async function Create(req, res) {
   const { name } = req.body;
-  const category = await Category.create({
+  Category.create({
     name,
   })
     .then((category) => {
