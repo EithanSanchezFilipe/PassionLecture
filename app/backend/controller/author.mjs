@@ -65,29 +65,22 @@ export async function Update(req, res) {
 }
 // Trouver un livre par son auteur
 export async function FindByAuthor(req, res) {
-  const { firstname } = req.query;
-  if (firstname) {
-    Author.findOne({
-      where: { firstname },
-      include: [Book],
-    })
-      .then((author) => {
-        if (!author) {
-          return res.status(404).json({
-            message: "Aucun auteur n'a été trouvé",
-          });
-        }
-        res.status(200).json(author);
-      })
-      .catch((error) => {
-        res.status(500).json({
-          message: 'Erreur lors de la recherche des auteurs',
-          error,
+  const { id } = req.params;
+  Author.findByPk(id, {
+    include: [Book],
+  })
+    .then((author) => {
+      if (!author) {
+        return res.status(404).json({
+          message: "Aucun auteur n'a été trouvé",
         });
+      }
+      res.status(200).json(author);
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: 'Erreur lors de la recherche des auteurs',
+        error,
       });
-  } else {
-    res.status(400).json({
-      message: "Nom de l'auteur non fourni",
     });
-  }
 }

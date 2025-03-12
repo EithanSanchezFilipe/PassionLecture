@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { FindByAuthor, Create, Delete, Update } from "../controller/author.mjs";
-import { auth } from "../middleware/auth.mjs";
+import { Router } from 'express';
+import { FindByAuthor, Create, Delete, Update } from '../controller/author.mjs';
+import { auth } from '../middleware/auth.mjs';
 const router = Router();
 
 // POST
@@ -59,8 +59,7 @@ const router = Router();
  *                   type: string
  *                   example: "Nom ou prénom manquant"
  */
-
-router.post("/add", auth, Create);
+router.post('/', auth, Create);
 // DELETE
 /**
  * @swagger
@@ -115,7 +114,7 @@ router.post("/add", auth, Create);
  *                   example: "L'auteur inscrit n'existe pas. Merci de réessayer avec un autre identifiant."
  */
 
-router.delete("/delete/:id", auth, Delete);
+router.delete('/delete/:id', auth, Delete);
 // PUT
 /**
  * @swagger
@@ -197,7 +196,7 @@ router.delete("/delete/:id", auth, Delete);
  *                   type: string
  *                   example: "Erreur lors de la mise à jour de l'auteur"
  */
-router.put("/:id", auth, Update);
+router.put('/:id', auth, Update);
 // GET
 /**
  * @swagger
@@ -257,5 +256,5 @@ router.put("/:id", auth, Update);
  *                   type: string
  *                   example: "Le prénom de l'auteur est requis."
  */
-router.get("/book", FindByAuthor);
+router.get('/:id/books', FindByAuthor);
 export default router;
