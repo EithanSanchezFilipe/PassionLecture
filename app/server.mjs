@@ -34,12 +34,12 @@ import authorRoute from './backend/routes/author.mjs';
 import editorRoute from './backend/routes/editor.mjs';
 import searchRoute from './backend/routes/search.mjs';
 // Routes
-app.use('/user', userRoute);
-app.use('/book', bookRoute);
-app.use('/category', categoryRoute);
-app.use('/author', authorRoute);
-app.use('/editor', editorRoute);
-app.use('/search', searchRoute);
+app.use('/api/user', userRoute);
+app.use('/api/book', bookRoute);
+app.use('/api/category', categoryRoute);
+app.use('/api/author', authorRoute);
+app.use('/api/editor', editorRoute);
+app.use('/api/search', searchRoute);
 
 const httpsServer = https.createServer(sslcert, app);
 

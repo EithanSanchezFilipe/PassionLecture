@@ -96,7 +96,7 @@ router.post('/add', auth, Create);
  *        description: erreur serveur
  */
 
-router.post('/:id/rating', auth, Rating);
+router.post('/:id/comments', auth, Rating);
 
 router.get('/:id/comments', auth, GetComments);
 // GET
@@ -206,7 +206,7 @@ router.delete('/:id', auth, Delete);
  *       500:
  *         description: erreur serveur
  */
-router.delete('/comment/:id', auth, DeleteComment);
+router.delete('/comments/:id', auth, DeleteComment);
 // PUT
 /**
  * @swagger

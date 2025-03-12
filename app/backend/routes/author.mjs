@@ -114,7 +114,7 @@ router.post('/', auth, Create);
  *                   example: "L'auteur inscrit n'existe pas. Merci de réessayer avec un autre identifiant."
  */
 
-router.delete('/delete/:id', auth, Delete);
+router.delete('/:id', auth, Delete);
 // PUT
 /**
  * @swagger

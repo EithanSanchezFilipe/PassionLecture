@@ -288,7 +288,7 @@ router.get('/profile', auth, Profile);
  *                   type: string
  *                   example: "L'utilisateur n'a pas pu être supprimé. Merci de réessayer dans quelques instants."
  */
-router.delete('/delete/', auth, Delete);
+router.delete('/', auth, Delete);
 /**
  * @swagger
  * /user/profile/:id:
