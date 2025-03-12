@@ -1,5 +1,5 @@
 import { Book, Category, Comment } from '../db/sequelize.mjs';
-import { ValidationError } from 'sequelize';
+import { ValidationError, where } from 'sequelize';
 import { Op } from 'sequelize';
 
 export async function Create(req, res) {
@@ -38,10 +38,10 @@ export async function Create(req, res) {
       }
     });
 }
-export async function Reach(req, res) {
+export function Reach(req, res) {
   const id = req.params.id;
   if (id) {
-    const book = await Book.findOne({ where: { id: id } })
+    Book.findByPk(id)
       .then((book) => {
         if (!book) {
           return res.status(404).json({
@@ -98,7 +98,6 @@ export async function All(req, res) {
       res.status(500).json({ message, data: error });
     });
 }
-
 export async function Delete(req, res) {
   if (book.user_fk.id !== req.user.id) {
     return res.status(403).json({
@@ -122,11 +121,11 @@ export async function Delete(req, res) {
 export async function Rating(req, res) {
   const id = req.params.id;
   const { note, message } = req.body;
-  console.log(req.body);
+  console.log(req.params);
   const userId = req.user.id;
   Comment.create({
     user_fk: userId,
-    book_id: id,
+    book_fk: id,
     note: note,
     message: message,
   })
@@ -144,7 +143,6 @@ export async function Rating(req, res) {
       });
     });
 }
-
 export async function DeleteComment(req, res) {
   Comment.findByPk(req.params.id).then((deletecomment) => {
     if (!deletecomment) {
@@ -187,6 +185,28 @@ export function Update(req, res) {
       res.status(500).json({
         message:
           "Le livre n'a pas pu être mis à jour. Merci de réessayer dans quelques instants.",
+      });
+    });
+}
+export function GetComments(req, res) {
+  const { id } = req.params;
+  Comment.findAll({ where: { book_fk: id } })
+    .then((comments) => {
+      if (comments.length == 0) {
+        return res
+          .status(404)
+          .json({ message: "Ce livre n'a pas de commentaires" });
+      }
+      return res.status(200).json({
+        message: 'La liste des commentaires à bien été récupérer',
+        comments,
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message:
+          "Les commentaires n'ont pas pu être récupérés. Merci de réessayer dans quelques instants.",
+        error,
       });
     });
 }
