@@ -12,7 +12,7 @@ services:
       - DB_USER=root
       - DB_PASSWORD=root
       - DB_NAME=db_passion_lecture
-      - DB_PORT=3306
+      - DB_PORT=6033
     volumes:
       - ./app:/home/node/app # Monter le répertoire de l'application
       - /home/node/app/node_modules # Volume pour node_modules (empêche les conflits avec l'hôte)
