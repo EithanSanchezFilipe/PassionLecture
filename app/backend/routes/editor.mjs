@@ -52,7 +52,7 @@ const router = Router();
  *                   example: "Nom manquant"
  */
 
-router.post('/add', auth, Create);
+router.post('/', auth, Create);
 // DELETE
 /**
  * @swagger
@@ -104,7 +104,7 @@ router.post('/add', auth, Create);
  *                   example: "L'editeur inscrit n'existe pas. Merci de réessayer avec un autre identifiant."
  */
 
-router.delete('/delete/:id', auth, Delete);
+router.delete('/:id', auth, Delete);
 // PUT
 /**
  * @swagger
