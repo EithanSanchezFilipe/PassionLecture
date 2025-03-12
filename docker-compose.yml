@@ -12,13 +12,13 @@ services:
       - DB_USER=root
       - DB_PASSWORD=root
       - DB_NAME=db_passion_lecture
-      - DB_PORT=6033
+      - DB_PORT=3306
     volumes:
       - ./app:/home/node/app # Monter le répertoire de l'application
       - /home/node/app/node_modules # Volume pour node_modules (empêche les conflits avec l'hôte)
       - dbdata:/var/lib/mysql # Volume pour persister les données de la DB
     ports:
-      - "8080:8080" # Expose le port 8080 pour l'application Node.js
+      - "443:443" # Expose le port 443 pour l'application Node.js
     networks:
       - app-network
     depends_on:
