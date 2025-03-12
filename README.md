@@ -45,3 +45,6 @@ Avant de commencer, assurez-vous d'avoir installé :
 
 3. Schéma d'interactions  
    [Schéma](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/doc/Schema-interaction.png)
+
+4. Checklist des routes
+   [Checklist](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/doc/CheckListRoutes.png)
