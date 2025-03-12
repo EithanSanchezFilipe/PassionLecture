@@ -20,7 +20,7 @@ RUN npm install
 RUN npm ci
 # Copier tout le code du backend dans le conteneur
 COPY app/backend/ ./backend/
-# Exposer le port sur lequel le backend va écouter (exemple: 8080)
+# Exposer le port sur lequel le backend va écouter (exemple: 443)
 EXPOSE 443
 
 # Démarrer le backend avec nodemon en utilisant server.mjs comme fichier principal
