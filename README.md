@@ -50,4 +50,4 @@ Avant de commencer, assurez-vous d'avoir installé :
    [Checklist](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/doc/CheckListRoutes.png)
 
 5. **Liste des routes**
-   [Liste]()
+   [Liste](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/doc/routes.md)
