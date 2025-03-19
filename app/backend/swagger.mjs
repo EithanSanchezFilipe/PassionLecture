@@ -213,7 +213,7 @@ const options = {
       },
     ],
   },
-  apis: ["./routes/*.mjs"], // Chemins vers vos fichiers de route
+  apis: ["./app/backend/routes/*.mjs"], // Chemins vers vos fichiers de route
 };
 const swaggerSpec = swaggerJSDoc(options);
 export { swaggerSpec };
