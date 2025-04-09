@@ -15,9 +15,6 @@ RUN npm install && npm ci
 # Copier tout le backend (y compris les certificats)
 COPY app/backend/ ./backend/
 
-# Donner les bons droits
-RUN chown -R node:node /home/node/app
-
 # Exposer le port HTTPS
 EXPOSE 443
 
