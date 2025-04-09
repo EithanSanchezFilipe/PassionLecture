@@ -1,13 +1,11 @@
-version: "3.9"
-
 services:
   app:
     build:
       context: .
-      dockerfile: nodejs.dockerfile
+      dockerfile: Dockerfile
     container_name: passion_lecture_app
     user: "node"
-    working_dir: /home/node/app
+    working_dir: /home/node/backend
     environment:
       - NODE_ENV=development
       - DB_HOST=db
@@ -16,8 +14,8 @@ services:
       - DB_NAME=db_passion_lecture
       - DB_PORT=3306
     volumes:
-      - ./app:/home/node/app
-      - /home/node/app/node_modules
+      - ./backend:/home/node/backend
+      - /home/node/backend/node_modules
     ports:
       - "443:443"
     networks:
@@ -27,7 +25,7 @@ services:
 
   db:
     image: mysql:8.0.30
-    container_name: db_passion_lecture_container
+    container_name: passion_lecture_db
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db_passion_lecture
@@ -41,7 +39,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin:5.2.0
-    container_name: phpmyadmin_passion_lecture_container
+    container_name: passion_lecture_phpmyadmin
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
