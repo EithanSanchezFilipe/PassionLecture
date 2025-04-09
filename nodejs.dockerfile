@@ -1,27 +1,25 @@
-# Utilisation de l'image officielle Node.js
 FROM node:20
 
-# Installer nodemon globalement pour le développement
+# Installer nodemon
 RUN npm install -g nodemon
 
-# Créer un répertoire de travail dans le conteneur
+# Dossier de travail
 WORKDIR /home/node/app
 
-# Copier les fichiers package.json et package-lock.json du backend dans le conteneur
-COPY package.json ./
-COPY package-lock.json ./
+# Copier package.json
+COPY ./ package*.json ./
 
+# Installer les dépendances
+RUN npm install && npm ci
 
+# Copier tout le backend (y compris les certificats)
+COPY app/backend/ ./backend/
+
+# Donner les bons droits
 RUN chown -R node:node /home/node/app
 
-# Installer les dépendances du backend
-WORKDIR /home/node/app/app
-RUN npm install
-RUN npm ci
-# Copier tout le code du backend dans le conteneur
-COPY app/backend/ ./backend/
-# Exposer le port sur lequel le backend va écouter (exemple: 443)
+# Exposer le port HTTPS
 EXPOSE 443
 
-# Démarrer le backend avec nodemon en utilisant server.mjs comme fichier principal
-CMD ["nodemon", "server.mjs"]
+# Démarrer le serveur
+CMD ["nodemon", "backend/server.mjs"]
