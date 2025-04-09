@@ -56,7 +56,7 @@ const router = Router();
  *       500:
  *         description: erreur serveur
  */
-router.post('/add', auth, Create);
+router.post('/', auth, Create);
 /**
  * @swagger
  * /book/{id}/rating:
