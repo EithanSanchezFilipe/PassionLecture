@@ -2,7 +2,7 @@ module.exports = {
   devServer: {
     proxy: {
       '^/api': {
-        target: 'https://localhost:443',
+        target: 'http://localhost:3000',
         changeOrigin: true,
         secure: false, // accepte le certificat auto-signé
         pathRewrite: { '^/api': '/api' },
