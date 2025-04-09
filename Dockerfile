@@ -7,7 +7,7 @@ RUN npm install -g nodemon
 WORKDIR /home/node/backend
 
 # Copier les fichiers package.json et package-lock.json
-COPY ./package*.json ./
+COPY ./backend/package*.json ./
 COPY ./backend/certificates/ ./certificates/
 
 # Installer les dépendances
@@ -20,4 +20,4 @@ COPY ./backend/ ./
 EXPOSE 443
 
 # Lancer le serveur avec nodemon
-CMD ["nodemon", "server.mjs"]
+CMD ["npm", "start"]
