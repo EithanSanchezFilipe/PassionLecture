@@ -12,7 +12,7 @@ import { books, authors, editors, categories } from "./data-mock.mjs";
 const sequelize = new Sequelize("db_passion_lecture", "root", "root", {
   host: "db",
   dialect: "mysql",
-  port: 3306,
+  port: 3066,
   logging: false,
   define: {
     freezeTableName: true,
