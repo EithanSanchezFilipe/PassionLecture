@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ValidationError } from "sequelize";
 import { User, Comment, Book, Category } from "../db/sequelize.mjs";
-import { privateKey } from "../server.mjs";
 
 export function Login(req, res) {
   const { username, password } = req.body;
