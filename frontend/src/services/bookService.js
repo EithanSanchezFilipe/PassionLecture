@@ -19,4 +19,10 @@ export default {
   addBook(book) {
     return apiClient.post('/book', book)
   },
+  getLatestBooks() {
+    return apiClient.get('/book/latest')
+  },
+  bufferToBase64(buffer) {
+    return 'data:image/jpeg;base64,' + btoa(String.fromCharCode(...new Uint8Array(buffer.data)))
+  },
 }

@@ -3,11 +3,17 @@ import bookService from '@/services/bookService'
 import { onMounted, ref } from 'vue'
 
 const books = ref(null)
+
 onMounted(() => {
   bookService
-    .getBooks()
+    .getLatestBooks()
     .then((response) => {
-      books.value = response.data.book
+      books.value = response.data.book.map((book) => {
+        if (book.coverImage) {
+          book.coverImage = bookService.bufferToBase64(book.coverImage)
+        }
+        return book
+      })
       console.log(books)
     })
     .catch((err) => {
