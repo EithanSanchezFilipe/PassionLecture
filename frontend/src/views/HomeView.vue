@@ -1,7 +1,7 @@
 <script setup>
 import bookService from '@/services/bookService'
 import { onMounted, ref } from 'vue'
-
+import HomeBook from '@/components/HomeBook.vue'
 const books = ref(null)
 
 onMounted(() => {
@@ -24,8 +24,6 @@ onMounted(() => {
 
 <template>
   <div class="books">
-    <div class="book" v-for="book in books">
-      <h1>{{ book.name }}</h1>
-    </div>
+    <HomeBook v-for="book in books" :key="book.id" :book="book"></HomeBook>
   </div>
 </template>
