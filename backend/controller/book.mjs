@@ -95,7 +95,7 @@ export async function All(req, res) {
       // Définir un message d'erreur pour l'utilisateur de l'API REST
       const message =
         "La liste des livres n'a pas pu être récupérée. Merci de réessayer dans quelques instants.";
-      res.status(500).json({ message, data: error });
+      res.status(500).json({ message, data: e });
     });
 }
 export async function Delete(req, res) {
@@ -214,5 +214,22 @@ export function GetComments(req, res) {
           "Les commentaires n'ont pas pu être récupérés. Merci de réessayer dans quelques instants.",
         error,
       });
+    });
+}
+export function Latest(req, res) {
+  //findAll trouve toutes les données d'une table
+  Book.findAll({ order: [['created', 'DESC']], limit: 5 })
+    //prends la valeur trouver et la renvoie en format json avec un message de succès
+    .then((book) => {
+      // Définir un message de succès pour l'utilisateur de l'API REST
+      const message = 'Les livres ont bien été récupérée.';
+      res.status(201).json({ message, book });
+    })
+    //si le serveur n'arrive pas a récuperer les données il renvoie une erreur 500
+    .catch((e) => {
+      // Définir un message d'erreur pour l'utilisateur de l'API REST
+      const message =
+        "La liste des livres n'a pas pu être récupérée. Merci de réessayer dans quelques instants.";
+      res.status(500).json({ message, data: e });
     });
 }

@@ -8,6 +8,7 @@ import {
   Rating,
   All,
   GetComments,
+  Latest,
 } from '../controller/book.mjs';
 import { auth } from '../middleware/auth.mjs';
 const router = Router();
@@ -126,6 +127,7 @@ router.get('/:id/comments', auth, GetComments);
  *         description: erreur serveur
  */
 router.get('/', All);
+router.get('/latest', Latest);
 /**
  * @swagger
  * /book/{id}:
