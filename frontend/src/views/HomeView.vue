@@ -14,7 +14,6 @@ onMounted(() => {
         }
         return book
       })
-      console.log(books)
     })
     .catch((err) => {
       console.log(err)
