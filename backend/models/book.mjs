@@ -57,7 +57,7 @@ const BookModel = (sequelize, DataTypes) => {
         },
       },
       coverImage: {
-        type: DataTypes.BLOB,
+        type: DataTypes.BLOB('long'),
       },
       pages: {
         type: DataTypes.INTEGER,

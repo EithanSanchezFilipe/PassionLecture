@@ -38,7 +38,7 @@ services:
       - app-network
 
   phpmyadmin:
-    image: phpmyadmin:5.2.0
+    image: phpmyadmin/phpmyadmin
     container_name: passion_lecture_phpmyadmin
     environment:
       PMA_HOST: db
