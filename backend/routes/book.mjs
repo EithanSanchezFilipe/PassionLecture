@@ -99,7 +99,7 @@ router.post('/', auth, Create);
 
 router.post('/:id/comments', auth, Rating);
 
-router.get('/:id/comments', auth, GetComments);
+router.get('/:id/comments', GetComments);
 // GET
 /**
  * @swagger
@@ -154,7 +154,7 @@ router.get('/latest', Latest);
  *         description: erreur serveur
  */
 
-router.get('/:id', auth, Reach);
+router.get('/:id', Reach);
 // DELETE
 /**
  * @swagger
