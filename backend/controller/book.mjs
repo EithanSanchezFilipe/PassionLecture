@@ -1,6 +1,6 @@
-import { Book, Category, Comment } from '../db/sequelize.mjs';
-import { ValidationError, where } from 'sequelize';
-import { Op } from 'sequelize';
+import { Book, Comment } from "../db/sequelize.mjs";
+import { ValidationError } from "sequelize";
+import { Op } from "sequelize";
 
 export async function Create(req, res) {
   const {
@@ -52,19 +52,19 @@ export function Reach(req, res) {
       })
       .catch((error) => {
         res.status(500).json({
-          message: 'Erreur lors de la recherche du livre',
+          message: "Erreur lors de la recherche du livre",
           error,
         });
       });
   } else {
     res.status(400).json({
-      message: 'ID du livre non fourni',
+      message: "ID du livre non fourni",
     });
   }
 }
 export async function All(req, res) {
   if (req.query.name) {
-    if (req.query.name.length < 2) {
+    if (req.query.name.length < 1) {
       const message = `Le terme de la recherche doit contenir au moins 2 caractères`;
       return res.status(400).json({ message });
     }
@@ -75,7 +75,7 @@ export async function All(req, res) {
     return Book.findAll({
       //select * from product where name like %...%
       where: { name: { [Op.like]: `%${req.query.name}%` } },
-      order: [['name', 'ASC']],
+      order: [["name", "ASC"]],
       limit: limit,
     }).then((book) => {
       const message = `Il y a ${book.length} livres qui correspondent au terme de la recherche`;
@@ -87,7 +87,7 @@ export async function All(req, res) {
     //prends la valeur trouver et la renvoie en format json avec un message de succès
     .then((book) => {
       // Définir un message de succès pour l'utilisateur de l'API REST
-      const message = 'Les livres ont bien été récupérée.';
+      const message = "Les livres ont bien été récupérée.";
       res.status(201).json({ message, book });
     })
     //si le serveur n'arrive pas a récuperer les données il renvoie une erreur 500
@@ -159,7 +159,7 @@ export async function DeleteComment(req, res) {
     .catch((error) => {
       console.error(error);
       res.status(500).json({
-        message: 'Erreur lors de la suppression du commentaire',
+        message: "Erreur lors de la suppression du commentaire",
         error,
       });
     });
@@ -181,7 +181,7 @@ export function Update(req, res) {
       }
       book.update(data).then((bookupdate) => {
         return res.status(200).json({
-          message: 'Le livre a bien été mis à jour',
+          message: "Le livre a bien été mis à jour",
           data: bookupdate,
         });
       });
@@ -204,7 +204,7 @@ export function GetComments(req, res) {
           .json({ message: "Ce livre n'a pas de commentaires" });
       }
       return res.status(200).json({
-        message: 'La liste des commentaires à bien été récupérer',
+        message: "La liste des commentaires à bien été récupérer",
         comments,
       });
     })
@@ -216,13 +216,32 @@ export function GetComments(req, res) {
       });
     });
 }
+export async function Cover(req, res) {
+  try {
+    const { id } = req.params;
+
+    const book = await Book.findByPk(id);
+
+    if (!book || !book.coverImage) {
+      return res.status(404).send("Image not found");
+    }
+
+    // Détermine dynamiquement le type MIME si possible
+    res.setHeader("Content-Type", "image/jpeg");
+    res.send(book.coverImage);
+  } catch (error) {
+    console.error("Erreur lors de la récupération de la couverture :", error);
+    res.status(500).send("Erreur serveur");
+  }
+}
+
 export function Latest(req, res) {
   //findAll trouve toutes les données d'une table
-  Book.findAll({ order: [['created', 'DESC']], limit: 5 })
+  Book.findAll({ order: [["created", "DESC"]], limit: 5 })
     //prends la valeur trouver et la renvoie en format json avec un message de succès
     .then((book) => {
       // Définir un message de succès pour l'utilisateur de l'API REST
-      const message = 'Les livres ont bien été récupérée.';
+      const message = "Les livres ont bien été récupérée.";
       res.status(201).json({ message, book });
     })
     //si le serveur n'arrive pas a récuperer les données il renvoie une erreur 500
