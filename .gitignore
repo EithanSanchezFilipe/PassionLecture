@@ -402,3 +402,4 @@ FodyWeavers.xsd
 # Certificates
 *.key
 *.crt
+/backend/db
