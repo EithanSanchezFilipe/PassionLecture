@@ -2,6 +2,7 @@
 import bookService from '@/services/bookService'
 import { onMounted, ref } from 'vue'
 import Comment from '@/components/Comment.vue'
+import CommentForm from '@/components/CommentForm.vue'
 const props = defineProps({
   id: {
     required: true,
@@ -65,6 +66,7 @@ onMounted(() => {
       </svg>
     </div>
     <Comment v-for="comment in comments" class="comments" :comment="comment"></Comment>
+    <CommentForm></CommentForm>
   </div>
 </template>
 <style scoped>

@@ -8,7 +8,10 @@ defineProps({
 </script>
 <template>
   <div v-if="comment">
-    {{ comment.message }}
+    <p class="username">{{ comment.username }}</p>
+    <p>
+      {{ comment.message }}
+    </p>
     <div class="stars">
       <svg
         v-for="(star, index) in comment.stars"
