@@ -22,6 +22,9 @@ export default {
   getLatestBooks() {
     return apiClient.get('/book/latest')
   },
+  getBookComments(id) {
+    return apiClient.get(`/book/${id}/comments`)
+  },
   bufferToBase64(buffer) {
     return 'data:image/jpeg;base64,' + btoa(String.fromCharCode(...new Uint8Array(buffer.data)))
   },
