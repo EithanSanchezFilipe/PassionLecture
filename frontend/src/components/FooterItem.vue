@@ -45,8 +45,10 @@ const icons = ref({
 <style scoped>
 footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  gap: 15em;
 }
+
 .footer-logo {
   display: flex;
   align-items: center;
@@ -68,8 +70,8 @@ footer img {
 }
 .footer-link {
   display: flex;
-  margin-right: 10em;
   padding: 10px;
+  gap: 10px;
 }
 .footer-link img {
   width: 40px;
