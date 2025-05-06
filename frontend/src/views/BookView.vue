@@ -3,6 +3,8 @@ import bookService from '@/services/bookService'
 import { onMounted, ref } from 'vue'
 import Comment from '@/components/Comment.vue'
 import CommentForm from '@/components/CommentForm.vue'
+import Rating from 'primevue/rating'
+
 const props = defineProps({
   id: {
     required: true,
@@ -10,7 +12,7 @@ const props = defineProps({
 })
 const book = ref(null)
 const comments = ref(null)
-const avg = ref(null)
+const avg = ref(0)
 onMounted(() => {
   bookService
     .getBook(props.id)
@@ -30,17 +32,11 @@ onMounted(() => {
     .getBookComments(props.id)
     .then((response) => {
       comments.value = response.data.comments
-      let total = 0
+      avg.value = Math.round(
+        comments.value.reduce((sum, comment) => sum + comment.note, 0) / comments.value.length,
+      )
 
-      comments.value = comments.value.map((comment) => {
-        total += comment.note
-        comment.stars = Array.from({ length: 5 }, (_, i) => i < comment.note)
-        return comment
-      })
-
-      const moyenne = comments.value.length ? total / comments.value.length : 0
-      avg.value = Array.from({ length: 5 }, (_, i) => i < Math.round(moyenne))
-      console.log(comments)
+      console.log(avg.value)
     })
     .catch((e) => {
       console.log(e)
@@ -52,18 +48,7 @@ onMounted(() => {
     <div class="info">
       <img :src="book.coverImage" alt="" />
       <h3>{{ book.name }}</h3>
-      <svg
-        v-for="(star, index) in avg"
-        :key="'avg-' + index"
-        class="star"
-        :class="{ active: star }"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-        />
-      </svg>
+      <Rating :defaultValue="Number(avg.value)" readonly />
     </div>
     <Comment v-for="comment in comments" class="comments" :comment="comment"></Comment>
     <CommentForm></CommentForm>
