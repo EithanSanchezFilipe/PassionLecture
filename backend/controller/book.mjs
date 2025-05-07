@@ -120,7 +120,7 @@ export async function Delete(req, res) {
 }
 export async function Rating(req, res) {
   const id = req.params.id;
-  const { note, message } = req.body;
+  const { note, commentaire } = req.body;
   console.log(req.params);
   const userId = req.user.id;
   User.findByPk(userId)
@@ -129,7 +129,7 @@ export async function Rating(req, res) {
         user_fk: userId,
         book_fk: id,
         note: note,
-        message: message,
+        message: commentaire,
         username: user.username,
       }).then((comment) => {
         return res.status(200).json({

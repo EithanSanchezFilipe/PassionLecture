@@ -1,4 +1,5 @@
 <script setup>
+import Rating from 'primevue/rating'
 defineProps({
   comment: {
     type: Object,
@@ -12,7 +13,9 @@ defineProps({
     <p>
       {{ comment.message }}
     </p>
-    <div class="stars"></div>
+    <div class="stars">
+      <Rating :default-value="comment.note" :readonly="true" />
+    </div>
   </div>
   <p v-else>Aucun commentaire</p>
 </template>

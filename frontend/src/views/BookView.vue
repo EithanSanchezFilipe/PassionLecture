@@ -48,7 +48,7 @@ onMounted(() => {
     <div class="info">
       <img :src="book.coverImage" alt="" />
       <h3>{{ book.name }}</h3>
-      <Rating :defaultValue="Number(avg.value)" readonly />
+      <Rating :default-value="avg" readonly />
     </div>
     <Comment v-for="comment in comments" class="comments" :comment="comment"></Comment>
     <CommentForm></CommentForm>

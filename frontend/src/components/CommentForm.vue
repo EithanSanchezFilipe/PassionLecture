@@ -2,35 +2,30 @@
 import { ref } from 'vue'
 import Rating from 'primevue/rating'
 const note = ref(1)
+const commentaire = ref('')
+
+const onSubmit = () => {}
 </script>
 
 <template>
-  <div class="rating">
-    <Rating :defaultValue="2" />
-  </div>
+  <form @submit.prevent="envoyerFormulaire" class="formulaire-commentaire">
+    <div class="champ-rating">
+      <label for="note">Note :</label>
+      <Rating v-model="note" :cancel="false" />
+    </div>
+
+    <div class="champ-commentaire">
+      <label for="commentaire">Commentaire :</label>
+      <textarea
+        id="commentaire"
+        v-model="commentaire"
+        rows="4"
+        placeholder="Écris ton avis ici..."
+      />
+    </div>
+
+    <button type="submit" @click="onSubmit">Envoyer</button>
+  </form>
 </template>
 
-<style scoped>
-.rating {
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-}
-
-.star {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  fill: #ddd; /* Couleur grise par défaut */
-  transition: fill 0.3s;
-}
-
-input:checked ~ label .star {
-  fill: #ffcc00; /* Couleur dorée quand sélectionnée */
-}
-
-input:not(:checked) ~ label .star:hover,
-label:not(:checked) ~ .star:hover ~ .star {
-  fill: #ffcc00; /* Survol de l'étoile */
-}
-</style>
+<style scoped></style>
