@@ -1,12 +1,36 @@
 <script setup>
 import { ref } from 'vue'
 import Rating from 'primevue/rating'
+import bookService from '@/services/bookService'
+
 const note = ref(1)
 const commentaire = ref('')
 
-const onSubmit = () => {}
-</script>
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+})
 
+const emit = defineEmits(['commentAdded'])
+
+const onSubmit = () => {
+  bookService
+    .addBookComment(props.id, {
+      note: note.value,
+      commentaire: commentaire.value,
+    })
+    .then(() => {
+      note.value = 1
+      commentaire.value = ''
+      emit('commentAdded')
+    })
+    .catch((e) => {
+      console.log(e)
+    })
+}
+</script>
 <template>
   <form @submit.prevent="envoyerFormulaire" class="formulaire-commentaire">
     <div class="champ-rating">
@@ -27,5 +51,3 @@ const onSubmit = () => {}
     <button type="submit" @click="onSubmit">Envoyer</button>
   </form>
 </template>
-
-<style scoped></style>

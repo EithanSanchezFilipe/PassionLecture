@@ -10,6 +10,7 @@ const props = defineProps({
     required: true,
   },
 })
+const emit = defineEmits(['commentAdded'])
 const book = ref(null)
 const comments = ref(null)
 const avg = ref(0)
@@ -27,21 +28,31 @@ onMounted(() => {
     .catch((e) => {
       console.log(e)
     })
-
+  fetchComments()
+})
+const fetchComments = () => {
   bookService
     .getBookComments(props.id)
     .then((response) => {
       comments.value = response.data.comments
-      avg.value = Math.round(
-        comments.value.reduce((sum, comment) => sum + comment.note, 0) / comments.value.length,
-      )
+      if (comments.value === undefined) {
+        avg.value = 0
+        return
+      } else {
+        avg.value = Math.round(
+          comments.value.reduce((sum, comment) => sum + comment.note, 0) / comments.value.length,
+        )
+      }
 
       console.log(avg.value)
     })
     .catch((e) => {
       console.log(e)
     })
-})
+}
+const handleCommentAdded = () => {
+  fetchComments()
+}
 </script>
 <template>
   <div v-if="book" class="book">
@@ -50,8 +61,13 @@ onMounted(() => {
       <h3>{{ book.name }}</h3>
       <Rating :default-value="avg" readonly />
     </div>
-    <Comment v-for="comment in comments" class="comments" :comment="comment"></Comment>
-    <CommentForm></CommentForm>
+    <Comment
+      v-if="comments"
+      v-for="comment in comments"
+      class="comments"
+      :comment="comment"
+    ></Comment>
+    <CommentForm :id="book.id" @commentAdded="handleCommentAdded"></CommentForm>
   </div>
 </template>
 <style scoped>

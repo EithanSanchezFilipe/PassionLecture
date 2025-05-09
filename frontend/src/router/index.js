@@ -16,6 +16,10 @@ const router = createRouter({
       component: BookView,
       props: true,
     },
+    {
+      path: '/category',
+      name: 'Category',
+    },
   ],
 })
 
