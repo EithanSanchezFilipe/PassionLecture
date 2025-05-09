@@ -32,7 +32,7 @@ const onSubmit = () => {
 }
 </script>
 <template>
-  <form @submit.prevent="envoyerFormulaire" class="formulaire-commentaire">
+  <form @submit.prevent="onSubmit" class="formulaire-commentaire">
     <div class="champ-rating">
       <label for="note">Note :</label>
       <Rating v-model="note" :cancel="false" />
@@ -48,6 +48,6 @@ const onSubmit = () => {
       />
     </div>
 
-    <button type="submit" @click="onSubmit">Envoyer</button>
+    <button type="submit">Envoyer</button>
   </form>
 </template>

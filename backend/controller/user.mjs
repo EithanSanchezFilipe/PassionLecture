@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ValidationError } from "sequelize";
 import { User, Comment, Book, Category } from "../db/sequelize.mjs";
+import dotenv from "dotenv";
+dotenv.config();
 
 export function Login(req, res) {
   const { username, password } = req.body;
@@ -36,13 +38,13 @@ export function Login(req, res) {
           // Créer un token JWT
           const token = jwt.sign(
             { id: user.id, username: user.username },
-            privateKey,
-            { expiresIn: "1h", algorithm: "RS256" }
+            process.env.privateKey,
+            { expiresIn: "1h", algorithm: "HS256" }
           );
           res.cookie("token", token, {
             httpOnly: true,
             sameSite: "strict",
-            secure: true,
+            secure: false,
             maxAge: 24 * 60 * 60 * 1000,
           });
           return res
@@ -75,16 +77,16 @@ export async function Register(req, res) {
         .then((user) => {
           const token = jwt.sign(
             { username: user.username, id: user.id },
-            privateKey,
+            process.env.privateKey,
             {
               expiresIn: "1h",
-              algorithm: "RS256",
+              algorithm: "HS256",
             }
           );
           res.cookie("token", token, {
             httpOnly: true,
             sameSite: "strict",
-            secure: true,
+            secure: false,
             maxAge: 24 * 60 * 60 * 1000,
           });
           res.status(200).json({

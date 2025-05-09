@@ -4,10 +4,9 @@ import { ref } from 'vue'
 
 const username = ref('')
 const password = ref('')
-const email = ref('')
 const onSubmit = () => {
   authService
-    .register({ username: username.value, password: password.value, email: email.value })
+    .login({ username: username.value, password: password.value })
     .then((response) => {
       console.log(response)
     })
@@ -21,10 +20,6 @@ const onSubmit = () => {
     <div class="champ-username">
       <label for="username">Nom d'utilisateur</label>
       <input type="text" id="username" v-model="username" placeholder="Nom d'utilisateur" />
-    </div>
-    <div class="champ-email">
-      <label for="email">Email</label>
-      <input type="email" id="email" v-model="email" placeholder="Votre email" />
     </div>
     <div class="champ-password">
       <label for="password">Mot de passe</label>

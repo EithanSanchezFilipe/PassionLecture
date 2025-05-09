@@ -2,13 +2,12 @@ import axios from 'axios'
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:443/api',
-  withCredentials: false,
+  withCredentials: true,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
 })
-
 export default {
   getBooks() {
     return apiClient.get('/book')
