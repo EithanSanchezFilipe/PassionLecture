@@ -9,9 +9,15 @@ import { initAssociations } from '../models/associations.mjs';
 import { books, authors, editors, categories } from './data-mock.mjs';
 
 // Create a new instance of Sequelize with the connection string to our database
+<<<<<<< Updated upstream
 const sequelize = new Sequelize('db_passion_lecture', 'root', 'root', {
   host: 'localhost',
   dialect: 'mysql',
+=======
+const sequelize = new Sequelize("db_passion_lecture", "root", "root", {
+  host: "localhost",
+  dialect: "mysql",
+>>>>>>> Stashed changes
   port: 6033,
   logging: false,
   define: {

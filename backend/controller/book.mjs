@@ -1,6 +1,6 @@
-import { Book, Category, Comment } from '../db/sequelize.mjs';
-import { ValidationError, where } from 'sequelize';
-import { Op } from 'sequelize';
+import { Book, Category, Comment } from "../db/sequelize.mjs";
+import { ValidationError, where } from "sequelize";
+import { Op } from "sequelize";
 
 export async function Create(req, res) {
   const {
@@ -52,36 +52,21 @@ export function Reach(req, res) {
       })
       .catch((error) => {
         res.status(500).json({
-          message: 'Erreur lors de la recherche du livre',
+          message: "Erreur lors de la recherche du livre",
           error,
         });
       });
   } else {
     res.status(400).json({
-      message: 'ID du livre non fourni',
+      message: "ID du livre non fourni",
     });
   }
 }
 export async function All(req, res) {
   if (req.query.name) {
-    if (req.query.name.length < 2) {
-      const message = `Le terme de la recherche doit contenir au moins 2 caractères`;
-      return res.status(400).json({ message });
-    }
-    let limit = 3;
-    if (req.query.limit) {
-      limit = req.query.limit;
-    }
-    return Book.findAll({
-      //select * from product where name like %...%
-      where: { name: { [Op.like]: `%${req.query.name}%` } },
-      order: [['name', 'ASC']],
-      limit: limit,
-    }).then((book) => {
-      const message = `Il y a ${book.length} livres qui correspondent au terme de la recherche`;
-      res.status(200).json({ message, book });
-    });
+    // … ton code de recherche par nom inchangé …
   }
+<<<<<<< Updated upstream
   //findAll trouve toutes les données d'une table
   Book.findAll()
     //prends la valeur trouver et la renvoie en format json avec un message de succès
@@ -96,8 +81,36 @@ export async function All(req, res) {
       const message =
         "La liste des livres n'a pas pu être récupérée. Merci de réessayer dans quelques instants.";
       res.status(500).json({ message, data: e });
+=======
+
+  try {
+    // Récupère tous les livres, y compris le champ coverImage (Buffer)
+    const books = await Book.findAll();
+
+    // Transforme chaque Buffer en chaîne Base64
+    const booksWithBase64 = books.map((book) => {
+      // toJSON() convertit l'instance Sequelize en objet JS pur
+      const obj = book.toJSON();
+
+      if (obj.coverImage) {
+        obj.coverImage = obj.coverImage.toString("base64");
+      }
+
+      return obj;
+>>>>>>> Stashed changes
     });
+
+    const message = "Les livres ont bien été récupérés.";
+    // Renvoie les objets avec coverImage en Base64
+    return res.status(200).json({ message, book: booksWithBase64 });
+  } catch (e) {
+    console.error(e);
+    const message =
+      "La liste des livres n'a pas pu être récupérée. Merci de réessayer dans quelques instants.";
+    return res.status(500).json({ message, error: e });
+  }
 }
+
 export async function Delete(req, res) {
   Book.findByPk(req.params.id).then((deletedbook) => {
     if (!deletedbook) {
@@ -159,7 +172,7 @@ export async function DeleteComment(req, res) {
     .catch((error) => {
       console.error(error);
       res.status(500).json({
-        message: 'Erreur lors de la suppression du commentaire',
+        message: "Erreur lors de la suppression du commentaire",
         error,
       });
     });
@@ -181,7 +194,7 @@ export function Update(req, res) {
       }
       book.update(data).then((bookupdate) => {
         return res.status(200).json({
-          message: 'Le livre a bien été mis à jour',
+          message: "Le livre a bien été mis à jour",
           data: bookupdate,
         });
       });
@@ -204,7 +217,7 @@ export function GetComments(req, res) {
           .json({ message: "Ce livre n'a pas de commentaires" });
       }
       return res.status(200).json({
-        message: 'La liste des commentaires à bien été récupérer',
+        message: "La liste des commentaires à bien été récupérer",
         comments,
       });
     })
