@@ -32,6 +32,8 @@ const router = createRouter({
       path: '/login',
       name: 'Login',
       component: Login,
+    },
+    {
       name: 'book-all',
       component: CategoryView,
       props: true,

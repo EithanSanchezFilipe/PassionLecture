@@ -1,4 +1,6 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 const auth = (req, res, next) => {
   //vérifie que l'utilisateur possède un token stocké dans les cookies
   const token = req.cookies.token;
