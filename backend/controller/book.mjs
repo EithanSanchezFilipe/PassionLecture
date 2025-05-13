@@ -1,3 +1,6 @@
+
+import { Book, Comment } from "../db/sequelize.mjs";
+import { ValidationError } from "sequelize";
 import { Book, Category, Comment } from "../db/sequelize.mjs";
 import { ValidationError, where } from "sequelize";
 import { Op } from "sequelize";
@@ -64,15 +67,31 @@ export function Reach(req, res) {
 }
 export async function All(req, res) {
   if (req.query.name) {
+    if (req.query.name.length < 1) {
+      const message = `Le terme de la recherche doit contenir au moins 2 caractères`;
+      return res.status(400).json({ message });
+    }
+    let limit = 3;
+    if (req.query.limit) {
+      limit = req.query.limit;
+    }
+    return Book.findAll({
+      //select * from product where name like %...%
+      where: { name: { [Op.like]: `%${req.query.name}%` } },
+      order: [["name", "ASC"]],
+      limit: limit,
+    }).then((book) => {
+      const message = `Il y a ${book.length} livres qui correspondent au terme de la recherche`;
+      res.status(200).json({ message, book });
+    });
     // … ton code de recherche par nom inchangé …
   }
-<<<<<<< Updated upstream
   //findAll trouve toutes les données d'une table
   Book.findAll()
     //prends la valeur trouver et la renvoie en format json avec un message de succès
     .then((book) => {
       // Définir un message de succès pour l'utilisateur de l'API REST
-      const message = 'Les livres ont bien été récupérée.';
+      const message = "Les livres ont bien été récupérée.";
       res.status(201).json({ message, book });
     })
     //si le serveur n'arrive pas a récuperer les données il renvoie une erreur 500
@@ -81,7 +100,6 @@ export async function All(req, res) {
       const message =
         "La liste des livres n'a pas pu être récupérée. Merci de réessayer dans quelques instants.";
       res.status(500).json({ message, data: e });
-=======
 
   try {
     // Récupère tous les livres, y compris le champ coverImage (Buffer)
@@ -97,7 +115,6 @@ export async function All(req, res) {
       }
 
       return obj;
->>>>>>> Stashed changes
     });
 
     const message = "Les livres ont bien été récupérés.";
@@ -229,13 +246,32 @@ export function GetComments(req, res) {
       });
     });
 }
+export async function Cover(req, res) {
+  try {
+    const { id } = req.params;
+
+    const book = await Book.findByPk(id);
+
+    if (!book || !book.coverImage) {
+      return res.status(404).send("Image not found");
+    }
+
+    // Détermine dynamiquement le type MIME si possible
+    res.setHeader("Content-Type", "image/jpeg");
+    res.send(book.coverImage);
+  } catch (error) {
+    console.error("Erreur lors de la récupération de la couverture :", error);
+    res.status(500).send("Erreur serveur");
+  }
+}
+
 export function Latest(req, res) {
   //findAll trouve toutes les données d'une table
-  Book.findAll({ order: [['created', 'DESC']], limit: 5 })
+  Book.findAll({ order: [["created", "DESC"]], limit: 5 })
     //prends la valeur trouver et la renvoie en format json avec un message de succès
     .then((book) => {
       // Définir un message de succès pour l'utilisateur de l'API REST
-      const message = 'Les livres ont bien été récupérée.';
+      const message = "Les livres ont bien été récupérée.";
       res.status(201).json({ message, book });
     })
     //si le serveur n'arrive pas a récuperer les données il renvoie une erreur 500

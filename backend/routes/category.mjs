@@ -1,6 +1,11 @@
-import { Router } from 'express';
-import { Create, FindByCategory, Delete } from '../controller/category.mjs';
-import { auth } from '../middleware/auth.mjs';
+import { Router } from "express";
+import {
+  Create,
+  FindByCategory,
+  Delete,
+  All,
+} from "../controller/category.mjs";
+import { auth } from "../middleware/auth.mjs";
 
 const router = Router();
 
@@ -35,8 +40,8 @@ const router = Router();
  *       500:
  *         description: Erreur serveur
  */
-router.post('/', auth, Create);
-
+router.post("/", auth, Create);
+router.get("/", All);
 // GET
 /**
  * @swagger
@@ -59,7 +64,7 @@ router.post('/', auth, Create);
  *       500:
  *         description: Erreur serveur
  */
-router.get('/:id/books', FindByCategory);
+router.get("/:id/books", FindByCategory);
 
 // DELETE
 /**
@@ -87,6 +92,6 @@ router.get('/:id/books', FindByCategory);
  *       500:
  *         description: Erreur serveur
  */
-router.delete('/:id', auth, Delete);
+router.delete("/:id", auth, Delete);
 
 export default router;
