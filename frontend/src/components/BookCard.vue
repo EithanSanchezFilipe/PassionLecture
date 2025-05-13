@@ -1,6 +1,11 @@
 <template>
   <main class="book-card">
-    <img :src="`http://localhost:443/api/book/${book.id}/cover`" :alt="book.name" />
+    <button
+      style="border: none; background: none; cursor: pointer"
+      @click="$router.push({ name: 'book-detail', params: { id: book.id } })"
+    >
+      <img :src="`http://localhost:443/api/book/${book.id}/cover`" :alt="book.name" />
+    </button>
     <p>{{ book.name }}</p>
     <div class="stars">
       <span v-for="n in 5" :key="n" class="star">
@@ -29,14 +34,15 @@ const averageRating = computed(() => {
 .book-card {
   display: flex;
   flex-direction: column;
-  width: 10rem;
-  align-items: flex-start;
-  margin: auto;
+  width: 12rem;
+  align-items: center;
+  text-align: center;
+  margin: 0;
 }
 
 .book-card img {
   width: 100%;
-  object-fit: contain;
+  object-fit: fill;
   aspect-ratio: 0.69;
 }
 

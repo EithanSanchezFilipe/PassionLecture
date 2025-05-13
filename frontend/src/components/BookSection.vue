@@ -16,10 +16,11 @@ defineProps({
 </script>
 <style scoped>
 .book-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   width: 100%;
   margin-left: 3rem;
-
-  max-width: 1064px;
   line-height: 1.25;
 }
 
@@ -34,7 +35,7 @@ defineProps({
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   margin-top: 1rem;
   width: 100%;
