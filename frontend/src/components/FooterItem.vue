@@ -46,7 +46,7 @@ const icons = ref({
 footer {
   display: flex;
   justify-content: space-around;
-  gap: 15em;
+  gap: 8em;
 }
 
 .footer-logo {

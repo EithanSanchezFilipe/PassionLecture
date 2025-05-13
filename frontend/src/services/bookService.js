@@ -9,8 +9,12 @@ const apiClient = axios.create({
   },
 })
 export default {
-  getBooks() {
-    return apiClient.get('/book')
+  getBooks(term = '') {
+    return apiClient.get('/book', {
+      params: {
+        name: term, // ou 'q' ou autre selon ton backend
+      },
+    })
   },
   getBook(id) {
     return apiClient.get('/book/' + id)

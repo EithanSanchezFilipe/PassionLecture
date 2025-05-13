@@ -8,7 +8,6 @@ WORKDIR /home/node/backend
 
 # Copier les fichiers package.json et package-lock.json
 COPY ./backend/package*.json ./
-COPY ./backend/certificates/ ./certificates/
 
 # Installer les dépendances
 RUN npm install && npm ci

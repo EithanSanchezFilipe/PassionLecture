@@ -1,6 +1,5 @@
-import { Category, Book } from '../db/sequelize.mjs';
-import { ValidationError } from 'sequelize';
-
+import { Category, Book } from "../db/sequelize.mjs";
+import { ValidationError } from "sequelize";
 // Ajouter une catégorie
 export function Create(req, res) {
   const { name } = req.body;
@@ -32,6 +31,30 @@ export function Delete(req, res) {
     });
   });
 }
+
+// Récupérer toutes les catégories avec le nombre de livres
+export function All(req, res) {
+  Category.findAll({
+    attributes: ["id", "name"],
+    include: [
+      {
+        model: Book,
+        attributes: [], // On ne récupère pas de détails sur le livre
+      },
+    ],
+  })
+    .then((categories) => {
+      res.status(200).json({ categories });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({
+        message: "Erreur lors de la récupération des catégories",
+        error,
+      });
+    });
+}
+
 // Trouver un livre par sa catégorie
 export function FindByCategory(req, res) {
   const { id } = req.params;
@@ -48,7 +71,7 @@ export function FindByCategory(req, res) {
     })
     .catch((error) => {
       return res.status(500).json({
-        message: 'Erreur lors de la recherche de la catégorie',
+        message: "Erreur lors de la recherche de la catégorie",
         error,
       });
     });
