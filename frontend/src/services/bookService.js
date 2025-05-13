@@ -12,7 +12,7 @@ export default {
   getBooks(term = '') {
     return apiClient.get('/book', {
       params: {
-        name: term, // ou 'q' ou autre selon ton backend
+        name: term,
       },
     })
   },

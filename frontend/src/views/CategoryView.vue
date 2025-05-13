@@ -3,12 +3,12 @@ import SearchBar from '../components/SearchBar.vue'
 import BookSection from '../components/BookSection.vue'
 import { useCategoryBooks } from '../components/useCategoryBooks'
 
-const { categories, filteredBooksByCategory, onSearch } = useCategoryBooks()
+const { categories, filteredBooksByCategory } = useCategoryBooks()
 </script>
 
 <template>
   <div>
-    <SearchBar @search="onSearch" />
+    <SearchBar />
 
     <BookSection
       v-for="cat in categories"

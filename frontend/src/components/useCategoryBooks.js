@@ -1,4 +1,4 @@
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import categoryService from '@/services/categoryService'
 
 export function useCategoryBooks() {
@@ -6,8 +6,8 @@ export function useCategoryBooks() {
   const booksByCategory = ref({})
   const searchTerm = ref('')
 
-  // 1. Récupère catégories et livres associés
-  const fetchData = async () => {
+  // Récupère catégories et livres associés
+  onMounted(async () => {
     try {
       const catRes = await categoryService.getAllCategory()
       categories.value = catRes.data.categories
@@ -21,31 +21,24 @@ export function useCategoryBooks() {
     } catch (err) {
       console.error('Erreur fetching categories/books:', err)
     }
-  }
+  })
 
-  // 2. Mise à jour du terme de recherche
-  const onSearch = (term) => {
-    searchTerm.value = term.toLowerCase()
-  }
+  // Computed pour filtrer les livres par catégorie et terme de recherche
   const filteredBooksByCategory = computed(() => {
     const filtered = {}
 
     for (const cat of categories.value) {
       const allBooks = booksByCategory.value[cat.id] || []
-
       filtered[cat.id] = allBooks.filter((book) =>
-        book.name?.toLowerCase().includes(searchTerm.value),
+        book.name?.toLowerCase().includes(searchTerm.value.toLowerCase()),
       )
     }
 
     return filtered
   })
-  onMounted(fetchData)
 
   return {
     categories,
-    searchTerm,
-    onSearch,
     filteredBooksByCategory,
   }
 }

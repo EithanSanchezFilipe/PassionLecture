@@ -1,64 +1,81 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref } from 'vue'
 import loupe from '@/assets/loupe.svg'
-import bookService from '@/services/bookService' // adapte le chemin si besoin
+import AutoComplete from 'primevue/autocomplete'
+import SearchService from '@/services/SearchService'
 
-const term = ref(localStorage.getItem('searchTerm') || '')
-const books = ref([])
+const value = ref('')
+const suggestions = ref([])
 
-const fetchData = async () => {
+// Méthode appelée automatiquement par AutoComplete quand l'utilisateur tape
+const searchSuggestions = async (event) => {
+  const term = event.query.trim()
+
+  if (term.length < 3) {
+    suggestions.value = []
+    return
+  }
+
+  const results = []
+
   try {
-    const response = await bookService.getBooks(term.value)
-    books.value = response.data
-  } catch (err) {
-    console.error('Erreur lors de la récupération des livres:', err)
+    const bookResponse = await SearchService.search(term, 'book')
+    const books = bookResponse.data || []
+    results.push(...books.map((book) => ({ name: book.name, type: 'book' })))
+  } catch (error) {
+    console.warn('Erreur lors de la récupération des livres', error)
   }
-}
 
-watch(term, () => {
-  fetchData()
-})
-
-// Clic sur la loupe = "valider" la recherche
-function submitSearch() {
-  localStorage.setItem('searchTerm', term.value)
-  fetchData()
-}
-
-// Charger la recherche précédente au rechargement
-onMounted(() => {
-  if (term.value) {
-    fetchData()
+  try {
+    const categoryResponse = await SearchService.search(term, 'category')
+    const categories = categoryResponse.data || []
+    results.push(...categories.map((category) => ({ name: category.name, type: 'category' })))
+  } catch (error) {
+    console.warn('Erreur lors de la récupération des catégories', error)
   }
-})
+
+  suggestions.value = results
+}
 </script>
 
 <template>
   <div class="search-bar-container">
     <div class="input-wrapper">
-      <img :src="loupe" @click="submitSearch" alt="Rechercher" class="icon" />
-      <input type="text" v-model="term" placeholder="Rechercher un livre..." class="search-bar" />
+      <img :src="loupe" alt="Rechercher" class="icon" />
+      <AutoComplete
+        v-model="value"
+        :suggestions="suggestions"
+        field="name"
+        placeholder="Rechercher..."
+        @complete="searchSuggestions"
+      >
+        <template>
+          <div class="suggestion-item">
+            <span class="suggestion-type"></span>
+            {{ item.name }}
+          </div>
+        </template>
+      </AutoComplete>
     </div>
   </div>
 </template>
 
 <style scoped>
-.search-bar {
-  width: 100%;
-  min-height: 10px;
-  background-color: var(--sds-color-background-default-secondary);
-  color: #3f3f46;
-  white-space: nowrap;
-}
-
 .search-bar-container {
   display: flex;
+  flex-direction: column;
   margin: 0 auto;
   margin-top: 5em;
   margin-bottom: 5em;
-  max-width: 100%;
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   background-color: #f5f5f5;
+}
+
+.search-bar {
+  width: 100%;
+  min-height: 2.25rem;
+  white-space: nowrap;
 }
 
 .input-wrapper {
@@ -76,19 +93,33 @@ onMounted(() => {
 .input-wrapper .icon {
   width: 1.75rem;
   padding: 0.375rem;
-  font-size: 1.125rem;
-  font-weight: 500;
-  line-height: 0.75rem;
-  text-align: center;
-  overflow: hidden;
   cursor: pointer;
 }
 
-.input-wrapper input {
-  flex: 1;
-  font-size: 1.125rem;
-  background: transparent;
-  border: none;
-  outline: none;
+.suggestions-list {
+  margin-top: 0.5rem;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.suggestion-item {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #eee;
+}
+
+.suggestion-type {
+  font-weight: bold;
+  margin-right: 0.5rem;
+  color: #888;
 }
 </style>
