@@ -5,21 +5,25 @@ import HomeBook from '@/components/HomeBook.vue'
 
 const books = ref(null)
 
-onMounted(() => {
-  bookService
-    .getLatestBooks()
-    .then((response) => {
-      books.value = response.data.books.map((book) => {
+onMounted(async () => {
+  try {
+    const response = await bookService.getLatestBooks()
+    const rawBooks = response.data.books
+
+    const processedBooks = await Promise.all(
+      rawBooks.map(async (book) => {
         if (book.coverImage) {
-          book.coverImage = bookService.bufferToBase64(book.coverImage)
+          book.coverImage = await bookService.bufferToBase64(book.coverImage)
         }
         return book
-      })
-      console.log(books)
-    })
-    .catch((err) => {
-      console.error(err)
-    })
+      }),
+    )
+
+    books.value = processedBooks
+    console.log(books.value)
+  } catch (err) {
+    console.error(err)
+  }
 })
 </script>
 

@@ -18,64 +18,75 @@ const icons = ref({
 </script>
 
 <template>
-  <footer>
-    <div class="footer-logo">
-      <RouterLink to="/" class="router-link">
-        <img :src="icons.logo" alt="logo" />
-      </RouterLink>
-      <nav>
-        <div class="footer-info">
+  <footer class="footer">
+    <div class="footer__content">
+      <div class="footer__left">
+        <RouterLink to="/" class="footer__logo-link">
+          <img :src="icons.logo" alt="logo" class="footer__logo" />
+        </RouterLink>
+
+        <div class="footer__info">
           <h2>À propos de nous</h2>
-          <h2>Qui Sommes-nous ?</h2>
+          <h2>Qui sommes-nous ?</h2>
           <h2>Nous contacter</h2>
         </div>
-      </nav>
-    </div>
-    <nav>
-      <div class="footer-link">
-        <RouterLink to="/"><img :src="icons.twitter" alt="Twitter" /> </RouterLink>
-        <RouterLink to="/"><img :src="icons.instagram" alt="Instagram" /> </RouterLink>
-        <RouterLink to="/"><img :src="icons.youtube" alt="Youtube" /> </RouterLink>
-        <RouterLink to="/"><img :src="icons.linkedin" alt="LinkedIn" /> </RouterLink>
       </div>
-    </nav>
+
+      <div class="footer__socials">
+        <RouterLink to="/"><img :src="icons.twitter" alt="Twitter" /></RouterLink>
+        <RouterLink to="/"><img :src="icons.instagram" alt="Instagram" /></RouterLink>
+        <RouterLink to="/"><img :src="icons.youtube" alt="YouTube" /></RouterLink>
+        <RouterLink to="/"><img :src="icons.linkedin" alt="LinkedIn" /></RouterLink>
+      </div>
+    </div>
   </footer>
 </template>
 
 <style scoped>
-footer {
-  display: flex;
-  margin-top: 1em;
-  bottom: 0;
-  justify-content: space-around;
-  gap: 8em;
+/* Positionne le footer en bas même si peu de contenu */
+.footer {
+  background-color: #f5f5f5;
+  width: 100%;
+  padding: 2rem 1rem;
+  margin-top: auto;
 }
 
-.footer-logo {
+.footer__content {
   display: flex;
-  align-items: center;
-  gap: 10em;
-}
-.footer-info {
-  display: flex;
-  gap: 5em;
   justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0, auto, 0, 10em;
+  gap: 10rem;
 }
-.footer-info h2 {
-  font-size: 20px;
-  width: fit-content;
-  height: 100%;
-  margin-right: 10em;
+
+.footer__left {
+  display: flex;
+  gap: 4rem;
 }
-footer img {
+
+.footer__logo {
   width: 65px;
 }
-.footer-link {
+
+.footer__info {
   display: flex;
-  padding: 10px;
-  gap: 10px;
+  flex-direction: row;
+  gap: 7rem;
 }
-.footer-link img {
+
+.footer__info h2 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.footer__socials {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer__socials img {
   width: 40px;
 }
 </style>

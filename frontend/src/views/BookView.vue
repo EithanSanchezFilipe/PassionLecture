@@ -15,22 +15,25 @@ const emit = defineEmits(['commentAdded'])
 const book = ref(null)
 const comments = ref(null)
 const avg = ref(0)
-onMounted(() => {
-  bookService
-    .getBook(props.id)
-    .then((response) => {
-      const data = response.data
-      if (data.coverImage) {
-        data.coverImage = bookService.bufferToBase64(data.coverImage)
-      }
-      book.value = data
-      console.log(book)
-    })
-    .catch((e) => {
-      console.log(e)
-    })
-  fetchComments()
+
+onMounted(async () => {
+  try {
+    const response = await bookService.getBook(props.id)
+    const data = response.data
+
+    if (data.coverImage) {
+      data.coverImage = await bookService.bufferToBase64(data.coverImage)
+    }
+
+    book.value = data
+    console.log(book.value)
+
+    fetchComments()
+  } catch (e) {
+    console.error(e)
+  }
 })
+
 const fetchComments = () => {
   bookService
     .getBookComments(props.id)

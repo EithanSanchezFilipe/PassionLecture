@@ -32,6 +32,15 @@ export default {
     return apiClient.post(`/book/${id}/comments`, comment)
   },
   bufferToBase64(buffer) {
-    return 'data:image/jpeg;base64,' + btoa(String.fromCharCode(...new Uint8Array(buffer.data)))
+    if (!buffer || !buffer.data) return Promise.resolve('')
+
+    const blob = new Blob([new Uint8Array(buffer.data)], { type: 'image/jpeg' })
+
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onloadend = () => resolve(reader.result)
+      reader.onerror = reject
+      reader.readAsDataURL(blob)
+    })
   },
 }
