@@ -1,5 +1,8 @@
+
 import { Book, Comment } from "../db/sequelize.mjs";
 import { ValidationError } from "sequelize";
+import { Book, Category, Comment } from "../db/sequelize.mjs";
+import { ValidationError, where } from "sequelize";
 import { Op } from "sequelize";
 
 export async function Create(req, res) {
@@ -81,6 +84,7 @@ export async function All(req, res) {
       const message = `Il y a ${book.length} livres qui correspondent au terme de la recherche`;
       res.status(200).json({ message, book });
     });
+    // … ton code de recherche par nom inchangé …
   }
   //findAll trouve toutes les données d'une table
   Book.findAll()
@@ -96,8 +100,34 @@ export async function All(req, res) {
       const message =
         "La liste des livres n'a pas pu être récupérée. Merci de réessayer dans quelques instants.";
       res.status(500).json({ message, data: e });
+
+  try {
+    // Récupère tous les livres, y compris le champ coverImage (Buffer)
+    const books = await Book.findAll();
+
+    // Transforme chaque Buffer en chaîne Base64
+    const booksWithBase64 = books.map((book) => {
+      // toJSON() convertit l'instance Sequelize en objet JS pur
+      const obj = book.toJSON();
+
+      if (obj.coverImage) {
+        obj.coverImage = obj.coverImage.toString("base64");
+      }
+
+      return obj;
     });
+
+    const message = "Les livres ont bien été récupérés.";
+    // Renvoie les objets avec coverImage en Base64
+    return res.status(200).json({ message, book: booksWithBase64 });
+  } catch (e) {
+    console.error(e);
+    const message =
+      "La liste des livres n'a pas pu être récupérée. Merci de réessayer dans quelques instants.";
+    return res.status(500).json({ message, error: e });
+  }
 }
+
 export async function Delete(req, res) {
   Book.findByPk(req.params.id).then((deletedbook) => {
     if (!deletedbook) {
