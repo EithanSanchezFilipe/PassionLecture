@@ -21,6 +21,10 @@ const CommentModel = (sequelize, DataTypes) => {
         },
       },
     },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     message: {
       type: DataTypes.STRING,
       allowNull: false,

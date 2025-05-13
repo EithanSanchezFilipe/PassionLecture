@@ -10,13 +10,15 @@ const logo = ref(logosvg)
     <RouterLink to="/"> <img :src="logo" alt="Logo" /></RouterLink>
     <div class="link-auth">
       <nav>
-        <RouterLink to="/">Accueil</RouterLink>
-        <RouterLink to="/category">Catégories</RouterLink>
-        <RouterLink to="/books">Livres</RouterLink>
+        <RouterLink :to="{ name: 'home' }">Accueil</RouterLink>
+        <RouterLink to="">Catégories</RouterLink>
+        <RouterLink to="{ name: 'Book' }">Livres</RouterLink>
       </nav>
       <div class="auth">
-        <RouterLink class="auth-btn" id="sign-in">Se connecter</RouterLink>
-        <RouterLink class="auth-btn" id="sign-up">Créer un compte</RouterLink>
+        <RouterLink class="auth-btn" id="sign-in" :to="{ name: 'Login' }">Se connecter</RouterLink>
+        <RouterLink class="auth-btn" id="sign-up" :to="{ name: 'Register' }"
+          >Créer un compte</RouterLink
+        >
       </div>
     </div>
   </header>

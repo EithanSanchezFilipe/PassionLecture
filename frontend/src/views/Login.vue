@@ -5,10 +5,9 @@ import router from '@/router'
 
 const username = ref('')
 const password = ref('')
-const email = ref('')
 const onSubmit = () => {
   authService
-    .register({ username: username.value, password: password.value, email: email.value })
+    .login({ username: username.value, password: password.value })
     .then((response) => {
       console.log(response)
     })
@@ -21,25 +20,24 @@ const goBack = () => {
 }
 </script>
 <template>
-  <div class="register-container">
+  <div class="login-container">
     <div class="back-button" @click="goBack()">← Retour</div>
-    <form @submit.prevent="onSubmit" class="formulaire-register">
-      <h2>Créer un compte</h2>
+
+    <form @submit.prevent="onSubmit" class="formulaire-login">
+      <h2>Se connecter</h2>
+
       <div class="champ">
         <label for="username">Nom d'utilisateur</label>
         <input type="text" id="username" v-model="username" placeholder="Nom d'utilisateur" />
       </div>
-      <div class="champ">
-        <label for="email">Email</label>
-        <input type="email" id="email" v-model="email" placeholder="Votre email" />
-      </div>
+
       <div class="champ">
         <label for="password">Mot de passe</label>
         <input type="password" id="password" v-model="password" placeholder="Mot de passe" />
       </div>
 
-      <button type="submit">Envoyer</button>
-      <RouterLink :to="{ name: 'Login' }">Vous avez déjà un compte?</RouterLink>
+      <button type="submit">Se connecter</button>
+      <RouterLink :to="{ name: 'Register' }">Vous n'avez pas de compte?</RouterLink>
     </form>
   </div>
 </template>
@@ -56,7 +54,7 @@ const goBack = () => {
   font-weight: bold;
 }
 
-.register-container {
+.login-container {
   position: relative;
   height: 100vh;
   display: flex;
@@ -66,7 +64,7 @@ const goBack = () => {
   font-family: 'Poppins', sans-serif;
 }
 
-.formulaire-register {
+.formulaire-login {
   background: #fff;
   padding: 70px 40px;
   border-radius: 30px;
@@ -78,7 +76,7 @@ const goBack = () => {
   gap: 20px;
 }
 
-.formulaire-register h2 {
+.formulaire-login h2 {
   margin: 0;
   text-align: center;
   color: #000;

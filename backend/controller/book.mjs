@@ -1,6 +1,7 @@
-import { Book, Comment } from "../db/sequelize.mjs";
-import { ValidationError } from "sequelize";
-import { Op } from "sequelize";
+
+import { Book, Category, Comment, User } from '../db/sequelize.mjs';
+import { ValidationError, where } from 'sequelize';
+import { Op } from 'sequelize';
 
 export async function Create(req, res) {
   const {
@@ -131,19 +132,22 @@ export async function Delete(req, res) {
 }
 export async function Rating(req, res) {
   const id = req.params.id;
-  const { note, message } = req.body;
+  const { note, commentaire } = req.body;
   console.log(req.params);
   const userId = req.user.id;
-  Comment.create({
-    user_fk: userId,
-    book_fk: id,
-    note: note,
-    message: message,
-  })
-    .then((comment) => {
-      return res.status(200).json({
-        message: `le livre dont l'id vaut ${id} a bien été commenté`,
-        data: comment,
+  User.findByPk(userId)
+    .then((user) => {
+      Comment.create({
+        user_fk: userId,
+        book_fk: id,
+        note: note,
+        message: commentaire,
+        username: user.username,
+      }).then((comment) => {
+        return res.status(200).json({
+          message: `le livre dont l'id vaut ${id} a bien été commenté`,
+          data: comment,
+        });
       });
     })
     .catch((error) => {
@@ -211,7 +215,7 @@ export function GetComments(req, res) {
     .then((comments) => {
       if (comments.length == 0) {
         return res
-          .status(404)
+          .status(204)
           .json({ message: "Ce livre n'a pas de commentaires" });
       }
       return res.status(200).json({
