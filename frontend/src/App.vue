@@ -23,4 +23,9 @@ const hideLayout = computed(() => noLayoutRoutes.includes(route.path))
   margin: 0px;
   font-family: 'Poppins';
 }
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 </style>

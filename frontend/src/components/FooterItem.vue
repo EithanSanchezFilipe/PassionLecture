@@ -45,6 +45,8 @@ const icons = ref({
 <style scoped>
 footer {
   display: flex;
+  margin-top: 1em;
+  bottom: 0;
   justify-content: space-around;
   gap: 8em;
 }
