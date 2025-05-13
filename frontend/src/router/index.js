@@ -22,6 +22,8 @@ const router = createRouter({
     {
       path: '/category',
       name: 'Category',
+      component: CategoryView,
+      props: true,
     },
     {
       path: '/register',
@@ -32,11 +34,6 @@ const router = createRouter({
       path: '/login',
       name: 'Login',
       component: Login,
-    },
-    {
-      name: 'book-all',
-      component: CategoryView,
-      props: true,
     },
   ],
 })

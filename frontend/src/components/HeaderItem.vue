@@ -11,7 +11,7 @@ const logo = ref(logosvg)
     <div class="link-auth">
       <nav>
         <RouterLink :to="{ name: 'home' }">Accueil</RouterLink>
-        <RouterLink to="">Catégories</RouterLink>
+        <RouterLink :to="{ name: 'Category' }">Catégories</RouterLink>
         <RouterLink to="{ name: 'Book' }">Livres</RouterLink>
       </nav>
       <div class="auth">
