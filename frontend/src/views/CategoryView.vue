@@ -1,23 +1,24 @@
 <script setup>
 import SearchBar from '../components/SearchBar.vue'
 import BookSection from '../components/BookSection.vue'
-import { useCategoryBooks } from '../components/useCategoryBooks'
+import { useCategorySearch } from '../components/CategorySearch'
 
-const { categories, filteredBooksByCategory } = useCategoryBooks()
+const { filteredCategories, booksByCategory, searchTerm } = useCategorySearch()
 </script>
 
 <template>
   <div>
-    <SearchBar />
+    <SearchBar v-model="searchTerm" />
 
     <BookSection
-      v-for="cat in categories"
+      v-for="cat in filteredCategories"
       :key="cat.id"
       :category="cat.name"
-      :books="filteredBooksByCategory[cat.id]"
+      :books="booksByCategory[cat.id]"
     />
   </div>
 </template>
+
 <style scoped>
 main {
   background-color: var(--sds-color-background-default-default);

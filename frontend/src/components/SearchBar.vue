@@ -1,17 +1,30 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import loupe from '@/assets/loupe.svg'
 import AutoComplete from 'primevue/autocomplete'
 import SearchService from '@/services/SearchService'
 
-const value = ref('')
+const props = defineProps(['modelValue'])
+const emit = defineEmits(['update:modelValue'])
+
+const value = ref(props.modelValue)
 const suggestions = ref([])
 
-// Méthode appelée automatiquement par AutoComplete quand l'utilisateur tape
+watch(
+  () => props.modelValue,
+  (val) => {
+    value.value = val
+  },
+)
+
+watch(value, (val) => {
+  emit('update:modelValue', val)
+})
+
 const searchSuggestions = async (event) => {
   const term = event.query.trim()
 
-  if (term.length < 3) {
+  if (term.length < 0) {
     suggestions.value = []
     return
   }
@@ -21,7 +34,7 @@ const searchSuggestions = async (event) => {
   try {
     const bookResponse = await SearchService.search(term, 'book')
     const books = bookResponse.data || []
-    results.push(...books.map((book) => ({ name: book.name, type: 'book' })))
+    results.push(...books.map((book) => book.name))
   } catch (error) {
     console.warn('Erreur lors de la récupération des livres', error)
   }
@@ -29,7 +42,7 @@ const searchSuggestions = async (event) => {
   try {
     const categoryResponse = await SearchService.search(term, 'category')
     const categories = categoryResponse.data || []
-    results.push(...categories.map((category) => ({ name: category.name, type: 'category' })))
+    results.push(...categories.map((category) => category.name))
   } catch (error) {
     console.warn('Erreur lors de la récupération des catégories', error)
   }
@@ -48,14 +61,7 @@ const searchSuggestions = async (event) => {
         field="name"
         placeholder="Rechercher..."
         @complete="searchSuggestions"
-      >
-        <template>
-          <div class="suggestion-item">
-            <span class="suggestion-type"></span>
-            {{ item.name }}
-          </div>
-        </template>
-      </AutoComplete>
+      />
     </div>
   </div>
 </template>
