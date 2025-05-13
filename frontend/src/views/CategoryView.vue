@@ -1,5 +1,5 @@
 <script setup>
-import SearchBar from '../components/SearchBar.vue'
+import SearchBar from '../components/SearchBarCat.vue'
 import BookSection from '../components/BookSection.vue'
 import { useCategorySearch } from '../components/CategorySearch'
 
