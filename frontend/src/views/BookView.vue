@@ -7,6 +7,7 @@ import Rating from 'primevue/rating'
 
 const props = defineProps({
   id: {
+    type: Number,
     required: true,
   },
 })

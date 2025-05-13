@@ -1,13 +1,20 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import Header from '@/components/HeaderItem.vue'
 import Footer from '@/components/FooterItem.vue'
+import { computed } from 'vue'
+
+const route = useRoute()
+
+const noLayoutRoutes = ['/login', '/register']
+
+const hideLayout = computed(() => noLayoutRoutes.includes(route.path))
 </script>
 
 <template>
-  <Header></Header>
+  <Header v-if="!hideLayout"></Header>
   <RouterView />
-  <Footer></Footer>
+  <Footer v-if="!hideLayout"></Footer>
 </template>
 
 <style>
