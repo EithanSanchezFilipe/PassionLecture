@@ -1,42 +1,55 @@
-import { Book, Category, Comment, User } from '../db/sequelize.mjs';
-import { ValidationError, where } from 'sequelize';
-import { Op } from 'sequelize';
+import { Book, Category, Comment, User, Author } from "../db/sequelize.mjs";
+import { ValidationError, where } from "sequelize";
+import { Op } from "sequelize";
 
 export async function Create(req, res) {
-  const {
-    name,
-    author,
-    price,
-    summary,
-    editionYear,
-    pages,
-    category_fk,
-    author_fk,
-    editor_fk,
-  } = req.body;
-  const userId = req.user.id;
-  Book.create({
-    name,
-    author,
-    price,
-    summary,
-    editionYear,
-    pages,
-    user_fk: userId,
-    category_fk,
-    author_fk,
-    editor_fk,
-  })
-    .then((book) => {
-      res.status(201).json(book);
-    })
-    .catch((e) => {
-      //si c'est une erreur de validation renvoie le messgae personnalisé
-      console.error(e);
-      if (e instanceof ValidationError) {
-        return res.status(400).json({ message: e.message });
-      }
+  try {
+    const { name, passage, summary, editionYear, pages, category_fk } =
+      req.body;
+    const userId = req.user?.id;
+
+    // Vérifier si l'utilisateur a déjà un auteur associé
+    let author = await Author.findOne({
+      where: { user_fk: userId },
     });
+
+    // Si pas d'auteur, en créer un nouveau
+    if (!author) {
+      const user = await User.findByPk(userId);
+      author = await Author.create({
+        firstname: user.username,
+        lastname: user.username,
+        user_fk: userId,
+      });
+    }
+
+    const bookData = {
+      name,
+      passage,
+      summary,
+      editionYear: parseInt(editionYear),
+      pages: parseInt(pages),
+      category_fk: parseInt(category_fk),
+      user_fk: userId,
+      author_fk: author.id, // Utiliser l'ID de l'auteur
+    };
+
+    if (req.files?.coverImage) {
+      bookData.coverImage = req.files.coverImage.data;
+    }
+
+    const book = await Book.create(bookData);
+    res.status(201).json(book);
+  } catch (e) {
+    console.error(e);
+    if (e instanceof ValidationError) {
+      return res.status(400).json({ message: e.message });
+    }
+    res.status(500).json({
+      message: "Erreur lors de la création du livre",
+      error: e.message,
+    });
+  }
 }
 export function Reach(req, res) {
   const id = req.params.id;
@@ -52,13 +65,13 @@ export function Reach(req, res) {
       })
       .catch((error) => {
         res.status(500).json({
-          message: 'Erreur lors de la recherche du livre',
+          message: "Erreur lors de la recherche du livre",
           error,
         });
       });
   } else {
     res.status(400).json({
-      message: 'ID du livre non fourni',
+      message: "ID du livre non fourni",
     });
   }
 }
@@ -72,7 +85,7 @@ export function All(req, res) {
 
     return Book.findAll({
       where: { name: { [Op.like]: `%${req.query.name}%` } },
-      order: [['name', 'ASC']],
+      order: [["name", "ASC"]],
       limit: limit,
     })
       .then((book) => {
@@ -81,7 +94,7 @@ export function All(req, res) {
       })
       .catch((e) => {
         res.status(500).json({
-          message: 'Erreur lors de la recherche',
+          message: "Erreur lors de la recherche",
           error: e,
         });
       });
@@ -92,18 +105,18 @@ export function All(req, res) {
       const booksWithBase64 = books.map((book) => {
         const obj = book.toJSON();
         if (obj.coverImage) {
-          obj.coverImage = obj.coverImage.toString('base64');
+          obj.coverImage = obj.coverImage.toString("base64");
         }
         return obj;
       });
       res.status(200).json({
-        message: 'Les livres ont bien été récupérés.',
+        message: "Les livres ont bien été récupérés.",
         book: booksWithBase64,
       });
     })
     .catch((e) => {
       res.status(500).json({
-        message: 'Erreur lors de la récupération des livres',
+        message: "Erreur lors de la récupération des livres",
         error: e,
       });
     });
@@ -173,7 +186,7 @@ export async function DeleteComment(req, res) {
     .catch((error) => {
       console.error(error);
       res.status(500).json({
-        message: 'Erreur lors de la suppression du commentaire',
+        message: "Erreur lors de la suppression du commentaire",
         error,
       });
     });
@@ -195,7 +208,7 @@ export function Update(req, res) {
       }
       book.update(data).then((bookupdate) => {
         return res.status(200).json({
-          message: 'Le livre a bien été mis à jour',
+          message: "Le livre a bien été mis à jour",
           data: bookupdate,
         });
       });
@@ -218,7 +231,7 @@ export function GetComments(req, res) {
           .json({ message: "Ce livre n'a pas de commentaires" });
       }
       return res.status(200).json({
-        message: 'La liste des commentaires à bien été récupérer',
+        message: "La liste des commentaires à bien été récupérer",
         comments,
       });
     })
@@ -237,29 +250,29 @@ export async function Cover(req, res) {
     const book = await Book.findByPk(id);
 
     if (!book || !book.coverImage) {
-      return res.status(404).send('Image not found');
+      return res.status(404).send("Image not found");
     }
 
     // Détermine dynamiquement le type MIME si possible
-    res.setHeader('Content-Type', 'image/jpeg');
+    res.setHeader("Content-Type", "image/jpeg");
     res.send(book.coverImage);
   } catch (error) {
-    console.error('Erreur lors de la récupération de la couverture :', error);
-    res.status(500).send('Erreur serveur');
+    console.error("Erreur lors de la récupération de la couverture :", error);
+    res.status(500).send("Erreur serveur");
   }
 }
 
 export function Latest(req, res) {
   //findAll trouve toutes les données d'une table
   Book.findAll({
-    order: [['created', 'DESC']],
+    order: [["created", "DESC"]],
     limit: 5,
     include: [{ model: Comment }],
   })
     //prends la valeur trouver et la renvoie en format json avec un message de succès
     .then((books) => {
       // Définir un message de succès pour l'utilisateur de l'API REST
-      const message = 'Les livres ont bien été récupérée.';
+      const message = "Les livres ont bien été récupérée.";
       const data = books.map((book) => {
         const notes = book.t_comments.map((comment) => comment.note);
         const avg =

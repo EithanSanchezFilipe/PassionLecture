@@ -1,5 +1,5 @@
 const AuthorModel = (sequelize, DataTypes) => {
-  return sequelize.define('t_author', {
+  return sequelize.define("t_author", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -23,6 +23,15 @@ const AuthorModel = (sequelize, DataTypes) => {
         },
       },
     },
+    user_fk: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: "t_user",
+        key: "id",
+      },
+    },
   });
 };
+
 export { AuthorModel };

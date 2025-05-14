@@ -27,6 +27,7 @@ const Book = BookModel(sequelize, DataTypes);
 const Comment = CommentModel(sequelize, DataTypes);
 
 await initAssociations(User, Editor, Comment, Category, Book, Author);
+
 // Test the connection
 
 sequelize
