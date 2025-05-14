@@ -20,8 +20,24 @@ export default {
     return apiClient.get('/book/' + id)
   },
   addBook(book) {
-    return apiClient.post('/book', book)
+    const formData = new FormData()
+    formData.append('name', book.name)
+    formData.append('passage', book.passage || '')
+    formData.append('summary', book.summary)
+    formData.append('editionYear', book.editionYear)
+    formData.append('pages', book.pages)
+    formData.append('category_fk', book.category_fk)
+    if (book.coverImage) {
+      formData.append('coverImage', book.coverImage)
+    }
+
+    return apiClient.post('/book', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
   },
+
   getLatestBooks() {
     return apiClient.get('/book/latest')
   },
