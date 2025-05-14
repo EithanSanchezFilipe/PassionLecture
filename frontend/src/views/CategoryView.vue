@@ -2,31 +2,59 @@
 import SearchBar from '../composables/SearchBarCat.vue'
 import BookSection from '../components/BookSection.vue'
 import { useCategorySearch } from '../components/CategorySearch'
+import ProgressSpinner from 'primevue/progressspinner'
 
-const { filteredCategories, booksByCategory, searchTerm } = useCategorySearch()
+const { filteredCategories, booksByCategory, searchTerm, isLoading, error } = useCategorySearch()
 </script>
 
 <template>
-  <div>
+  <div class="category-view">
     <SearchBar v-model="searchTerm" />
 
-    <BookSection
-      v-for="cat in filteredCategories"
-      :key="cat.id"
-      :category="cat.name"
-      :books="booksByCategory[cat.id]"
-    />
+    <div v-if="isLoading" class="loading">
+      <ProgressSpinner />
+      <p>Chargement des catégories...</p>
+    </div>
+
+    <div v-else-if="error" class="error">
+      {{ error }}
+    </div>
+
+    <div v-else>
+      <div v-if="filteredCategories.length === 0" class="no-results">
+        <p>Aucune catégorie trouvée</p>
+      </div>
+
+      <BookSection
+        v-for="cat in filteredCategories"
+        :key="cat.id"
+        :category="cat.name"
+        :books="booksByCategory[cat.id] || []"
+      />
+    </div>
   </div>
 </template>
 
 <style scoped>
-main {
-  background-color: var(--sds-color-background-default-default);
-  width: var(--sds-responsive-device-width);
+.category-view {
+  padding: 1rem;
 }
 
-div {
-  padding-left: var(--sds-size-space-0);
-  padding-right: var(--sds-size-space-0);
+.loading,
+.error,
+.no-results {
+  text-align: center;
+  padding: 2rem;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.error {
+  color: red;
 }
 </style>
