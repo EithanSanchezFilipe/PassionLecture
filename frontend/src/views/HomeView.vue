@@ -20,7 +20,6 @@ onMounted(async () => {
     )
 
     books.value = processedBooks
-    console.log(books.value)
   } catch (err) {
     console.error(err)
   }

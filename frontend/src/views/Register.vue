@@ -1,28 +1,41 @@
 <script setup>
-import authService from '@/services/authService'
-import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import { ref, inject } from 'vue'
 import router from '@/router'
-
+const auth = useAuthStore()
+const GStore = inject('GStore')
 const username = ref('')
 const password = ref('')
 const email = ref('')
 const onSubmit = () => {
-  authService
-    .register({ username: username.value, password: password.value, email: email.value })
+  auth
+    .Register({ username: username.value, password: password.value, email: email.value })
     .then((response) => {
-      console.log(response)
+      if (response.status == 200) {
+        GStore.flashMessage = 'Compte créé avec succès !'
+        setTimeout(() => {
+          GStore.flashMessage = ''
+        }, 3000)
+        router.push({ name: 'home' })
+      } else {
+        GStore.flashMessage = response.data.message
+        GStore.isSuccess = false
+      }
     })
     .catch((e) => {
-      console.log(e)
+      console.error(e)
+      GStore.flashMessage = e.response.data.message
+      GStore.isSuccess = false
     })
 }
 const goBack = () => {
-  router.go(-1)
+  router.push({ name: 'home' })
 }
 </script>
 <template>
   <div class="register-container">
-    <div class="back-button" @click="goBack()">← Retour</div>
+    <div class="back-button" @click="goBack()">← Retourner a l'accueil</div>
+
     <form @submit.prevent="onSubmit" class="formulaire-register">
       <h2>Créer un compte</h2>
       <div class="champ">

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { auth } from '../middleware/auth.mjs';
+import { auth, validateToken } from '../middleware/auth.mjs';
 import {
   Register,
   Login,
@@ -331,5 +331,5 @@ router.delete('/', auth, Delete);
  *                   example: "L'utilisateur n'a pas pu être mis à jour. Merci de réessayer dans quelques instants."
  */
 router.put('/profile/:id', auth, Update);
-
+router.get('/validateToken', validateToken);
 export default router;

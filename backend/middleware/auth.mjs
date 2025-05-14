@@ -27,4 +27,20 @@ const auth = (req, res, next) => {
     }
   });
 };
-export { auth };
+const validateToken = (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(204).json({ message: 'Pas de token' });
+    }
+    jwt.verify(token, process.env.privateKey, (error, decodedToken) => {
+      if (error) {
+        return res.status(204).json({ message: 'Token invalide' });
+      }
+      return res.status(200).json({ message: 'Token valide' });
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
+export { auth, validateToken };
