@@ -1,8 +1,8 @@
-import { Author, Book } from '../db/sequelize.mjs';
-import { ValidationError } from 'sequelize';
-import { Op } from 'sequelize';
+import { Author, Book } from "../db/sequelize.mjs";
+import { ValidationError } from "sequelize";
+import { Op } from "sequelize";
 
-// Ajouter une catégorie
+// Ajouter un auteur
 export async function Create(req, res) {
   const { firstname, lastname } = req.body;
   Author.create({
@@ -79,7 +79,7 @@ export async function FindByAuthor(req, res) {
     })
     .catch((error) => {
       res.status(500).json({
-        message: 'Erreur lors de la recherche des auteurs',
+        message: "Erreur lors de la recherche des auteurs",
         error,
       });
     });
