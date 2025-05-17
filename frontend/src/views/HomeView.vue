@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 import bookService from '@/services/bookService'
 import HomeBook from '@/components/HomeBook.vue'
+import BaseCarousel from '@/components/base/BaseCarousel.vue'
 
 const books = ref(null)
 
@@ -34,12 +35,16 @@ onMounted(async () => {
       une communauté de passionnés et échangez vos coups de cœur littéraires !
     </p>
   </section>
-  <section class="new-books-section">
-    <h2>Nouveautés</h2>
-    <div class="books">
-      <HomeBook v-for="book in books" :key="book.id" :book="book" />
-    </div>
-  </section>
+  
+  <BaseCarousel 
+    v-if="books"
+    :items="books"
+    title="Nouveautés"
+  >
+    <template #item="{ item }">
+      <HomeBook :book="item" />
+    </template>
+  </BaseCarousel>
 </template>
 
 <style scoped>
@@ -62,25 +67,5 @@ onMounted(async () => {
   font-size: 1.2rem;
   color: #555;
   line-height: 1.6;
-}
-
-.new-books-section {
-  padding: 3em 2em;
-  background-color: #ffffff;
-}
-
-.new-books-section h2 {
-  font-size: 2rem;
-  text-decoration: underline;
-  color: black;
-  margin-bottom: 1.5em;
-  text-align: center;
-}
-
-.books {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2em;
 }
 </style>

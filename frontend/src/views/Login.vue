@@ -10,6 +10,7 @@ const onSubmit = () => {
   auth
     .Login({ username: username.value, password: password.value })
     .then((response) => {
+
       if (response.status === 200) {
         GStore.flashMessage = 'Connexion réussie. Bienvenue !'
         GStore.isSuccess = true
@@ -18,6 +19,7 @@ const onSubmit = () => {
         }, 3000)
         router.push({ name: 'home' })
       }
+
     })
     .catch((e) => {
       console.error(e)

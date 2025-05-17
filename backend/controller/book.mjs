@@ -54,7 +54,12 @@ export async function Create(req, res) {
 export function Reach(req, res) {
   const id = req.params.id;
   if (id) {
-    Book.findByPk(id)
+    Book.findByPk(id, {
+      include: [{
+        model: Category,
+        attributes: ['id', 'name']
+      }]
+    })
       .then((book) => {
         if (!book) {
           return res.status(404).json({

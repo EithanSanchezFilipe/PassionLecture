@@ -43,8 +43,9 @@ const icons = ref({
 </template>
 
 <style scoped>
-/* Positionne le footer en bas même si peu de contenu */
 .footer {
+  display: flex;
+  flex-direction: column;
   background-color: #f5f5f5;
   width: 100%;
   padding: 2rem 1rem;
@@ -54,9 +55,8 @@ const icons = ref({
 .footer__content {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  max-width: 1200px;
+  width: 100%;
+  max-width: 150rem;
   margin: 0, auto, 0, 10em;
   gap: 10rem;
 }
@@ -83,6 +83,7 @@ const icons = ref({
 
 .footer__socials {
   display: flex;
+  justify-content: flex-end;
   gap: 1rem;
 }
 

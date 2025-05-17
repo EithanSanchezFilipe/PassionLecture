@@ -10,6 +10,7 @@ const emit = defineEmits(['update:modelValue'])
 const value = ref(props.modelValue)
 const suggestions = ref([])
 
+const loading = ref(false)
 watch(
   () => props.modelValue,
   (val) => {
@@ -33,6 +34,7 @@ const searchSuggestions = async (event) => {
     suggestions.value = res.data?.map((cat) => cat.name) || []
   } catch (err) {
     console.warn('Erreur catégories :', err)
+    suggestions.value = []
   }
 }
 </script>
@@ -45,38 +47,84 @@ const searchSuggestions = async (event) => {
         v-model="value"
         :suggestions="suggestions"
         field="name"
+        :loading="loading"
         placeholder="Rechercher une catégorie..."
         @complete="searchSuggestions"
+        class="search-input"
       />
     </div>
   </div>
 </template>
 
 <style scoped>
-/* 🔁 même style que SearchBarBook */
 .search-bar-container {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  margin-top: 5em;
-  margin-bottom: 5em;
+  margin-top: 2em;
+  margin-bottom: 2em;
   width: 100%;
-  max-width: 500px;
-  background-color: #f5f5f5;
+  max-width: 400px;
 }
+
 .input-wrapper {
   display: flex;
-  gap: 1rem;
   align-items: center;
-  padding: 0.25rem 0.5rem;
+  padding: 0.3rem 0.8rem;
   width: 100%;
   border: 1px solid black;
-  border-radius: 0.75rem;
-  background-color: rgba(250, 250, 250, 0.9);
+  border-radius: 0.5rem;
+  background-color: white;
+  cursor: text;
 }
+
 .input-wrapper .icon {
-  width: 1.75rem;
-  padding: 0.375rem;
+  width: 1.2rem;
+  min-width: 1.2rem;
+  margin-right: 0.4rem;
+}
+
+:deep(.search-input) {
+  width: 100%;
+}
+
+:deep(.p-autocomplete) {
+  width: 100%;
+}
+
+:deep(.p-autocomplete-input) {
+  width: 100% !important;
+  border: none !important;
+  padding: 0.3rem 0 !important;
+  font-size: 0.95rem;
+  background-color: transparent !important;
+}
+
+:deep(.p-autocomplete-input:focus) {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+:deep(.p-autocomplete-panel) {
+  margin-top: 0.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+:deep(.p-autocomplete-items) {
+  padding: 0.5rem 0;
+}
+
+:deep(.p-autocomplete-item) {
+  padding: 0.75rem 1rem;
   cursor: pointer;
+}
+
+:deep(.p-autocomplete-item:hover) {
+  background-color: #f5f5f5;
+}
+
+:deep(.p-autocomplete-loader) {
+  right: 0.5rem;
 }
 </style>
