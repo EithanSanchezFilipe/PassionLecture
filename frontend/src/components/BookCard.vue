@@ -1,10 +1,13 @@
 <template>
-  <main class="book-card">
+ <main class="book-card">
     <button
       style="border: none; background: none; cursor: pointer"
       @click="$router.push({ name: 'book-detail', params: { id: book.id } })"
     >
-      <img :src="`http://localhost:443/api/book/${book.id}/cover`" :alt="book.name" />
+    <img v-if="book.coverImage" :src="book.coverImage" alt="Book cover" />
+    <Skeleton v-if="!book.coverImage" :height="'17em'" :class="'mb-2'"></Skeleton>
+    <h3>{{ truncatedName }}</h3>
+    <Rating :default-value="book.avg" readonly />
     </button>
     <p>{{ book.name }}</p>
     <div class="stars">
@@ -17,6 +20,8 @@
 
 <script setup>
 import { computed } from 'vue'
+import Skeleton from 'primevue/skeleton'
+
 
 const props = defineProps({
   book: Object,
@@ -38,6 +43,10 @@ const averageRating = computed(() => {
   align-items: center;
   text-align: center;
   margin: 0;
+}
+
+.p-skeleton {
+  background-color: #e0e0e0;
 }
 
 .book-card img {
