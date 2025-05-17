@@ -194,6 +194,7 @@ const handleCommentAdded = () => {
   height: auto;
   aspect-ratio: 2/3;
   border-radius: 8px;
+  background-color: #e0e0e0;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease;
 }
@@ -205,13 +206,15 @@ const handleCommentAdded = () => {
 .book-info {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  align-items: center;
+  text-align: center;
+  gap: 1.2rem;
 }
 
 h1 {
   font-size: 2rem;
   color: #333;
-  margin: 0;
+  margin: auto;
   line-height: 1.2;
 }
 
