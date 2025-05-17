@@ -1,5 +1,5 @@
 <script setup>
-import Rating from 'primevue/rating'
+import BaseRating from '@/components/base/BaseRating.vue'
 defineProps({
   comment: {
     type: Object,
@@ -8,14 +8,33 @@ defineProps({
 })
 </script>
 <template>
-  <div v-if="comment">
+  <div v-if="comment" class="comment">
     <p class="username">{{ comment.username }}</p>
-    <p>
+    <p class="message">
       {{ comment.message }}
     </p>
     <div class="stars">
-      <Rating :default-value="comment.note" :readonly="true" />
+      <BaseRating :model-value="comment.note" readonly />
     </div>
   </div>
   <p v-else>Aucun commentaire</p>
 </template>
+
+<style scoped>
+.comment {
+  margin-bottom: 1.5em;
+}
+
+.username {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.message {
+  margin-bottom: 0.5em;
+}
+
+.stars {
+  margin-top: 0.5em;
+}
+</style>

@@ -1,7 +1,7 @@
 <script setup>
-import SearchBar from '../composables/SearchBarCat.vue'
-import BookSection from '../components/BookSection.vue'
-import { useCategorySearch } from '../components/CategorySearch'
+import SearchBar from '@/composables/SearchBarCat.vue'
+import BookSection from '@/components/BookSection.vue'
+import { useCategorySearch } from '@/composables/CategorySearch'
 import ProgressSpinner from 'primevue/progressspinner'
 
 const { filteredCategories, booksByCategory, searchTerm, isLoading, error } = useCategorySearch()

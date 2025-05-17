@@ -25,7 +25,7 @@ const emit = defineEmits(['update:visible'])
 const first = ref(0)
 const rows = ref(5)
 
-const paginatedBooks = computed(() => {
+const Books = computed(() => {
   return props.books.slice(first.value, first.value + rows.value)
 })
 
@@ -49,8 +49,8 @@ const closeModal = () => {
     @update:visible="closeModal"
   >
     <div class="books-grid">
-      <div v-for="book in paginatedBooks" :key="book.id" class="book-card">
-        <img :src="`http://localhost:443/api/book/${book.id}/cover`" :alt="book.name" />
+      <div v-for="book in Books" :key="book.id" class="book-card">
+      <img v-if="displayCoverImage" :src="displayCoverImage" alt="Book cover" />
         <div class="book-info">
           <h3>{{ book.name }}</h3>
           <p>{{ book.summary }}</p>

@@ -1,4 +1,4 @@
-import { Category, Book } from "../db/sequelize.mjs";
+import { Category, Book, Comment } from "../db/sequelize.mjs";
 import { ValidationError } from "sequelize";
 // Ajouter une catégorie
 export function Create(req, res) {
@@ -59,15 +59,32 @@ export function All(req, res) {
 export function FindByCategory(req, res) {
   const { id } = req.params;
   Category.findByPk(id, {
-    include: [Book],
+    include: [{
+      model: Book,
+      include: [Comment]
+    }],
   })
     .then((category) => {
       if (!category) {
-        return res.status(404).json({
+        return res.status(204).json({
           message: "La catégorie n'existe pas",
         });
       }
-      res.status(200).json(category);
+
+      // Calculer la moyenne des notes pour chaque livre
+      const booksWithAvg = category.t_books.map(book => {
+        const notes = book.t_comments.map(comment => comment.note);
+        const avg = notes.length > 0 ? notes.reduce((acc, val) => acc + val, 0) / notes.length : 1;
+        return {
+          ...book.toJSON(),
+          avg
+        };
+      });
+
+      res.status(200).json({
+        ...category.toJSON(),
+        t_books: booksWithAvg
+      });
     })
     .catch((error) => {
       return res.status(500).json({
