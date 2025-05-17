@@ -10,25 +10,9 @@ export function useCategorySearch() {
   const error = ref(null)
   const createdUrls = ref([])
 
-  const convertBlobToUrl = (blob) => {
-    if (!blob) return null
-    const url = URL.createObjectURL(new Blob([blob], { type: 'image/jpeg' }))
-    createdUrls.value.push(url)
-    return url
-  }
-
-  const cleanupUrls = () => {
-    createdUrls.value.forEach(url => {
-      URL.revokeObjectURL(url)
-    })
-    createdUrls.value = []
-  }
-
   const loadData = async () => {
     try {
-      // Nettoyer les anciennes URLs avant de charger de nouvelles données
-      cleanupUrls()
-      
+
       const catRes = await categoryService.getAllCategory()
       categories.value = catRes.data.categories || []
 
@@ -39,7 +23,7 @@ export function useCategorySearch() {
               const res = await categoryService.getBooksByCategory(cat.id)
               const books = res.data.t_books || []
               
-              // Convertir les images en base64 comme dans HomeView
+              // Convertir les images en base64
               const processedBooks = await Promise.all(
                 books.map(async (book) => {
                   if (book.coverImage) {
@@ -67,10 +51,6 @@ export function useCategorySearch() {
 
   onMounted(() => {
     loadData()
-  })
-
-  onBeforeUnmount(() => {
-    cleanupUrls()
   })
 
   const filteredCategories = computed(() => {

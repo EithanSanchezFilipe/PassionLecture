@@ -4,11 +4,6 @@ export function Search(req, res) {
   const { query, searchType } = req.query;
   let model;
   let name = 'name';
-  let options = {
-    where: {},
-    include: []
-  };
-
   switch (searchType) {
     case 'user':
       model = User;
@@ -16,10 +11,6 @@ export function Search(req, res) {
       break;
     case 'book':
       model = Book;
-      options.include.push({
-        model: Category,
-        as: 't_category'
-      });
       break;
     case 'category':
       model = Category;
@@ -36,13 +27,14 @@ export function Search(req, res) {
         .status(400)
         .json({ message: 'Type de recherche non pris en charge' });
   }
-
-  options.where[name] = {
-    [Op.like]: `%${query}%`
-  };
-
   model
-    .findAll(options)
+    .findAll({
+      where: {
+        [name]: {
+          [Op.like]: `%${query}%`,
+        },
+      },
+    })
     .then((results) => {
       if (results.length === 0) {
         return res.status(200).json({ message: 'Aucun résultat trouvé' });
