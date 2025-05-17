@@ -16,4 +16,7 @@ export default {
   register(user) {
     return apiClient.post('/user/register', user)
   },
+  validateToken() {
+    return apiClient.get('/user/validateToken')
+  },
 }

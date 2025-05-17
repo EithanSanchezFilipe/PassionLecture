@@ -1,27 +1,39 @@
 <script setup>
-import authService from '@/services/authService'
-import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import { ref, inject } from 'vue'
 import router from '@/router'
-
+const auth = useAuthStore()
 const username = ref('')
+const GStore = inject('GStore')
 const password = ref('')
 const onSubmit = () => {
-  authService
-    .login({ username: username.value, password: password.value })
+  auth
+    .Login({ username: username.value, password: password.value })
     .then((response) => {
-      
+
+      if (response.status === 200) {
+        GStore.flashMessage = 'Connexion réussie. Bienvenue !'
+        GStore.isSuccess = true
+        setTimeout(() => {
+          GStore.flashMessage = ''
+        }, 3000)
+        router.push({ name: 'home' })
+      }
+
     })
     .catch((e) => {
-      console.log(e)
+      console.error(e)
+      GStore.flashMessage = e.response.data.message
+      GStore.isSuccess = false
     })
 }
 const goBack = () => {
-  router.go(-1)
+  router.push({ name: 'home' })
 }
 </script>
 <template>
   <div class="login-container">
-    <div class="back-button" @click="goBack()">← Retour</div>
+    <div class="back-button" @click="goBack()">← Retourner a l'accueil</div>
 
     <form @submit.prevent="onSubmit" class="formulaire-login">
       <h2>Se connecter</h2>

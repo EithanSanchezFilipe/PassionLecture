@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 import logosvg from '@/assets/icons/logo.svg'
-
+import { useAuthStore } from '@/stores/auth'
+const auth = useAuthStore()
 const logo = ref(logosvg)
 </script>
 
@@ -14,7 +15,7 @@ const logo = ref(logosvg)
         <RouterLink :to="{ name: 'Category' }">Catégories</RouterLink>
         <RouterLink :to="{ name: 'Book' }">Livres</RouterLink>
       </nav>
-      <div class="auth">
+      <div class="auth" v-if="!auth.isAuthenticated">
         <RouterLink class="auth-btn" id="sign-in" :to="{ name: 'Login' }">Se connecter</RouterLink>
         <RouterLink class="auth-btn" id="sign-up" :to="{ name: 'Register' }"
           >Créer un compte</RouterLink
