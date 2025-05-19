@@ -26,7 +26,7 @@ watch(value, (val) => {
 
 const searchSuggestions = async (event) => {
   const term = event.query.trim()
-  if (term.length === 0) {
+  if (term.length < 5) {
     suggestions.value = []
     return
   }
@@ -49,9 +49,7 @@ const searchSuggestions = async (event) => {
 
 const handleSelect = (event) => {
   if (event && event.id) {
-    router.push(`/book/${event.id}`).then(() => {
-      window.location.reload()
-    })
+    router.push(`/book/${event.id}`)
   }
 }
 
@@ -63,35 +61,17 @@ const handleKeyDown = async (event) => {
     try {
       loading.value = true
       const res = await SearchService.search(searchTerm, 'book')
-      
-      if (res.data && res.data.length > 0) {
-        // Si on trouve un livre qui contient le terme de recherche
-        const matchingBook = res.data.find(book => 
-          book.name.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        
-        if (matchingBook) {
-          // Navigate to specific book
-          router.push(`/book/${matchingBook.id}`).then(() => {
-            window.location.reload()
-          })
-        } else {
-          // Navigate to category view with search results
-          router.push({
-            path: '/category',
-            query: { search: searchTerm }
-          }).then(() => {
-            window.location.reload()
-          })
-        }
+      const results = res.data || []
+
+      if (results.length === 1) {
+        // Si un seul livre trouvé, redirection vers sa page détaillée
+        router.push(`/book/${results[0].id}`)
+      } else if (results.length > 1) {
+        // Si plusieurs livres trouvés, redirection vers la page de filtrage
+        router.push(`/books/filter?search=${encodeURIComponent(searchTerm)}&searchType=book`)
       } else {
-        // Navigate to category view with search term
-        router.push({
-          path: '/category',
-          query: { search: searchTerm }
-        }).then(() => {
-          window.location.reload()
-        })
+        // Aucun résultat trouvé
+        console.log('Aucun livre trouvé pour cette recherche')
       }
     } catch (err) {
       console.warn('Erreur de recherche :', err)
@@ -101,11 +81,10 @@ const handleKeyDown = async (event) => {
   }
 }
 
+// Simplifie le watch pour éviter les rechargements de page inutiles
 watch(value, (newValue) => {
   if (newValue && typeof newValue === 'object' && newValue.id) {
-    router.push(`/book/${newValue.id}`).then(() => {
-      window.location.reload()
-    })
+    router.push(`/book/${newValue.id}`)
   }
 })
 </script>
