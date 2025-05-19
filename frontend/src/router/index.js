@@ -43,9 +43,9 @@ const router = createRouter({
       component: Login,
     },
     {
-      path: '/book-filter',
-      name: 'book-filter',
-      component: () => import('@/views/BookFilter.vue')
+      path: '/books/filter',
+      name: 'books-filter',
+      component: () => import('@/views/BookFilterView.vue')
     },
   ],
 })
