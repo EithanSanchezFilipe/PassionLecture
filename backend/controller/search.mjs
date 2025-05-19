@@ -4,6 +4,8 @@ export function Search(req, res) {
   const { query, searchType } = req.query;
   let model;
   let name = 'name';
+  let include = [];
+  
   switch (searchType) {
     case 'user':
       model = User;
@@ -11,6 +13,7 @@ export function Search(req, res) {
       break;
     case 'book':
       model = Book;
+      include = [{ model: Author }];
       break;
     case 'category':
       model = Category;
@@ -27,6 +30,7 @@ export function Search(req, res) {
         .status(400)
         .json({ message: 'Type de recherche non pris en charge' });
   }
+  
   model
     .findAll({
       where: {
@@ -34,6 +38,7 @@ export function Search(req, res) {
           [Op.like]: `%${query}%`,
         },
       },
+      include
     })
     .then((results) => {
       if (results.length === 0) {

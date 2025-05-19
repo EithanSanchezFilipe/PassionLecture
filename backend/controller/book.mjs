@@ -55,10 +55,15 @@ export function Reach(req, res) {
   const id = req.params.id;
   if (id) {
     Book.findByPk(id, {
-      include: [{
-        model: Category,
-        attributes: ['id', 'name']
-      }]
+      include: [
+        {
+          model: Category,
+          attributes: ['id', 'name']
+        },
+        {
+          model: Author
+        }
+      ]
     })
       .then((book) => {
         if (!book) {
@@ -92,6 +97,7 @@ export function All(req, res) {
       where: { name: { [Op.like]: `%${req.query.name}%` } },
       order: [["name", "ASC"]],
       limit: limit,
+      include: [{ model: Author }]
     })
       .then((book) => {
         const message = `Il y a ${book.length} livres qui correspondent au terme de la recherche`;
@@ -105,7 +111,9 @@ export function All(req, res) {
       });
   }
 
-  Book.findAll()
+  Book.findAll({
+    include: [{ model: Author }]
+  })
     .then((books) => {
       const booksWithBase64 = books.map((book) => {
         const obj = book.toJSON();
@@ -272,7 +280,10 @@ export function Latest(req, res) {
   Book.findAll({
     order: [["created", "DESC"]],
     limit: 5,
-    include: [{ model: Comment }],
+    include: [
+      { model: Comment },
+      { model: Author }
+    ],
   })
     //prends la valeur trouver et la renvoie en format json avec un message de succès
     .then((books) => {
