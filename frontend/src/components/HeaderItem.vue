@@ -21,6 +21,9 @@ const logo = ref(logosvg)
           >Créer un compte</RouterLink
         >
       </div>
+      <div class="logout" v-else>
+        <button type="button" class="logout-btn">Se déconnecter</button>
+      </div>
     </div>
   </header>
 </template>
@@ -71,5 +74,23 @@ nav a:hover {
 #sign-up:hover {
   cursor: pointer;
   background-color: #1e1e1e;
+}
+.logout-btn {
+  background-color: #f5f5f5;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+.logout-btn:hover {
+  background-color: #dcdcdc;
+  transform: scale(1.05);
+}
+.logout-btn:focus {
+  outline: none;
 }
 </style>
