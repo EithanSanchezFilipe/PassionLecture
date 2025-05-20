@@ -43,8 +43,11 @@ const isStepValid = computed(() => {
     case 0:
       return formData.value.name && formData.value.category_fk
     case 1:
-      return formData.value.summary && summaryLength.value <= SUMMARY_MAX_LENGTH && 
-             (!formData.value.passage || passageLength.value <= PASSAGE_MAX_LENGTH)
+      return (
+        formData.value.summary &&
+        summaryLength.value <= SUMMARY_MAX_LENGTH &&
+        (!formData.value.passage || passageLength.value <= PASSAGE_MAX_LENGTH)
+      )
     case 2:
       return formData.value.editionYear && formData.value.pages
     default:
@@ -121,15 +124,18 @@ const handleImageUpload = (event) => {
             <div class="form-group">
               <label>Résumé*</label>
               <div class="textarea-container">
-                <Textarea 
-                  v-model="formData.summary" 
-                  rows="5" 
-                  autoResize 
+                <Textarea
+                  v-model="formData.summary"
+                  rows="5"
+                  autoResize
                   :maxlength="SUMMARY_MAX_LENGTH"
                   :class="{ 'p-invalid': summaryLength > SUMMARY_MAX_LENGTH }"
                   placeholder="Écrivez le résumé du livre..."
                 />
-                <span class="char-count" :class="{ 'count-error': summaryLength > SUMMARY_MAX_LENGTH }">
+                <span
+                  class="char-count"
+                  :class="{ 'count-error': summaryLength > SUMMARY_MAX_LENGTH }"
+                >
                   {{ summaryLength }}/{{ SUMMARY_MAX_LENGTH }}
                 </span>
               </div>
@@ -140,15 +146,18 @@ const handleImageUpload = (event) => {
             <div class="form-group">
               <label>Passage</label>
               <div class="textarea-container">
-                <Textarea 
-                  v-model="formData.passage" 
-                  rows="3" 
-                  autoResize 
+                <Textarea
+                  v-model="formData.passage"
+                  rows="3"
+                  autoResize
                   :maxlength="PASSAGE_MAX_LENGTH"
                   :class="{ 'p-invalid': passageLength > PASSAGE_MAX_LENGTH }"
                   placeholder="Écrivez un passage marquant du livre..."
                 />
-                <span class="char-count" :class="{ 'count-error': passageLength > PASSAGE_MAX_LENGTH }">
+                <span
+                  class="char-count"
+                  :class="{ 'count-error': passageLength > PASSAGE_MAX_LENGTH }"
+                >
                   {{ passageLength }}/{{ PASSAGE_MAX_LENGTH }}
                 </span>
               </div>
@@ -248,7 +257,7 @@ const handleImageUpload = (event) => {
   background-color: #f9f9f9;
   border-radius: 6px;
   margin-bottom: 1.5rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 :deep(.p-steps-item) {
@@ -282,8 +291,10 @@ const handleImageUpload = (event) => {
   padding: 0.75rem 1rem !important;
   font-size: 1rem;
   color: #222;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition:
+    border 0.2s,
+    box-shadow 0.2s;
 }
 
 :deep(.p-inputtext.p-invalid),
@@ -301,12 +312,13 @@ const handleImageUpload = (event) => {
 /* Style spécifique pour Dropdown PrimeVue */
 :deep(.p-dropdown) {
   width: 100% !important;
-  background: #fff !important;
   border: 1.5px solid #d1d5db !important;
   border-radius: 6px !important;
   min-height: 2.75rem;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition:
+    border 0.2s,
+    box-shadow 0.2s;
 }
 :deep(.p-dropdown.p-focus) {
   border-color: #6366f1 !important;
@@ -318,10 +330,9 @@ const handleImageUpload = (event) => {
   background: transparent !important;
 }
 :deep(.p-dropdown-panel) {
-  background: #fff !important;
   border-radius: 6px !important;
   border: 1.5px solid #d1d5db !important;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.09);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.09);
 }
 :deep(.p-dropdown-item) {
   color: #222 !important;
@@ -361,7 +372,7 @@ input[type='file']:focus {
   padding: 0.75rem 2.5rem;
   border-radius: 6px;
   font-weight: 600;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   border: none;
 }
 :deep(.p-button-secondary) {

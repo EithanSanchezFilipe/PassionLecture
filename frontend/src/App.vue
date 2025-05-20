@@ -44,6 +44,7 @@ const closeFlashMessage = () => {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 .flashMessage {
   position: fixed;
@@ -113,5 +114,27 @@ const closeFlashMessage = () => {
 .fade-enter-to,
 .fade-leave-from {
   opacity: 1;
+}
+
+header {
+  position: relative;
+  z-index: 10;
+  background: #fff;
+  border-bottom: 2px solid #e0e0e0;
+}
+header img,
+header .logo {
+  margin-left: 1rem;
+}
+
+/* Fix PrimeVue overlay/panel positioning */
+.p-autocomplete-panel,
+.p-dropdown-panel {
+  position: absolute !important;
+  left: 0 !important;
+  right: auto !important;
+  width: auto !important;
+  max-width: 100vw !important;
+  z-index: 9999 !important;
 }
 </style>

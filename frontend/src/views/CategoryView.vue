@@ -10,12 +10,12 @@ const router = useRouter()
 const { filteredCategories, booksByCategory, searchTerm, isLoading, error } = useCategorySearch()
 
 const categoriesWithBooks = computed(() =>
-  filteredCategories.value.filter(cat => (booksByCategory.value[cat.id] || []).length > 0)
+  filteredCategories.value.filter((cat) => (booksByCategory.value[cat.id] || []).length > 0),
 )
 
-const getLimitedBooks = books => books.slice(0, 8)
-const shouldShowCarousel = books => books.length >= 8
-const goToBook = id => router.push(`/book/${id}`)
+const getLimitedBooks = (books) => books.slice(0, 8)
+const shouldShowCarousel = (books) => books.length >= 8
+const goToBook = (id) => router.push(`/book/${id}`)
 </script>
 
 <template>
@@ -64,7 +64,11 @@ const goToBook = id => router.push(`/book/${id}`)
                   <div class="book-info">
                     <h3>{{ data.name }}</h3>
                     <p class="book-author">
-                      {{ data.t_author ? data.t_author.firstname + ' ' + data.t_author.lastname : 'Auteur inconnu' }}
+                      {{
+                        data.t_author
+                          ? data.t_author.firstname + ' ' + data.t_author.lastname
+                          : 'Auteur inconnu'
+                      }}
                     </p>
                   </div>
                 </div>
@@ -72,7 +76,12 @@ const goToBook = id => router.push(`/book/${id}`)
             </Carousel>
           </template>
           <div v-else class="books-grid">
-            <div v-for="book in booksByCategory[cat.id]" :key="book.id" class="book-card" @click="goToBook(book.id)">
+            <div
+              v-for="book in booksByCategory[cat.id]"
+              :key="book.id"
+              class="book-card"
+              @click="goToBook(book.id)"
+            >
               <template v-if="book.coverImage">
                 <img :src="book.coverImage" :alt="book.name" class="book-cover" />
               </template>
@@ -82,7 +91,11 @@ const goToBook = id => router.push(`/book/${id}`)
               <div class="book-info">
                 <h3>{{ book.name }}</h3>
                 <p class="book-author">
-                  {{ book.t_author ? book.t_author.firstname + ' ' + book.t_author.lastname : 'Auteur inconnu' }}
+                  {{
+                    book.t_author
+                      ? book.t_author.firstname + ' ' + book.t_author.lastname
+                      : 'Auteur inconnu'
+                  }}
                 </p>
               </div>
             </div>
@@ -195,6 +208,7 @@ const goToBook = id => router.push(`/book/${id}`)
   font-size: 1.1rem;
   color: #2c3e50;
   margin: 0;
+  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -204,6 +218,7 @@ const goToBook = id => router.push(`/book/${id}`)
   color: #6c757d;
   font-size: 0.9rem;
   margin: 0.5rem 0 0;
+  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

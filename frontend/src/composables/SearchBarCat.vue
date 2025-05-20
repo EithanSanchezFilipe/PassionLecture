@@ -31,8 +31,6 @@ const searchSuggestions = async (event) => {
 
   try {
     const res = await SearchService.search(term, 'category')
-        console .warn('Suggestions livres :', res.data)
-
     suggestions.value = res.data?.map((cat) => cat.name) || []
   } catch (err) {
     console.warn('Erreur catégories :', err)
@@ -76,7 +74,7 @@ const searchSuggestions = async (event) => {
   width: 100%;
   border: 1px solid black;
   border-radius: 0.5rem;
-  background-color: white;
+  background-color: #f5f6fa;
   cursor: text;
 }
 
@@ -123,7 +121,7 @@ const searchSuggestions = async (event) => {
 }
 
 :deep(.p-autocomplete-item:hover) {
-  background-color: #f5f5f5;
+  background-color: #e1e3ea !important;
 }
 
 :deep(.p-autocomplete-loader) {

@@ -19,7 +19,6 @@ app.use(PrimeVue)
 app.use(pinia)
 app.use(router)
 
-
 app.component('PrimeDialog', Dialog)
 app.component('PrimePaginator', Paginator)
 app.component('ProgressSpinner', ProgressSpinner)
