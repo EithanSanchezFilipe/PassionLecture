@@ -3,6 +3,7 @@ import { RouterView, useRoute } from 'vue-router'
 import Header from '@/components/HeaderItem.vue'
 import Footer from '@/components/FooterItem.vue'
 import { computed, inject } from 'vue'
+import Popup from './components/Popup.vue'
 import 'primeicons/primeicons.css'
 import { useAuthStore } from './stores/auth'
 const GStore = inject('GStore')

@@ -1,6 +1,8 @@
 <script setup>
-import { ref } from 'vue'
+import Popup from './Popup.vue'
+import { ref, inject } from 'vue'
 import logosvg from '@/assets/icons/logo.svg'
+const GStore = inject('GStore')
 import { useAuthStore } from '@/stores/auth'
 const auth = useAuthStore()
 const logo = ref(logosvg)
@@ -8,14 +10,26 @@ const logo = ref(logosvg)
 const logout = () => {
   auth
     .Logout()
-    .then((_) => {})
+    .then((_) => {
+      GStore.flashMessage = 'Vous vous êtes déconnecter avec succes !'
+      GStore.isSuccess = true
+      setTimeout(() => {
+        GStore.flashMessage = ''
+      }, 3000)
+      popup()
+    })
     .catch((e) => {
       console.error(e)
     })
 }
+const showPopup = ref(false)
+const popup = () => {
+  showPopup.value = !showPopup.value
+}
 </script>
 
 <template>
+  <Popup action="logout" :show="showPopup" @cancel="popup" @confirm="logout" />
   <header>
     <RouterLink to="/"> <img :src="logo" alt="Logo" /></RouterLink>
     <div class="link-auth">
@@ -31,7 +45,7 @@ const logout = () => {
         >
       </div>
       <div class="logout" v-else>
-        <button @click="logout" type="button" class="logout-btn">Se déconnecter</button>
+        <button @click="popup" type="button" class="logout-btn">Se déconnecter</button>
       </div>
     </div>
   </header>
