@@ -13,6 +13,7 @@ const onSubmit = () => {
     .then((response) => {
       if (response.status == 200) {
         GStore.flashMessage = 'Compte créé avec succès !'
+        GStore.isSuccess = true
         setTimeout(() => {
           GStore.flashMessage = ''
         }, 3000)

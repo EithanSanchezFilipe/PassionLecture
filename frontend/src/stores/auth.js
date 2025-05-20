@@ -29,5 +29,10 @@ export const useAuthStore = defineStore('auth', {
           console.error(err)
         })
     },
+    async Logout() {
+      const response = await authService.logout()
+      this.isAuthenticated = false
+      return response
+    },
   },
 })

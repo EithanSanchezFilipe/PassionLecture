@@ -19,4 +19,8 @@ export default {
   validateToken() {
     return apiClient.get('/user/validateToken')
   },
+  logout() {
+    console.log('Logout')
+    return apiClient.post('/user/logout')
+  },
 }

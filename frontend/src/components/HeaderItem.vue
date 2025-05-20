@@ -4,6 +4,15 @@ import logosvg from '@/assets/icons/logo.svg'
 import { useAuthStore } from '@/stores/auth'
 const auth = useAuthStore()
 const logo = ref(logosvg)
+
+const logout = () => {
+  auth
+    .Logout()
+    .then((_) => {})
+    .catch((e) => {
+      console.error(e)
+    })
+}
 </script>
 
 <template>
@@ -22,7 +31,7 @@ const logo = ref(logosvg)
         >
       </div>
       <div class="logout" v-else>
-        <button type="button" class="logout-btn">Se déconnecter</button>
+        <button @click="logout" type="button" class="logout-btn">Se déconnecter</button>
       </div>
     </div>
   </header>
