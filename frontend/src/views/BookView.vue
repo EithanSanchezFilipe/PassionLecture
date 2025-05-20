@@ -7,7 +7,9 @@ import CommentForm from '@/components/CommentForm.vue'
 import BaseRating from '@/components/base/BaseRating.vue'
 import SearchBarBook from '@/composables/SearchBarBook.vue'
 import Skeleton from 'primevue/skeleton'
-
+import { useAuthStore } from '@/stores/auth'
+const auth = useAuthStore()
+auth.Authorize()
 const router = useRouter()
 const props = defineProps({
   id: {
