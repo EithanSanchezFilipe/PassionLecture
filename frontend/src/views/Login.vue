@@ -2,15 +2,14 @@
 import { useAuthStore } from '@/stores/auth'
 import { ref, inject } from 'vue'
 import router from '@/router'
-const auth = useAuthStore()
 const username = ref('')
+const auth = useAuthStore()
 const GStore = inject('GStore')
 const password = ref('')
 const onSubmit = () => {
   auth
     .Login({ username: username.value, password: password.value })
     .then((response) => {
-
       if (response.status === 200) {
         GStore.flashMessage = 'Connexion réussie. Bienvenue !'
         GStore.isSuccess = true
@@ -19,7 +18,6 @@ const onSubmit = () => {
         }, 3000)
         router.push({ name: 'Home' })
       }
-
     })
     .catch((e) => {
       console.error(e)

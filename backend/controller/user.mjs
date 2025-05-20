@@ -13,50 +13,42 @@ export function Login(req, res) {
       message: "Les champs nom d'utilisateur et mot de passe sont obligatoires",
     });
   }
-
   // Trouver l'utilisateur dans la base de données
-  User.findOne({ where: { username: username } }).then((user) => {
-    // Vérifier si l'utilisateur existe
-    if (!user) {
-      return res.status(404).json({ message: 'Utilisateur non trouvé' });
-    }
+  User.findOne({ where: { username: username } })
+    .then((user) => {
+      // Vérifier si l'utilisateur existe
+      if (!user) {
+        return res.status(404).json({ message: 'Utilisateur non trouvé' });
+      }
 
-    // Comparer le mot de passe avec celui stocké dans la base de données
-    return bcrypt
-      .compare(password, user.password)
-      .then((isMatch) => {
+      // Comparer le mot de passe avec celui stocké dans la base de données
+      return bcrypt.compare(password, user.password).then((isMatch) => {
+        console.log('aaaaaaaaaaaaaaa');
         if (!isMatch) {
           return res.status(400).json({ message: 'Mot de passe incorrect' });
         }
 
-        // Comparer le mot de passe avec celui stocké dans la base de données
-        return bcrypt.compare(password, user.password).then((isMatch) => {
-          if (!isMatch) {
-            return res.status(400).json({ message: 'Mot de passe incorrect' });
-          }
-
-          // Créer un token JWT
-          const token = jwt.sign(
-            { id: user.id, username: user.username },
-            process.env.privateKey,
-            { expiresIn: '1h', algorithm: 'HS256' }
-          );
-          res.cookie('token', token, {
-            httpOnly: true,
-            sameSite: 'strict',
-            secure: false,
-            maxAge: 24 * 60 * 60 * 1000,
-          });
-          return res
-            .status(200)
-            .json({ message: 'Utilisateur connecté', token: token });
+        // Créer un token JWT
+        const token = jwt.sign(
+          { id: user.id, username: user.username },
+          process.env.privateKey,
+          { expiresIn: '1h', algorithm: 'HS256' }
+        );
+        res.cookie('token', token, {
+          httpOnly: true,
+          sameSite: 'strict',
+          secure: false,
+          maxAge: 24 * 60 * 60 * 1000,
         });
-      })
-      .catch((error) => {
-        console.error(error);
-        return res.status(500).json({ message: 'Erreur interne du serveur' });
+        return res
+          .status(200)
+          .json({ message: 'Utilisateur connecté', token: token });
       });
-  });
+    })
+    .catch((error) => {
+      console.error(error);
+      return res.status(500).json({ message: 'Erreur interne du serveur' });
+    });
 }
 export async function Register(req, res) {
   const { username, email, password } = req.body;
@@ -67,7 +59,7 @@ export async function Register(req, res) {
     });
   }
   bcrypt
-    .hash(password, 15)
+    .hash(password, 10)
     .then((hashedPassword) => {
       User.create({
         username: username,

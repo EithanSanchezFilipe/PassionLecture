@@ -6,9 +6,10 @@ import Comment from '@/components/Comment.vue'
 import CommentForm from '@/components/CommentForm.vue'
 import BaseRating from '@/components/base/BaseRating.vue'
 import SearchBarBook from '@/composables/SearchBarBook.vue'
-import BaseCarousel from '@/components/base/BaseCarousel.vue'
 import Skeleton from 'primevue/skeleton'
-
+import { useAuthStore } from '@/stores/auth'
+const auth = useAuthStore()
+auth.Authorize()
 const router = useRouter()
 const props = defineProps({
   id: {
@@ -29,7 +30,7 @@ const latestComments = computed(() => {
 
 watch(searchTerm, async (newValue) => {
   if (newValue && typeof newValue === 'object' && newValue.id) {
-    router.push({ name: 'book-detail', params: { id: newValue.id }})
+    router.push({ name: 'book-detail', params: { id: newValue.id } })
   }
 })
 
@@ -58,7 +59,7 @@ const fetchComments = () => {
         avg.value = 1
       } else {
         avg.value = Math.round(
-          comments.value.reduce((sum, comment) => sum + comment.note, 0) / comments.value.length
+          comments.value.reduce((sum, comment) => sum + comment.note, 0) / comments.value.length,
         )
       }
     })
@@ -75,17 +76,17 @@ const handleCommentAdded = () => {
 <template>
   <div class="book-view">
     <SearchBarBook v-model="searchTerm" />
-    
+
     <div v-if="book" class="book-content">
       <div class="main-content">
         <div class="header-section">
           <div class="left-section">
             <div class="cover-wrapper">
               <Skeleton v-if="!book.coverImage" class="cover-image" />
-              <img 
+              <img
                 v-else
-                :src="book.coverImage" 
-                :alt="book.name" 
+                :src="book.coverImage"
+                :alt="book.name"
                 class="cover-image"
                 @error="$event.target.style.display = 'none'"
               />
@@ -100,7 +101,7 @@ const handleCommentAdded = () => {
               </div>
             </div>
           </div>
-          
+
           <div class="summary-section">
             <h2>Résumé</h2>
             <p v-if="book.summary" class="summary">{{ book.summary }}</p>
@@ -110,7 +111,7 @@ const handleCommentAdded = () => {
 
         <section class="comments-section">
           <h2>Commentaires</h2>
-          
+
           <div class="featured-comments" v-if="latestComments.length > 0">
             <h3>Derniers avis</h3>
             <div class="comments-grid">
@@ -294,7 +295,9 @@ h3 {
   padding: 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   height: 100%;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition:
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
 }
 
 .comment-card:hover {
@@ -371,4 +374,3 @@ h3 {
   aspect-ratio: 2/3;
 }
 </style>
-

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import authService from '@/services/authService'
-import Cookies from 'js-cookie'
+import router from '@/router'
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     isAuthenticated: false,
@@ -28,6 +28,18 @@ export const useAuthStore = defineStore('auth', {
         .catch((err) => {
           console.error(err)
         })
+    },
+    async Logout() {
+      const response = await authService.logout()
+      this.isAuthenticated = false
+      return response
+    },
+    Authorize() {
+      if (this.isAuthenticated) {
+        return
+      } else {
+        router.push({ name: 'Login' })
+      }
     },
   },
 })
