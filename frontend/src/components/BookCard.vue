@@ -1,21 +1,28 @@
 <template>
- <main class="book-card">
-    <button
-      style="border: none; background: none; cursor: pointer"
-      @click="$router.push({ name: 'book-detail', params: { id: book.id } })"
-    >
-      <img v-if="book.coverImage" :src="book.coverImage" alt="Book cover" />
-      <Skeleton v-if="!book.coverImage" :height="'17em'" :class="'mb-2'"></Skeleton>
-      <h3>{{ truncatedName }}</h3>
-      <BaseRating :model-value="book.avg" readonly />
-    </button>
-  </main>
+  <div class="book-card" @click="navigateToBook">
+    <div class="book-cover">
+      <BaseBookCover 
+        :coverImage="book.coverImage"
+        :altText="book.name"
+      />
+    </div>
+    <div class="book-info">
+      <h3 class="book-title">{{ book.name }}</h3>
+      <BaseRating
+        v-if="book.rating"
+        :modelValue="book.rating"
+        :readonly="true"
+        class="book-rating"
+      />
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
 import Skeleton from 'primevue/skeleton'
 import BaseRating from '@/components/base/BaseRating.vue'
+import BaseBookCover from '@/components/base/BaseBookCover.vue'
 
 const props = defineProps({
   book: {
@@ -30,59 +37,49 @@ const truncatedName = computed(() => {
     ? props.book.name.slice(0, maxLength) + '...'
     : props.book.name
 })
+
+const navigateToBook = () => {
+  // Implement the logic to navigate to the book detail page
+}
 </script>
 
 <style scoped>
 .book-card {
-  display: flex;
-  flex-direction: column;
-  width: 12em;
-  align-items: center;
-  text-align: center;
-  margin: 1em;
-  position: relative;
-  padding-bottom: 2em;
-  transition: transform 0.2s ease;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .book-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.p-skeleton {
-  background-color: #e0e0e0;
+.book-cover {
   width: 100%;
+  aspect-ratio: 2/3;
 }
 
-.book-card img {
-  width: 100%;
-  height: 17em;
-  object-fit: cover;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.book-info {
+  padding: 1rem;
 }
 
-.book-card p {
-  margin-top: 0.5rem;
-  text-align: center;
-  width: 100%;
-}
-
-h3 {
-  margin-top: 0.5em;
-  text-align: center;
-  font-size: 0.95em;
-  white-space: nowrap;
+.book-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
-.p-rating {
-  gap: 10px;
-}
-
-.p-rating * {
-  height: 20px;
-  color: #ffcc00;
+.book-rating {
+  margin-top: 0.5rem;
 }
 </style>

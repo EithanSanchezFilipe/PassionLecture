@@ -7,6 +7,7 @@ import CommentForm from '@/components/CommentForm.vue'
 import BaseRating from '@/components/base/BaseRating.vue'
 import SearchBarBook from '@/composables/SearchBarBook.vue'
 import BaseCarousel from '@/components/base/BaseCarousel.vue'
+import Skeleton from 'primevue/skeleton'
 
 const router = useRouter()
 const props = defineProps({
@@ -79,7 +80,16 @@ const handleCommentAdded = () => {
       <div class="main-content">
         <div class="header-section">
           <div class="left-section">
-            <img :src="book.coverImage" :alt="book.name" class="cover-image" />
+            <div class="cover-wrapper">
+              <Skeleton v-if="!book.coverImage" class="cover-image" />
+              <img 
+                v-else
+                :src="book.coverImage" 
+                :alt="book.name" 
+                class="cover-image"
+                @error="$event.target.style.display = 'none'"
+              />
+            </div>
             <div class="book-info">
               <h1>{{ book.name }}</h1>
               <BaseRating :model-value="avg" readonly class="rating" />
@@ -174,10 +184,17 @@ const handleCommentAdded = () => {
   top: 2rem;
 }
 
+.cover-wrapper {
+  width: 100%;
+  position: relative;
+}
+
 .cover-image {
   width: 100%;
   height: auto;
+  aspect-ratio: 2/3;
   border-radius: 8px;
+  background-color: #e0e0e0;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease;
 }
@@ -189,13 +206,15 @@ const handleCommentAdded = () => {
 .book-info {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  align-items: center;
+  text-align: center;
+  gap: 1.2rem;
 }
 
 h1 {
   font-size: 2rem;
   color: #333;
-  margin: 0;
+  margin: auto;
   line-height: 1.2;
 }
 
@@ -344,6 +363,12 @@ h3 {
   .comments-grid-all {
     grid-template-columns: 1fr;
   }
+}
+
+:deep(.p-skeleton) {
+  border-radius: 8px;
+  height: auto !important;
+  aspect-ratio: 2/3;
 }
 </style>
 

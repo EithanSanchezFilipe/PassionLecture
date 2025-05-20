@@ -1,30 +1,32 @@
 <script setup>
 import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import loupe from '@/assets/loupe.svg'
 import AutoComplete from 'primevue/autocomplete'
 import SearchService from '@/services/SearchService'
 
+const router = useRouter()
 const props = defineProps(['modelValue'])
 const emit = defineEmits(['update:modelValue'])
 
-const value = ref(props.modelValue)
+const value = ref('')
 const suggestions = ref([])
 const loading = ref(false)
 
 watch(
   () => props.modelValue,
   (val) => {
-    value.value = val
+    value.value = typeof val === 'object' ? val.name : val
   },
 )
 
 watch(value, (val) => {
-  emit('update:modelValue', val)
+  emit('update:modelValue', typeof val === 'object' ? val.name : val)
 })
 
 const searchSuggestions = async (event) => {
   const term = event.query.trim()
-  if (term.length === 0) {
+  if (term.length < 5) {
     suggestions.value = []
     return
   }
@@ -35,8 +37,7 @@ const searchSuggestions = async (event) => {
     suggestions.value = res.data?.map((book) => ({
       name: book.name,
       id: book.id,
-      coverImage: book.coverImage,
-      category: book.t_category?.name || 'Non catégorisé'
+      coverImage: book.coverImage
     })) || []
   } catch (err) {
     console.warn('Erreur livres :', err)
@@ -45,6 +46,47 @@ const searchSuggestions = async (event) => {
     loading.value = false
   }
 }
+
+const handleSelect = (event) => {
+  if (event && event.id) {
+    router.push(`/book/${event.id}`)
+  }
+}
+
+const handleKeyDown = async (event) => {
+  if (event.key === 'Enter') {
+    const searchTerm = typeof value.value === 'object' ? value.value.name : value.value?.trim()
+    if (!searchTerm) return
+
+    try {
+      loading.value = true
+      const res = await SearchService.search(searchTerm, 'book')
+      const results = res.data || []
+
+      if (results.length === 1) {
+        // Si un seul livre trouvé, redirection vers sa page détaillée
+        router.push(`/book/${results[0].id}`)
+      } else if (results.length > 1) {
+        // Si plusieurs livres trouvés, redirection vers la page de filtrage
+        router.push(`/books/filter?search=${encodeURIComponent(searchTerm)}&searchType=book`)
+      } else {
+        // Aucun résultat trouvé
+        console.log('Aucun livre trouvé pour cette recherche')
+      }
+    } catch (err) {
+      console.warn('Erreur de recherche :', err)
+    } finally {
+      loading.value = false
+    }
+  }
+}
+
+// Simplifie le watch pour éviter les rechargements de page inutiles
+watch(value, (newValue) => {
+  if (newValue && typeof newValue === 'object' && newValue.id) {
+    router.push(`/book/${newValue.id}`)
+  }
+})
 </script>
 
 <template>
@@ -54,10 +96,12 @@ const searchSuggestions = async (event) => {
       <AutoComplete
         v-model="value"
         :suggestions="suggestions"
-        field="name"
+        optionLabel="name"
         :loading="loading"
         placeholder="Rechercher un livre..."
         @complete="searchSuggestions"
+        @keydown="handleKeyDown"
+        @item-select="handleSelect"
         class="search-input"
       >
         <template #item="slotProps">
@@ -69,10 +113,7 @@ const searchSuggestions = async (event) => {
               class="suggestion-cover"
             />
             <div v-else class="suggestion-cover placeholder"></div>
-            <div class="suggestion-info">
-              <span class="suggestion-name">{{ slotProps.item.name }}</span>
-              <span class="suggestion-category">{{ slotProps.item.category }}</span>
-            </div>
+            <span>{{ slotProps.item.name }}</span>
           </div>
         </template>
       </AutoComplete>
@@ -124,21 +165,6 @@ const searchSuggestions = async (event) => {
 
 .suggestion-cover.placeholder {
   background-color: #e0e0e0;
-}
-
-.suggestion-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.suggestion-name {
-  font-weight: 500;
-}
-
-.suggestion-category {
-  font-size: 0.85rem;
-  color: #666;
 }
 
 :deep(.search-input) {

@@ -1,4 +1,4 @@
-import { Category, Book, Comment } from "../db/sequelize.mjs";
+import { Category, Book, Comment, Author } from "../db/sequelize.mjs";
 import { ValidationError } from "sequelize";
 // Ajouter une catégorie
 export function Create(req, res) {
@@ -61,8 +61,17 @@ export function FindByCategory(req, res) {
   Category.findByPk(id, {
     include: [{
       model: Book,
-      include: [Comment]
-    }],
+      attributes: ['id','name','coverImage'],
+      include: [
+        {
+          model: Comment
+        },
+        {
+          model: Author,
+          attributes: ['id', 'firstname', 'lastname']
+        }
+      ]
+    }]
   })
     .then((category) => {
       if (!category) {

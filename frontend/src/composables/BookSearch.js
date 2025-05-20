@@ -1,53 +1,101 @@
 import { ref, computed, onMounted } from 'vue'
-import categoryService from '@/services/categoryService'
+import SearchService from '@/services/SearchService'
+import bookService from '@/services/bookService'
 
 export function useBookSearch() {
-  const categories = ref([])
-  const booksByCategory = ref({})
+  const books = ref([])
   const searchTerm = ref('')
-
-  onMounted(async () => {
-    try {
-      const catRes = await categoryService.getAllCategory()
-      categories.value = catRes.data.categories
-
-      await Promise.all(
-        categories.value.map(async (cat) => {
-          const res = await categoryService.getBooksByCategory(cat.id)
-          booksByCategory.value[cat.id] = res.data.t_books || []
-        }),
-      )
-    } catch (err) {
-      console.error('Erreur lors du chargement des livres par catégorie:', err)
+  const isLoading = ref(true)
+  const error = ref(null)
+  
+  const loadBooks = async (query = '') => {
+    if (!query) {
+      books.value = []
+      isLoading.value = false
+      return
     }
-  })
 
-  const filteredBooksByCategory = computed(() => {
-    const result = []
-
-    for (const cat of categories.value) {
-      const allBooks = booksByCategory.value[cat.id] || []
-      const filteredBooks = allBooks.filter((book) =>
-        book.name?.toLowerCase().includes(searchTerm.value.toLowerCase()),
-      )
-
-      if (filteredBooks.length > 0) {
-        result.push({
-          ...cat,
-          books: filteredBooks,
+    try {
+      isLoading.value = true
+      const res = await SearchService.search(query, 'book')
+      const resultsData = res.data || []
+      
+      // Convertir les images en base64 comme dans CategorySearch
+      const processedBooks = await Promise.all(
+        resultsData.map(async (book) => {
+          const processedBook = { ...book }
+          if (book.coverImage) {
+            try {
+              processedBook.coverImage = await bookService.bufferToBase64(book.coverImage)
+            } catch (e) {
+              console.warn('Erreur lors de la conversion de l\'image:', e)
+              processedBook.coverImage = null
+            }
+          }
+          return processedBook
         })
+      )
+      
+      books.value = processedBooks
+      console.log('Livres chargés:', books.value.length)
+    } catch (err) {
+      console.error('Erreur lors de la recherche de livres:', err)
+      error.value = 'Erreur lors de la recherche des livres'
+      books.value = []
+    } finally {
+      isLoading.value = false
+    }
+  }
+  
+  const getAuthorName = (book) => {
+    console.log('Structure complète du livre:', book);
+    console.log('Type de book.t_author:', typeof book.t_author, book.t_author);
+    console.log('Type de book.author:', typeof book.author, book.author);
+    
+    // Gestion flexible de la structure d'auteur
+    if (book.t_author && book.t_author.firstname && book.t_author.lastname) {
+      console.log('MATCH: Utilisation de t_author', book.t_author.firstname, book.t_author.lastname);
+      return `${book.t_author.firstname} ${book.t_author.lastname}`
+    }
+    
+    if (book.author && book.author.firstname && book.author.lastname) {
+      console.log('MATCH: Utilisation de author', book.author.firstname, book.author.lastname);
+      return `${book.author.firstname} ${book.author.lastname}`
+    }
+    
+    if (book.authorName) {
+      console.log('MATCH: Utilisation de authorName', book.authorName);
+      return book.authorName;
+    }
+    
+    if (typeof book.author === 'string') {
+      console.log('MATCH: author est une chaîne', book.author);
+      return book.author;
+    }
+    
+    const fields = ['author_firstname', 'author_lastname', 'author_name'];
+    for (const field of fields) {
+      if (book[field]) {
+        console.log(`MATCH: Utilisation de ${field}`, book[field]);
+        return book[field];
       }
     }
+    
+    console.log('ECHEC: Aucune correspondance trouvée pour l\'auteur, retour "Auteur inconnu"');
+    return 'Auteur inconnu'
+  }
 
-    result.sort((a, b) => b.books.length - a.books.length)
-
-    return result
+  const filteredBooks = computed(() => {
+    return books.value
   })
 
   return {
-    categories,
-    booksByCategory,
+    books,
     searchTerm,
-    filteredBooksByCategory,
+    filteredBooks,
+    isLoading,
+    error,
+    loadBooks,
+    getAuthorName
   }
 }

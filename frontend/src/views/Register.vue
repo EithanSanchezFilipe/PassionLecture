@@ -16,7 +16,7 @@ const onSubmit = () => {
         setTimeout(() => {
           GStore.flashMessage = ''
         }, 3000)
-        router.push({ name: 'home' })
+        router.push({ name: 'Home' })
       } else {
         GStore.flashMessage = response.data.message
         GStore.isSuccess = false
@@ -29,7 +29,7 @@ const onSubmit = () => {
     })
 }
 const goBack = () => {
-  router.push({ name: 'home' })
+  router.push({ name: 'Home' })
 }
 </script>
 <template>

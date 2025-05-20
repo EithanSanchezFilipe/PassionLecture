@@ -31,12 +31,12 @@ await initAssociations(User, Editor, Comment, Category, Book, Author);
 // Test the connection
 
 sequelize
-  .sync({ alter: true })
+  .sync({ force: true })
   .then((_) => {
-    // initCat();
-    // initEdi();
-    // initAut();
-    // initBook();
+    initCat();
+    initEdi();
+    initAut();
+    initBook();
     console.log("The database has been synchronized");
   })
   .catch((e) => {
@@ -50,21 +50,21 @@ try {
 }
 
 const initCat = () => {
-  categories.map((book) => {
-    Category.create({ name: book.nom, id: book.id });
+  categories.map((category) => {
+    Category.create({ name: category.name });
   });
 };
 const initEdi = () => {
   editors.map((editor) => {
-    Editor.create({ id: editor.id, name: editor.nom });
+    Editor.create({ id: editor.id, name: editor.name });
   });
 };
 const initAut = () => {
   authors.map((author) => {
     Author.create({
       id: author.id,
-      lastname: author.nom,
-      firstname: author.prenom,
+      lastname: author.lastname,
+      firstname: author.firstname,
     });
   });
 };
@@ -72,14 +72,14 @@ const initBook = () => {
   books.map((book) => {
     Book.create({
       id: book.id,
-      name: book.titre,
-      passage: book.extrait,
-      summary: book.resume,
-      editionYear: book.annee_edition,
-      pages: book.nombre_de_pages,
-      category_fk: book.id_categorie,
-      author_fk: book.id_auteur,
-      editor_fk: book.id_editeur,
+      name: book.name,
+      passage: book.passage,
+      summary: book.summary,
+      editionYear: book.editionYear,
+      pages: book.pages,
+      category_fk: book.category_fk,
+      author_fk: book.author_fk,
+      editor_fk: book.editor_fk,
     });
   });
 };

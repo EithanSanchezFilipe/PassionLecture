@@ -31,6 +31,8 @@ const searchSuggestions = async (event) => {
 
   try {
     const res = await SearchService.search(term, 'category')
+        console .warn('Suggestions livres :', res.data)
+
     suggestions.value = res.data?.map((cat) => cat.name) || []
   } catch (err) {
     console.warn('Erreur catégories :', err)
