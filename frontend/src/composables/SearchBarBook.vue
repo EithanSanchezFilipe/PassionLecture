@@ -26,7 +26,7 @@ watch(value, (val) => {
 
 const searchSuggestions = async (event) => {
   const term = event.query.trim()
-  if (term.length < 5) {
+  if (term.length < 1) {
     suggestions.value = []
     return
   }
@@ -34,11 +34,12 @@ const searchSuggestions = async (event) => {
   try {
     loading.value = true
     const res = await SearchService.search(term, 'book')
-    suggestions.value = res.data?.map((book) => ({
-      name: book.name,
-      id: book.id,
-      coverImage: book.coverImage
-    })) || []
+    suggestions.value =
+      res.data?.map((book) => ({
+        name: book.name,
+        id: book.id,
+        coverImage: book.coverImage,
+      })) || []
   } catch (err) {
     console.warn('Erreur livres :', err)
     suggestions.value = []
@@ -65,7 +66,9 @@ const handleKeyDown = async (event) => {
 
       if (results.length === 1) {
         // Si un seul livre trouvé, redirection vers sa page détaillée
-        router.push(`/book/${results[0].id}`)
+        router.push(`/book/${results[0].id}`).then(() => {
+          window.location.reload()
+        })
       } else if (results.length > 1) {
         // Si plusieurs livres trouvés, redirection vers la page de filtrage
         router.push(`/books/filter?search=${encodeURIComponent(searchTerm)}&searchType=book`)
@@ -106,9 +109,9 @@ watch(value, (newValue) => {
       >
         <template #item="slotProps">
           <div class="suggestion-item">
-            <img 
-              v-if="slotProps.item.coverImage" 
-              :src="slotProps.item.coverImage" 
+            <img
+              v-if="slotProps.item.coverImage"
+              :src="slotProps.item.coverImage"
               alt="Couverture"
               class="suggestion-cover"
             />
