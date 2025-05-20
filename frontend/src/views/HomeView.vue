@@ -108,7 +108,9 @@ onMounted(fetchLatestBooks)
 
 .nouveautes-section {
   padding: 2rem 0;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .nouveautes-title {
   font-size: 2rem;
@@ -118,11 +120,10 @@ onMounted(fetchLatestBooks)
   text-align: center;
 }
 .books-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 1.5rem;
-  margin: 0 auto;
-  width: 65%;
 }
 .book-card {
   padding: 1rem;
