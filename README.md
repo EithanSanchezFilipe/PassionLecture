@@ -46,8 +46,24 @@ Avant de commencer, assurez-vous d'avoir installé :
 3. **Schéma d'interactions**  
    [Schéma](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/doc/Schema-interaction.png)
 
-4. **Checklist des routes**
+
+5. **Checklist des routes**
    [Checklist](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/doc/CheckListRoutes.png)
 
-5. **Liste des routes**
+6. **Liste des routes**
    [Liste](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/doc/routes.md)
+
+## Bilan de fonctionnalitées 80% 264
+
+1. **Une page d’accueil comprenant une explication de l’utilité du site ainsi
+que les cinq derniers ouvrages ajoutés (accès tout public)** OK(intervale de 2 minutes pour evite trops de requetes)
+2. **Une page comprenant la liste des ouvrages par catégorie (accès tout
+public avec restrictions sur les liens).** OK
+3. **Une page d’ajout d’un ouvrage (accès utilisateur)** OK
+4. **Une page de modification d’un ouvrage (accès utilisateur pour ses
+ouvrages)** KO
+5. **Une page de suppression d’un ouvrage (accès utilisateur pour ses
+ouvrages)** KO
+6. **Une page (vue détail d’un livre) permettant d’ajouter une appréciation
+et un commentaire à un ouvrage (accès utilisateur)** OK(appréciation et note ensemble)
+7. **L’utilisateur admin peut réaliser toutes les actions** KO
