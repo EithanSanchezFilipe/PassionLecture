@@ -333,7 +333,6 @@ const handleImageUpload = (event) => {
 /* Style spécifique pour Dropdown PrimeVue */
 :deep(.p-dropdown) {
   width: 100% !important;
-  background: #fff !important;
   border: 1.5px solid #d1d5db !important;
   border-radius: 6px !important;
   min-height: 2.75rem;
@@ -352,7 +351,6 @@ const handleImageUpload = (event) => {
   background: transparent !important;
 }
 :deep(.p-dropdown-panel) {
-  background: #fff !important;
   border-radius: 6px !important;
   border: 1.5px solid #d1d5db !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.09);

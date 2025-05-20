@@ -207,7 +207,7 @@ watch(value, (newValue) => {
 }
 
 :deep(.p-autocomplete-item:hover) {
-  background-color: #f5f5f5;
+  background-color: #e1e3ea !important;
 }
 
 :deep(.p-autocomplete-loader) {
