@@ -1,11 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import bookService from '@/services/bookService'
 import categoryService from '@/services/categoryService'
 import AddBookStepper from '@/composables/AddBookStepper.vue'
 import Button from 'primevue/button'
-
+const auth = useAuthStore()
+auth.Authorize()
 const router = useRouter()
 const showStepper = ref(false)
 const categories = ref([])
