@@ -4,12 +4,12 @@ import Rating from 'primevue/rating'
 const props = defineProps({
   modelValue: {
     type: Number,
-    default: 1
+    default: 1,
   },
   readonly: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -17,7 +17,7 @@ const emit = defineEmits(['update:modelValue'])
 
 <template>
   <div class="base-rating">
-    <Rating 
+    <Rating
       :model-value="modelValue"
       :readonly="readonly"
       :cancel="false"
@@ -39,4 +39,4 @@ const emit = defineEmits(['update:modelValue'])
   height: 20px;
   color: #ffcc00;
 }
-</style> 
+</style>

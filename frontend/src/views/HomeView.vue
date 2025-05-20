@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 import bookService from '@/services/bookService'
 import BookCard from '@/components/BookCard.vue'
+import BaseRating from '@/components/base/BaseRating.vue'
 
 const books = ref([])
 const CACHE_KEY = 'latestBooksCache'
@@ -64,6 +65,12 @@ onMounted(fetchLatestBooks)
         </template>
         <div class="book-info">
           <h3>{{ book.name }}</h3>
+          <BaseRating
+            v-if="book.rating || book.avg"
+            :modelValue="book.rating || book.avg"
+            :readonly="true"
+            class="book-rating"
+          />
           <p class="book-author">
             {{
               book.t_author
@@ -154,7 +161,11 @@ onMounted(fetchLatestBooks)
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
+.book-rating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .book-author {
   color: #6c757d;
   font-size: 0.9rem;
