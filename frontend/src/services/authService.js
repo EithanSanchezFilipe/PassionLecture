@@ -23,4 +23,7 @@ export default {
     console.log('Logout')
     return apiClient.post('/user/logout')
   },
+  getProfile() {
+    return apiClient.get('/user/profile')
+  },
 }
