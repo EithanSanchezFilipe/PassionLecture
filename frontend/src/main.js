@@ -8,6 +8,7 @@ import Paginator from 'primevue/paginator'
 import ProgressSpinner from 'primevue/progressspinner'
 import Steps from 'primevue/steps'
 import 'primeicons/primeicons.css'
+import Aura from '@primeuix/themes/aura'
 
 import App from './App.vue'
 import router from './router'
@@ -15,7 +16,16 @@ import router from './router'
 const app = createApp(App)
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
-app.use(PrimeVue)
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura,
+    options: {
+      darkModeSelector: 'none', // Force le mode clair par défaut
+      cssLayer: false,
+      cssVariables: true,
+    },
+  },
+})
 app.use(pinia)
 app.use(router)
 
