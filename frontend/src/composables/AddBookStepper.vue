@@ -160,87 +160,95 @@ const handleImageUpload = (event) => {
         </div>
 
         <div class="step-content">
-          <!-- Étape 1: Informations de base -->
-          <div v-if="activeIndex === 0">
-            <div class="form-group">
-              <label>Titre*</label>
-              <InputText v-model="formData.name" required />
-            </div>
-            <div class="form-group">
-              <label>Catégorie*</label>
-              <Dropdown
-                v-model="formData.category_fk"
-                :options="categories"
-                optionLabel="name"
-                optionValue="id"
-                placeholder="Sélectionner une catégorie"
-              />
-            </div>
-          </div>
-
-          <!-- Étape 2: Contenu -->
-          <div v-if="activeIndex === 1">
-            <div class="form-group">
-              <label>Résumé*</label>
-              <div class="textarea-container">
-                <Textarea
-                  v-model="formData.summary"
-                  rows="5"
-                  autoResize
-                  :maxlength="SUMMARY_MAX_LENGTH"
-                  :class="{ 'p-invalid': summaryLength > SUMMARY_MAX_LENGTH }"
-                  placeholder="Écrivez le résumé du livre..."
-                />
-                <span
-                  class="char-count"
-                  :class="{ 'count-error': summaryLength > SUMMARY_MAX_LENGTH }"
-                >
-                  {{ summaryLength }}/{{ SUMMARY_MAX_LENGTH }}
-                </span>
+          <!-- Conteneur pour les transitions d'étapes -->
+          <transition name="fade-slide" mode="out-in">
+            <!-- Étape 1: Informations de base -->
+            <div v-if="activeIndex === 0" key="step1" class="step-form-container">
+              <div class="form-group appear-animation">
+                <label>Titre*</label>
+                <InputText v-model="formData.name" required />
               </div>
-              <small v-if="summaryLength > SUMMARY_MAX_LENGTH" class="p-error">
-                Le résumé ne peut pas dépasser {{ SUMMARY_MAX_LENGTH }} caractères
-              </small>
-            </div>
-            <div class="form-group">
-              <label>Passage</label>
-              <div class="textarea-container">
-                <Textarea
-                  v-model="formData.passage"
-                  rows="3"
-                  autoResize
-                  :maxlength="PASSAGE_MAX_LENGTH"
-                  :class="{ 'p-invalid': passageLength > PASSAGE_MAX_LENGTH }"
-                  placeholder="Écrivez un passage marquant du livre..."
+              <div class="form-group appear-animation" style="animation-delay: 0.1s">
+                <label>Catégorie*</label>
+                <Dropdown
+                  v-model="formData.category_fk"
+                  :options="categories"
+                  optionLabel="name"
+                  optionValue="id"
+                  placeholder="Sélectionner une catégorie"
                 />
-                <span
-                  class="char-count"
-                  :class="{ 'count-error': passageLength > PASSAGE_MAX_LENGTH }"
-                >
-                  {{ passageLength }}/{{ PASSAGE_MAX_LENGTH }}
-                </span>
               </div>
-              <small v-if="passageLength > PASSAGE_MAX_LENGTH" class="p-error">
-                Le passage ne peut pas dépasser {{ PASSAGE_MAX_LENGTH }} caractères
-              </small>
             </div>
-          </div>
 
-          <!-- Étape 3: Détails supplémentaires -->
-          <div v-if="activeIndex === 2">
-            <div class="form-group">
-              <label>Année d'édition*</label>
-              <InputNumber v-model="formData.editionYear" :max="new Date().getFullYear()" />
+            <!-- Étape 2: Contenu -->
+            <div v-if="activeIndex === 1" key="step2" class="step-form-container">
+              <div class="form-group appear-animation">
+                <label>Résumé*</label>
+                <div class="textarea-container">
+                  <Textarea
+                    v-model="formData.summary"
+                    rows="5"
+                    autoResize
+                    :maxlength="SUMMARY_MAX_LENGTH"
+                    :class="{ 'p-invalid': summaryLength > SUMMARY_MAX_LENGTH }"
+                    placeholder="Écrivez le résumé du livre..."
+                  />
+                  <span
+                    class="char-count"
+                    :class="{ 'count-error': summaryLength > SUMMARY_MAX_LENGTH }"
+                  >
+                    {{ summaryLength }}/{{ SUMMARY_MAX_LENGTH }}
+                  </span>
+                </div>
+                <small v-if="summaryLength > SUMMARY_MAX_LENGTH" class="p-error">
+                  Le résumé ne peut pas dépasser {{ SUMMARY_MAX_LENGTH }} caractères
+                </small>
+              </div>
+              <div class="form-group appear-animation" style="animation-delay: 0.1s">
+                <label>Passage</label>
+                <div class="textarea-container">
+                  <Textarea
+                    v-model="formData.passage"
+                    rows="3"
+                    autoResize
+                    :maxlength="PASSAGE_MAX_LENGTH"
+                    :class="{ 'p-invalid': passageLength > PASSAGE_MAX_LENGTH }"
+                    placeholder="Écrivez un passage marquant du livre..."
+                  />
+                  <span
+                    class="char-count"
+                    :class="{ 'count-error': passageLength > PASSAGE_MAX_LENGTH }"
+                  >
+                    {{ passageLength }}/{{ PASSAGE_MAX_LENGTH }}
+                  </span>
+                </div>
+                <small v-if="passageLength > PASSAGE_MAX_LENGTH" class="p-error">
+                  Le passage ne peut pas dépasser {{ PASSAGE_MAX_LENGTH }} caractères
+                </small>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Nombre de pages*</label>
-              <InputNumber v-model="formData.pages" :min="1" />
+
+            <!-- Étape 3: Détails supplémentaires -->
+            <div v-if="activeIndex === 2" key="step3" class="step-form-container">
+              <div class="form-group appear-animation">
+                <label>Année d'édition*</label>
+                <InputNumber v-model="formData.editionYear" :max="new Date().getFullYear()" />
+              </div>
+              <div class="form-group appear-animation" style="animation-delay: 0.1s">
+                <label>Nombre de pages*</label>
+                <InputNumber v-model="formData.pages" :min="1" />
+              </div>
+              <div class="form-group appear-animation" style="animation-delay: 0.2s">
+                <label>Couverture</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  @change="handleImageUpload"
+                  class="file-input"
+                />
+              </div>
             </div>
-            <div class="form-group">
-              <label>Couverture</label>
-              <input type="file" accept="image/*" @change="handleImageUpload" />
-            </div>
-          </div>
+          </transition>
         </div>
       </div>
 
@@ -250,12 +258,13 @@ const handleImageUpload = (event) => {
             label="Retour"
             @click="handleBack"
             :disabled="activeIndex === 0"
-            class="p-button-secondary"
+            class="p-button-secondary btn-animated"
           />
           <Button
             :label="activeIndex === 2 ? 'Terminer' : 'Suivant'"
             @click="handleNext"
             :disabled="!isStepValid"
+            class="btn-animated"
           />
         </div>
       </template>
@@ -276,10 +285,10 @@ const handleImageUpload = (event) => {
 }
 
 .dialog-content {
-  background-color: #f9f9f9;
+  background-color: transparent;
   border-radius: 14px;
   padding: 2.5rem 2rem;
-  box-shadow: 0 6px 32px rgba(0, 0, 0, 0.12);
+  box-shadow: none;
 }
 .steps-container {
   position: relative;
@@ -291,10 +300,11 @@ const handleImageUpload = (event) => {
   bottom: 0;
   left: 0;
   height: 3px;
-  background-color: #6366f1;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
   width: calc(100% / 3);
-  transition: transform 0.3s ease;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   border-radius: 2px;
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
 }
 
 /* Reset des styles PrimeVue */
@@ -327,17 +337,18 @@ const handleImageUpload = (event) => {
 .step-content {
   margin: 2rem 0;
   padding: 1.5rem 1rem;
-  background-color: #fff;
+  background-color: transparent;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  box-shadow: none;
+  border: 1px solid #eaeaea;
 }
 
 :deep(.p-steps) {
   padding: 1rem;
-  background-color: #f9f9f9;
+  background-color: transparent;
   border-radius: 6px;
   margin-bottom: 1.5rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  box-shadow: none;
 }
 
 :deep(.p-steps-item) {
@@ -389,13 +400,13 @@ const handleImageUpload = (event) => {
   display: block;
 }
 
-/* Style spécifique pour Dropdown PrimeVue */
+/* Style Dropdown Épuré */
 :deep(.p-dropdown) {
   width: 100% !important;
   border: 1.5px solid #d1d5db !important;
   border-radius: 6px !important;
   min-height: 2.75rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  box-shadow: none;
   transition:
     border 0.2s,
     box-shadow 0.2s;
@@ -413,6 +424,7 @@ const handleImageUpload = (event) => {
   border-radius: 6px !important;
   border: 1.5px solid #d1d5db !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.09);
+  background: white;
 }
 :deep(.p-dropdown-item) {
   color: #222 !important;
@@ -461,9 +473,16 @@ input[type='file']:focus {
   border: 1.5px solid #d1d5db !important;
 }
 :deep(.p-button:not(.p-button-secondary)) {
-  background: #6366f1 !important;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
   color: #fff !important;
   border: none !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3) !important;
+}
+
+:deep(.p-button:not(.p-button-secondary)):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4) !important;
 }
 :deep(.p-button:disabled) {
   opacity: 0.6;
@@ -508,9 +527,133 @@ input[type='file']:focus {
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   pointer-events: none;
+  transition: all 0.2s ease;
+  transform-origin: right center;
 }
 
 .count-error {
   color: #dc2626;
+  transform: scale(1.1);
+  font-weight: bold;
+}
+/* Animations pour transitions d'étapes */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.4s ease;
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+/* Animation d'apparition des form groups */
+.appear-animation {
+  animation: fadeIn 0.5s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation pour les boutons */
+.btn-animated {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease !important;
+}
+
+.btn-animated:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.btn-animated:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Animation des steps */
+:deep(.p-steps .p-steps-item) {
+  transition: opacity 0.4s ease;
+}
+
+:deep(.p-steps .p-steps-item .p-menuitem-link .p-steps-number) {
+  transition:
+    background-color 0.4s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+:deep(.p-steps .p-steps-item.p-highlight .p-steps-number) {
+  animation: pulse 1.5s infinite;
+  animation-delay: 0.5s;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+}
+
+/* Style de focus amélioré */
+:deep(.p-inputtext:focus),
+:deep(.p-dropdown:focus),
+:deep(.p-inputnumber-input:focus) {
+  animation: focusPulse 0.6s ease;
+}
+
+@keyframes focusPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+  }
+}
+
+/* Style pour l'upload de fichier */
+.file-input {
+  transition: all 0.3s ease;
+}
+
+.file-input:hover {
+  opacity: 0.8;
+}
+
+/* Animation de container d'étape */
+.step-form-container {
+  animation: fadeScale 0.5s ease;
+}
+
+@keyframes fadeScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 </style>
