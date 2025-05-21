@@ -2,7 +2,6 @@
 import bookService from '@/services/bookService'
 import { onMounted, ref, watch, computed, inject } from 'vue'
 import { useRouter } from 'vue-router'
-import Comment from '@/components/Comment.vue'
 import CommentForm from '@/components/CommentForm.vue'
 import BaseRating from '@/components/base/BaseRating.vue'
 import SearchBarBook from '@/composables/SearchBarBook.vue'
@@ -12,6 +11,7 @@ import AddBookStepper from '@/composables/AddBookStepper.vue'
 import { useAuthStore } from '@/stores/auth'
 import authService from '@/services/authService'
 import categoryService from '@/services/categoryService'
+import CommentCard from '@/components/CommentCard.vue'
 
 const GStore = inject('GStore')
 const auth = useAuthStore()
@@ -268,11 +268,11 @@ const handleUpdateBook = async (updatedBookData) => {
           <div class="featured-comments" v-if="latestComments.length > 0">
             <h3>Derniers avis</h3>
             <div class="comments-grid">
-              <Comment
+              <CommentCard
                 v-for="comment in latestComments"
                 :key="comment.id"
                 :comment="comment"
-                class="comment-card"
+                :showBookInfo="false"
               />
             </div>
           </div>
@@ -280,12 +280,12 @@ const handleUpdateBook = async (updatedBookData) => {
           <div class="all-comments">
             <h3>Tous les commentaires</h3>
             <div class="comments-grid-all">
-              <Comment
+              <CommentCard
                 v-if="comments && comments.length"
                 v-for="comment in comments"
                 :key="comment.id"
                 :comment="comment"
-                class="comment-card"
+                :showBookInfo="false"
               />
               <p v-else class="no-comments">Aucun commentaire pour le moment</p>
             </div>
@@ -508,20 +508,22 @@ h3 {
   margin-bottom: 3rem;
 }
 
-.comment-card {
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  height: 100%;
-  transition:
-    transform 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out;
+.all-comments h3,
+.featured-comments h3 {
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
 }
 
-.comment-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+.all-comments h3::after,
+.featured-comments h3::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 3px;
+  background: #6366f1;
+  margin: 0.75rem auto 0;
+  border-radius: 3px;
 }
 
 .no-comments {

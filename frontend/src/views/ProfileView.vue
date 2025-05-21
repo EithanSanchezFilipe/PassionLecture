@@ -6,6 +6,7 @@ import bookService from '@/services/bookService'
 import { useRouter } from 'vue-router'
 import BaseRating from '@/components/base/BaseRating.vue'
 import { Skeleton } from 'primevue'
+import CommentCard from '@/components/CommentCard.vue'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -260,19 +261,14 @@ const findBookById = (bookId) => {
         <div v-if="activeTab === 'commented' && userComments.length > 0" class="comments-section">
           <h3>Mes commentaires</h3>
           <div class="comments-list">
-            <div v-for="comment in userComments" :key="comment.id" class="comment-card">
-              <div class="comment-header">
-                <h4>{{ findBookById(comment.book_fk)?.name || 'Livre inconnu' }}</h4>
-                <BaseRating :modelValue="comment.note" :readonly="true" class="comment-rating" />
-                <span class="comment-date">{{
-                  new Date(comment.createdAt).toLocaleDateString()
-                }}</span>
-              </div>
-              <p class="comment-text">{{ comment.message || comment.text || '' }}</p>
-              <button class="view-book-btn" @click="goToBook(comment.book_fk)">
-                Voir le livre
-              </button>
-            </div>
+            <CommentCard
+              v-for="comment in userComments"
+              :key="comment.id"
+              :comment="comment"
+              :bookName="findBookById(comment.book_fk)?.name"
+              :showBookInfo="true"
+              @viewBook="goToBook"
+            />
           </div>
         </div>
       </div>
@@ -648,79 +644,26 @@ const findBookById = (bookId) => {
   font-size: 2rem;
   font-weight: 700;
   color: #222;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   text-align: center;
+  position: relative;
+}
+
+.comments-section h3::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 3px;
+  background: #6366f1;
+  margin: 0.75rem auto 0;
+  border-radius: 3px;
 }
 
 .comments-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.5rem;
-}
-
-.comment-card {
-  background-color: white;
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-  width: 350px;
-}
-
-.comment-card:hover {
-  transform: translateY(-3px);
-}
-
-.comment-header {
-  margin-bottom: 1rem;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 0.75rem;
-}
-
-.comment-header h4 {
-  font-size: 1.1rem;
-  color: #2c3e50;
-  margin: 0 0 0.5rem 0;
-  text-align: center;
-}
-
-.comment-rating {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 0.5rem;
-}
-
-.comment-date {
-  font-size: 0.875rem;
-  color: #6c757d;
-  display: block;
-  text-align: center;
-}
-
-.comment-text {
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
-}
-
-.view-book-btn {
-  background-color: #6366f1;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: block;
-  margin: 0 auto;
-}
-
-.view-book-btn:hover {
-  background-color: #4f46e5;
-  transform: translateY(-2px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
 }
 
 /* Responsive styles */
