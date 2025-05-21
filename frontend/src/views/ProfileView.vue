@@ -224,12 +224,21 @@ const findBookById = (bookId) => {
               class="book-card"
               @click="goToBook(book.id)"
             >
-              <div class="book-cover">
+              <div class="book-badges">
+                <div v-if="book.isRead" class="book-badge read">Lu</div>
+                <div
+                  v-if="userComments.some((c) => c.book_fk === book.id)"
+                  class="book-badge commented"
+                >
+                  Commenté
+                </div>
+              </div>
+              <div class="book-cover-container">
                 <template v-if="book.coverImage">
                   <img :src="book.coverImage" :alt="book.name" class="cover-image" />
                 </template>
                 <template v-else>
-                  <Skeleton class="book-cover skeleton-cover" />
+                  <Skeleton class="skeleton-cover" />
                 </template>
               </div>
               <div class="book-info">
@@ -241,17 +250,6 @@ const findBookById = (bookId) => {
                   class="book-rating"
                 />
                 <p class="book-category" v-if="book.t_category">{{ book.t_category.name }}</p>
-
-                <!-- Badge pour les livres lus -->
-                <div v-if="book.isRead" class="book-badge read">Lu</div>
-
-                <!-- Badge pour les livres commentés -->
-                <div
-                  v-if="userComments.some((c) => c.book_fk === book.id)"
-                  class="book-badge commented"
-                >
-                  Commenté
-                </div>
               </div>
             </div>
           </div>
@@ -532,25 +530,52 @@ const findBookById = (bookId) => {
 }
 
 .book-card {
-  padding: 1rem;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin-bottom: 1.5rem;
+  position: relative;
   transition: transform 0.3s ease;
   cursor: pointer;
-  background-color: white;
-  position: relative;
 }
 
 .book-card:hover {
   transform: translateY(-5px);
 }
 
-.book-cover {
-  width: 200px;
+.book-badges {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.book-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: white;
+}
+
+.book-badge.read {
+  background-color: #10b981;
+}
+
+.book-badge.commented {
+  background-color: #3b82f6;
+}
+
+.book-cover-container {
   height: 300px;
-  overflow: hidden;
-  position: relative;
+  width: 100%;
   border-radius: 8px;
+  overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.75rem;
 }
 
 .cover-image {
@@ -572,9 +597,10 @@ const findBookById = (bookId) => {
 }
 
 .book-info {
-  margin-top: 1rem;
-  max-width: 200px;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
 }
 
 .book-title {
@@ -582,9 +608,13 @@ const findBookById = (bookId) => {
   color: #2c3e50;
   margin: 0 0 0.5rem 0;
   text-align: center;
-  white-space: nowrap;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  height: 2.8rem;
 }
 
 .book-rating {
@@ -602,27 +632,7 @@ const findBookById = (bookId) => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.book-badge {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: white;
-  z-index: 10;
-}
-
-.book-badge.read {
-  background-color: #10b981;
-}
-
-.book-badge.commented {
-  background-color: #3b82f6;
-  top: 40px;
+  max-width: 100%;
 }
 
 /* Comments section styles */
@@ -740,8 +750,11 @@ const findBookById = (bookId) => {
     gap: 0.5rem;
   }
 
-  .book-cover {
+  .book-card {
     width: 150px;
+  }
+
+  .book-cover-container {
     height: 225px;
   }
 
@@ -756,5 +769,12 @@ const findBookById = (bookId) => {
   .comment-card {
     width: 100%;
   }
+}
+
+.skeleton-cover {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 8px;
+  background: #e9ecef;
 }
 </style>
