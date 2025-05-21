@@ -609,7 +609,6 @@ const findBookById = (bookId) => {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   height: 2.8rem;
 }
