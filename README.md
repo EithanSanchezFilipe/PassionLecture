@@ -56,7 +56,7 @@ Avant de commencer, assurez-vous d'avoir installé :
 ## Bilan de fonctionnalitées 80% 264
 
 1. **Une page d’accueil comprenant une explication de l’utilité du site ainsi
-que les cinq derniers ouvrages ajoutés (accès tout public)** OK(intervale de 2 minutes pour evite trops de requetes)
+que les cinq derniers ouvrages ajoutés (accès tout public)** OK
 2. **Une page comprenant la liste des ouvrages par catégorie (accès tout
 public avec restrictions sur les liens).** OK
 3. **Une page d’ajout d’un ouvrage (accès utilisateur)** OK
