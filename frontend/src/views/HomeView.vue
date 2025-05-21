@@ -65,14 +65,14 @@ onMounted(fetchLatestBooks)
   <section class="nouveautes-section">
     <h2 class="nouveautes-title">Nouveautés</h2>
     <div class="books-grid">
-      <div v-for="book in books" :key="book.id" class="book-card">
+      <div v-for="book in books" :key="book.id" class="book-card" @click="goToBook(book.id)">
         <template v-if="book.coverImage">
           <img :src="book.coverImage" :alt="book.name" class="book-cover" />
         </template>
         <template v-else>
           <div class="book-cover skeleton-cover"></div>
         </template>
-        <div class="book-info" @click="goToBook(book.id)">
+        <div class="book-info">
           <h3>{{ book.name }}</h3>
           <BaseRating
             v-if="book.rating || book.avg"
