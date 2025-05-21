@@ -136,9 +136,14 @@ const deleteBook = async () => {
       GStore.isSuccess = true
     }
 
-    // Redirect to home page with explicit setTimeout to ensure redirect happens
+    // Redirect to home page with direct navigation
     setTimeout(() => {
-      router.push({ name: 'Home' })
+      // Match the exact route name from router configuration (case-sensitive)
+      router.push({ name: 'Home' }).catch((err) => {
+        console.error('Navigation error:', err)
+        // Fallback to direct path if named route fails
+        router.push('/')
+      })
     }, 100)
   } catch (error) {
     console.error('Error deleting book:', error)
