@@ -31,13 +31,13 @@ await initAssociations(User, Editor, Comment, Category, Book, Author);
 // Test the connection
 
 sequelize
-  .sync({ alter: true })
+  .sync({ force: true })
   .then((_) => {
-    // initCat();
-    // initEdi();
-    // initAut();
-    // initBook();
-    // initUser();
+    initUser();
+    initCat();
+    initEdi();
+    initAut();
+    initBook();
     console.log("The database has been synchronized");
   })
   .catch((e) => {
@@ -77,6 +77,7 @@ const initUser = () => {
       password: user.password,
       email: user.email,
       admin: user.admin,
+      isRead: user.isRead,
     });
   });
 };
@@ -92,6 +93,8 @@ const initBook = () => {
       category_fk: book.category_fk,
       author_fk: book.author_fk,
       editor_fk: book.editor_fk,
+      isRead: book.isRead,
+      user_fk: book.user_fk,
     });
   });
 };

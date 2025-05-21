@@ -45,6 +45,7 @@ const popup = () => {
         >
       </div>
       <div class="logout" v-else>
+        <RouterLink class="profile-btn" :to="{ name: 'Profile' }">Mon Profil</RouterLink>
         <button @click="popup" type="button" class="logout-btn">Se déconnecter</button>
       </div>
     </div>
@@ -115,5 +116,31 @@ nav a:hover {
 }
 .logout-btn:focus {
   outline: none;
+}
+
+.profile-btn {
+  background-color: #f8f9fa;
+  border: 1px solid #6366f1;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #6366f1;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-align: center;
+}
+
+.profile-btn:hover {
+  background-color: #6366f1;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(99, 102, 241, 0.2);
+}
+
+.logout {
+  display: flex;
+  align-items: center;
+  gap: 1em;
 }
 </style>

@@ -160,94 +160,95 @@ const handleImageUpload = (event) => {
         </div>
 
         <div class="step-content">
-          <!-- Conteneur pour les transitions d'étapes -->
           <transition name="fade-slide" mode="out-in">
-            <!-- Étape 1: Informations de base -->
-            <div v-if="activeIndex === 0" key="step1" class="step-form-container">
-              <div class="form-group appear-animation">
-                <label>Titre*</label>
-                <InputText v-model="formData.name" required />
-              </div>
-              <div class="form-group appear-animation" style="animation-delay: 0.1s">
-                <label>Catégorie*</label>
-                <Dropdown
-                  v-model="formData.category_fk"
-                  :options="categories"
-                  optionLabel="name"
-                  optionValue="id"
-                  placeholder="Sélectionner une catégorie"
-                />
-              </div>
-            </div>
-
-            <!-- Étape 2: Contenu -->
-            <div v-if="activeIndex === 1" key="step2" class="step-form-container">
-              <div class="form-group appear-animation">
-                <label>Résumé*</label>
-                <div class="textarea-container">
-                  <Textarea
-                    v-model="formData.summary"
-                    rows="5"
-                    autoResize
-                    :maxlength="SUMMARY_MAX_LENGTH"
-                    :class="{ 'p-invalid': summaryLength > SUMMARY_MAX_LENGTH }"
-                    placeholder="Écrivez le résumé du livre..."
-                  />
-                  <span
-                    class="char-count"
-                    :class="{ 'count-error': summaryLength > SUMMARY_MAX_LENGTH }"
-                  >
-                    {{ summaryLength }}/{{ SUMMARY_MAX_LENGTH }}
-                  </span>
+            <component :is="'div'" :key="activeIndex" class="step-form-container">
+              <!-- Étape 1: Informations de base -->
+              <template v-if="activeIndex === 0">
+                <div class="form-group appear-animation">
+                  <label>Titre*</label>
+                  <InputText v-model="formData.name" required />
                 </div>
-                <small v-if="summaryLength > SUMMARY_MAX_LENGTH" class="p-error">
-                  Le résumé ne peut pas dépasser {{ SUMMARY_MAX_LENGTH }} caractères
-                </small>
-              </div>
-              <div class="form-group appear-animation" style="animation-delay: 0.1s">
-                <label>Passage</label>
-                <div class="textarea-container">
-                  <Textarea
-                    v-model="formData.passage"
-                    rows="3"
-                    autoResize
-                    :maxlength="PASSAGE_MAX_LENGTH"
-                    :class="{ 'p-invalid': passageLength > PASSAGE_MAX_LENGTH }"
-                    placeholder="Écrivez un passage marquant du livre..."
+                <div class="form-group appear-animation" style="animation-delay: 0.1s">
+                  <label>Catégorie*</label>
+                  <Dropdown
+                    v-model="formData.category_fk"
+                    :options="categories"
+                    optionLabel="name"
+                    optionValue="id"
+                    placeholder="Sélectionner une catégorie"
                   />
-                  <span
-                    class="char-count"
-                    :class="{ 'count-error': passageLength > PASSAGE_MAX_LENGTH }"
-                  >
-                    {{ passageLength }}/{{ PASSAGE_MAX_LENGTH }}
-                  </span>
                 </div>
-                <small v-if="passageLength > PASSAGE_MAX_LENGTH" class="p-error">
-                  Le passage ne peut pas dépasser {{ PASSAGE_MAX_LENGTH }} caractères
-                </small>
-              </div>
-            </div>
+              </template>
 
-            <!-- Étape 3: Détails supplémentaires -->
-            <div v-if="activeIndex === 2" key="step3" class="step-form-container">
-              <div class="form-group appear-animation">
-                <label>Année d'édition*</label>
-                <InputNumber v-model="formData.editionYear" :max="new Date().getFullYear()" />
-              </div>
-              <div class="form-group appear-animation" style="animation-delay: 0.1s">
-                <label>Nombre de pages*</label>
-                <InputNumber v-model="formData.pages" :min="1" />
-              </div>
-              <div class="form-group appear-animation" style="animation-delay: 0.2s">
-                <label>Couverture</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  @change="handleImageUpload"
-                  class="file-input"
-                />
-              </div>
-            </div>
+              <!-- Étape 2: Contenu -->
+              <template v-if="activeIndex === 1">
+                <div class="form-group appear-animation">
+                  <label>Résumé*</label>
+                  <div class="textarea-container">
+                    <Textarea
+                      v-model="formData.summary"
+                      rows="5"
+                      autoResize
+                      :maxlength="SUMMARY_MAX_LENGTH"
+                      :class="{ 'p-invalid': summaryLength > SUMMARY_MAX_LENGTH }"
+                      placeholder="Écrivez le résumé du livre..."
+                    />
+                    <span
+                      class="char-count"
+                      :class="{ 'count-error': summaryLength > SUMMARY_MAX_LENGTH }"
+                    >
+                      {{ summaryLength }}/{{ SUMMARY_MAX_LENGTH }}
+                    </span>
+                  </div>
+                  <small v-if="summaryLength > SUMMARY_MAX_LENGTH" class="p-error">
+                    Le résumé ne peut pas dépasser {{ SUMMARY_MAX_LENGTH }} caractères
+                  </small>
+                </div>
+                <div class="form-group appear-animation" style="animation-delay: 0.1s">
+                  <label>Passage</label>
+                  <div class="textarea-container">
+                    <Textarea
+                      v-model="formData.passage"
+                      rows="3"
+                      autoResize
+                      :maxlength="PASSAGE_MAX_LENGTH"
+                      :class="{ 'p-invalid': passageLength > PASSAGE_MAX_LENGTH }"
+                      placeholder="Écrivez un passage marquant du livre..."
+                    />
+                    <span
+                      class="char-count"
+                      :class="{ 'count-error': passageLength > PASSAGE_MAX_LENGTH }"
+                    >
+                      {{ passageLength }}/{{ PASSAGE_MAX_LENGTH }}
+                    </span>
+                  </div>
+                  <small v-if="passageLength > PASSAGE_MAX_LENGTH" class="p-error">
+                    Le passage ne peut pas dépasser {{ PASSAGE_MAX_LENGTH }} caractères
+                  </small>
+                </div>
+              </template>
+
+              <!-- Étape 3: Détails supplémentaires -->
+              <template v-if="activeIndex === 2">
+                <div class="form-group appear-animation">
+                  <label>Année d'édition*</label>
+                  <InputNumber v-model="formData.editionYear" :max="new Date().getFullYear()" />
+                </div>
+                <div class="form-group appear-animation" style="animation-delay: 0.1s">
+                  <label>Nombre de pages*</label>
+                  <InputNumber v-model="formData.pages" :min="1" />
+                </div>
+                <div class="form-group appear-animation" style="animation-delay: 0.2s">
+                  <label>Couverture</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    @change="handleImageUpload"
+                    class="file-input"
+                  />
+                </div>
+              </template>
+            </component>
           </transition>
         </div>
       </div>

@@ -1,6 +1,6 @@
 const BookModel = (sequelize, DataTypes) => {
   return sequelize.define(
-    't_book',
+    "t_book",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -11,18 +11,18 @@ const BookModel = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: {
-          msg: 'Ce nom est déjà pris.',
+          msg: "Ce nom est déjà pris.",
         },
         validate: {
           is: {
             args: /^[\p{L}\p{P}\s\d]*$/u,
-            msg: 'Seules les lettres, les accents, les espaces, les virgules et les points sont autorisés',
+            msg: "Seules les lettres, les accents, les espaces, les virgules et les points sont autorisés",
           },
           notEmpty: {
-            msg: 'Le nom ne peut pas être vide.',
+            msg: "Le nom ne peut pas être vide.",
           },
           notNull: {
-            msg: 'Le nom est une propriété obligatoire',
+            msg: "Le nom est une propriété obligatoire",
           },
         },
       },
@@ -31,12 +31,12 @@ const BookModel = (sequelize, DataTypes) => {
         validate: {
           is: {
             args: /^[\p{L}\p{P}\s\d]*$/u,
-            msg: 'Seules les lettres, les accents, les espaces, les virgules et les points sont autorisés',
+            msg: "Seules les lettres, les accents, les espaces, les virgules et les points sont autorisés",
           },
           len: {
             args: [0, 250],
-            msg: 'Le passage ne peut pas dépasser 250 caractères',
-          }
+            msg: "Le passage ne peut pas dépasser 250 caractères",
+          },
         },
       },
       summary: {
@@ -45,9 +45,9 @@ const BookModel = (sequelize, DataTypes) => {
         validate: {
           len: {
             args: [1, 2000],
-            msg: 'Le résumé doit faire entre 1 et 2000 caractères',
-          }
-        }
+            msg: "Le résumé doit faire entre 1 et 2000 caractères",
+          },
+        },
       },
       editionYear: {
         type: DataTypes.INTEGER,
@@ -67,7 +67,7 @@ const BookModel = (sequelize, DataTypes) => {
         },
       },
       coverImage: {
-        type: DataTypes.BLOB('long'),
+        type: DataTypes.BLOB("long"),
       },
       pages: {
         type: DataTypes.INTEGER,
@@ -75,21 +75,26 @@ const BookModel = (sequelize, DataTypes) => {
         validate: {
           isInt: {
             args: true,
-            msg: 'Le nombre de pages doit être un entier valide.',
+            msg: "Le nombre de pages doit être un entier valide.",
           },
           min: {
             args: [1],
-            msg: 'Le nombre de pages doit être au moins 1.',
+            msg: "Le nombre de pages doit être au moins 1.",
           },
           notNull: {
-            msg: 'Le nombre de pages est une propriété obligatoire',
+            msg: "Le nombre de pages est une propriété obligatoire",
           },
         },
+      },
+      isRead: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
     },
     {
       timestamps: true,
-      createdAt: 'created',
+      createdAt: "created",
       updatedAt: false,
     }
   );

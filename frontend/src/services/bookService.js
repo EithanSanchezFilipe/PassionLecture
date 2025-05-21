@@ -83,4 +83,8 @@ export default {
       reader.readAsDataURL(blob)
     })
   },
+
+  getBooksByUser(userId) {
+    return apiClient.get(`/book/user/${userId}`)
+  },
 }

@@ -120,7 +120,7 @@ export function Profile(req, res) {
           model: Category,
           attributes: ["name"],
         },
-        attributes: ["id", "name"],
+        attributes: ["name", "coverImage", "isRead", "editionYear", "pages"],
       },
     ],
   })
