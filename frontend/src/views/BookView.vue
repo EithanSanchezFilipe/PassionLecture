@@ -1,13 +1,19 @@
 <script setup>
 import bookService from '@/services/bookService'
-import { onMounted, ref, watch, computed } from 'vue'
+import { onMounted, ref, watch, computed, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import Comment from '@/components/Comment.vue'
 import CommentForm from '@/components/CommentForm.vue'
 import BaseRating from '@/components/base/BaseRating.vue'
 import SearchBarBook from '@/composables/SearchBarBook.vue'
 import Skeleton from 'primevue/skeleton'
+import Popup from '@/components/Popup.vue'
+import AddBookStepper from '@/composables/AddBookStepper.vue'
 import { useAuthStore } from '@/stores/auth'
+import authService from '@/services/authService'
+import categoryService from '@/services/categoryService'
+
+const GStore = inject('GStore')
 const auth = useAuthStore()
 auth.Authorize()
 const router = useRouter()
@@ -22,10 +28,32 @@ const book = ref(null)
 const comments = ref(null)
 const avg = ref(1)
 const searchTerm = ref('')
+const showDeletePopup = ref(false)
+const showUpdatePopup = ref(false)
+const showEditStepper = ref(false)
+const currentUser = ref(null)
+const categories = ref([])
 
 const latestComments = computed(() => {
   if (!comments.value) return []
   return comments.value.slice(0, 3)
+})
+
+// Check if current user is the book owner or an admin
+const canModifyBook = computed(() => {
+  if (!book.value) return false
+
+  // If we have a loaded user from profile API call
+  if (currentUser.value) {
+    return book.value.user_fk === currentUser.value.id || currentUser.value.admin === true
+  }
+
+  // Or if we have a user in the auth store
+  if (auth.user) {
+    return book.value.user_fk === auth.user.id || auth.user.admin === true
+  }
+
+  return false
 })
 
 watch(searchTerm, async (newValue) => {
@@ -36,6 +64,13 @@ watch(searchTerm, async (newValue) => {
 
 onMounted(async () => {
   try {
+    // Load categories
+    const categoriesResponse = await categoryService.getAllCategory()
+    if (categoriesResponse && categoriesResponse.data) {
+      categories.value = categoriesResponse.data.categories
+    }
+
+    // Load book data
     const response = await bookService.getBook(props.id)
     const data = response.data
 
@@ -45,6 +80,16 @@ onMounted(async () => {
 
     book.value = data
     fetchComments()
+
+    // Load user profile data
+    try {
+      const userResponse = await authService.getProfile()
+      if (userResponse && userResponse.data) {
+        currentUser.value = userResponse.data.user
+      }
+    } catch (error) {
+      console.error('Error fetching user profile:', error)
+    }
   } catch (e) {
     console.error(e)
   }
@@ -70,6 +115,103 @@ const fetchComments = () => {
 
 const handleCommentAdded = () => {
   fetchComments()
+}
+
+const deleteBook = async () => {
+  try {
+    // Close the popup before doing anything else
+    showDeletePopup.value = false
+
+    // Get book ID from current book
+    const bookId = book.value.id
+    console.log('Deleting book with ID:', bookId)
+
+    // Call the delete API
+    const response = await bookService.deleteBook(bookId)
+    console.log('Delete response:', response)
+
+    // Show success message
+    if (GStore) {
+      GStore.flashMessage = 'Le livre a été supprimé avec succès'
+      GStore.isSuccess = true
+    }
+
+    // Redirect to home page with explicit setTimeout to ensure redirect happens
+    setTimeout(() => {
+      router.push({ name: 'Home' })
+    }, 100)
+  } catch (error) {
+    console.error('Error deleting book:', error)
+    let errorMessage = 'Erreur lors de la suppression du livre'
+
+    if (error.response) {
+      console.error('Error details:', error.response.data)
+      errorMessage = error.response.data.message || errorMessage
+    }
+
+    // Show error message
+    if (GStore) {
+      GStore.flashMessage = errorMessage
+      GStore.isSuccess = false
+    }
+  }
+}
+
+const editBook = () => {
+  showUpdatePopup.value = false
+  showEditStepper.value = true
+}
+
+const handleUpdateBook = async (updatedBookData) => {
+  try {
+    // Make sure we're working with the correct book ID
+    const bookId = book.value.id
+
+    console.log('Updating book with ID:', bookId)
+    console.log('Update data:', updatedBookData)
+
+    // Ensure numeric values are properly converted
+    const dataToSend = {
+      ...updatedBookData,
+      editionYear: Number(updatedBookData.editionYear),
+      pages: Number(updatedBookData.pages),
+      category_fk: Number(updatedBookData.category_fk),
+    }
+
+    // Call the update API
+    const updateResponse = await bookService.updateBook(bookId, dataToSend)
+    console.log('Update response:', updateResponse)
+
+    // Refresh the book data
+    const response = await bookService.getBook(bookId)
+    const data = response.data
+
+    if (data.coverImage) {
+      data.coverImage = await bookService.bufferToBase64(data.coverImage)
+    }
+
+    book.value = data
+
+    // Show success message
+    if (GStore) {
+      GStore.flashMessage = 'Le livre a été mis à jour avec succès'
+      GStore.isSuccess = true
+    }
+  } catch (error) {
+    console.error('Error updating book:', error)
+    let errorMessage = 'Erreur lors de la mise à jour du livre'
+
+    if (error.response) {
+      console.error('Error details:', error.response.data)
+      errorMessage = error.response.data.message || errorMessage
+    }
+
+    // Show error message
+    if (GStore) {
+      GStore.flashMessage = errorMessage
+      GStore.isSuccess = false
+    }
+  }
 }
 </script>
 
@@ -98,6 +240,12 @@ const handleCommentAdded = () => {
                 <p>Année d'édition: {{ book.editionYear }}</p>
                 <p>Pages: {{ book.pages }}</p>
                 <p v-if="book.t_category">Catégorie: {{ book.t_category.name }}</p>
+              </div>
+
+              <!-- Book action buttons (only visible to book owner or admin) -->
+              <div v-if="canModifyBook" class="book-actions">
+                <button class="edit-btn" @click="showUpdatePopup = true">Modifier</button>
+                <button class="delete-btn" @click="showDeletePopup = true">Supprimer</button>
               </div>
             </div>
           </div>
@@ -142,6 +290,38 @@ const handleCommentAdded = () => {
         </section>
       </div>
     </div>
+
+    <!-- Popups for confirmation -->
+    <Popup
+      action="update"
+      :show="showUpdatePopup"
+      @confirm="editBook"
+      @cancel="showUpdatePopup = false"
+    />
+
+    <Popup
+      action="delete"
+      :show="showDeletePopup"
+      @confirm="deleteBook"
+      @cancel="showDeletePopup = false"
+    />
+
+    <!-- Edit Book Form with Stepper -->
+    <AddBookStepper
+      v-if="book"
+      v-model:visible="showEditStepper"
+      :categories="categories"
+      @save="handleUpdateBook"
+      :initial-data="{
+        name: book.name,
+        passage: book.passage || '',
+        summary: book.summary || '',
+        editionYear: book.editionYear || new Date().getFullYear(),
+        pages: book.pages || null,
+        category_fk: book.category_fk || null,
+      }"
+      :is-editing="true"
+    />
   </div>
 </template>
 
@@ -240,6 +420,40 @@ h1 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.book-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.edit-btn {
+  background-color: #3498db;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #2980b9;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
 }
 
 .summary-section {

@@ -58,12 +58,12 @@ export function Reach(req, res) {
       include: [
         {
           model: Category,
-          attributes: ['id', 'name']
+          attributes: ["id", "name"],
         },
         {
-          model: Author
-        }
-      ]
+          model: Author,
+        },
+      ],
     })
       .then((book) => {
         if (!book) {
@@ -97,7 +97,7 @@ export function All(req, res) {
       where: { name: { [Op.like]: `%${req.query.name}%` } },
       order: [["name", "ASC"]],
       limit: limit,
-      include: [{ model: Author }]
+      include: [{ model: Author }],
     })
       .then((book) => {
         const message = `Il y a ${book.length} livres qui correspondent au terme de la recherche`;
@@ -112,7 +112,7 @@ export function All(req, res) {
   }
 
   Book.findAll({
-    include: [{ model: Author }]
+    include: [{ model: Author }],
   })
     .then((books) => {
       const booksWithBase64 = books.map((book) => {
@@ -136,24 +136,50 @@ export function All(req, res) {
 }
 
 export async function Delete(req, res) {
-  Book.findByPk(req.params.id).then((deletedbook) => {
+  console.log("Deleting book with ID:", req.params.id);
+  console.log("User ID:", req.user.id);
+  console.log("User Admin Status:", req.user.admin);
+
+  try {
+    const deletedbook = await Book.findByPk(req.params.id);
+
     if (!deletedbook) {
       const message =
-        "Le produit demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
+        "Le livre demandé n'existe pas. Merci de réessayer avec un autre identifiant.";
       return res.status(404).json({ message });
     }
-    if (deletedbook.user_fk !== req.user.id) {
+
+    console.log("Found book:", deletedbook.id, deletedbook.name);
+    console.log("Book owner ID:", deletedbook.user_fk);
+
+    // Check if user is the owner or an admin
+    // Handle case where user_fk might be null
+    const isOwner = deletedbook.user_fk === req.user.id;
+    const isAdmin = req.user.admin === true;
+
+    console.log("Is owner:", isOwner);
+    console.log("Is admin:", isAdmin);
+
+    if (!isOwner && !isAdmin) {
       return res.status(403).json({
-        message: "Vous n'êtes pas autorisé à effacer ce livre",
+        message: "Vous n'êtes pas autorisé à supprimer ce livre",
       });
     }
-    return Book.destroy({
+
+    // Use await to ensure deletion completes
+    await Book.destroy({
       where: { id: deletedbook.id },
-    }).then((_) => {
-      const message = `Le produit ${deletedbook.name} a bien été supprimé !`;
-      res.status(201).json({ message, deletedbook });
     });
-  });
+
+    const message = `Le livre "${deletedbook.name}" a bien été supprimé !`;
+    return res.status(200).json({ message, deletedbook });
+  } catch (error) {
+    console.error("Delete error:", error);
+    return res.status(500).json({
+      message: "Une erreur est survenue lors de la suppression du livre.",
+      error: error.message,
+    });
+  }
 }
 export async function Rating(req, res) {
   const id = req.params.id;
@@ -207,30 +233,80 @@ export async function DeleteComment(req, res) {
 export function Update(req, res) {
   const id = req.params.id;
   const data = { ...req.body };
+
+  console.log("Updating book with ID:", id);
+  console.log("Received data:", data);
+  console.log("Files:", req.files);
+  console.log("User ID:", req.user.id);
+  console.log("User Admin Status:", req.user.admin);
+
+  // Type conversion
+  if (data.editionYear) {
+    data.editionYear = parseInt(data.editionYear);
+  }
+
+  if (data.pages) {
+    data.pages = parseInt(data.pages);
+  }
+
+  if (data.category_fk) {
+    data.category_fk = parseInt(data.category_fk);
+  }
+
+  // Handle file upload if present
+  if (req.files && req.files.coverImage) {
+    data.coverImage = req.files.coverImage.data;
+    console.log("Image received with size:", req.files.coverImage.size);
+  }
+
   Book.findByPk(id)
     .then((book) => {
       if (!book) {
-        res
-          .status(400)
+        return res
+          .status(404)
           .json({ message: `Le Livre avec l'id ${id} n'existe pas` });
       }
-      if (book.user_fk !== req.user.id) {
+
+      console.log("Found book:", book.id, book.name);
+      console.log("Book owner ID:", book.user_fk);
+
+      // Check if user is the owner or an admin
+      const isOwner = book.user_fk === req.user.id;
+      const isAdmin = req.user.admin === true;
+
+      console.log("Is owner:", isOwner);
+      console.log("Is admin:", isAdmin);
+
+      if (!isOwner && !isAdmin) {
         return res.status(403).json({
           message: "Vous n'êtes pas autorisé à modifier ce livre",
         });
       }
-      book.update(data).then((bookupdate) => {
-        return res.status(200).json({
-          message: "Le livre a bien été mis à jour",
-          data: bookupdate,
+
+      // Update the book with the new data
+      return book
+        .update(data)
+        .then((bookupdate) => {
+          console.log("Book updated successfully");
+          return res.status(200).json({
+            message: "Le livre a bien été mis à jour",
+            data: bookupdate,
+          });
+        })
+        .catch((error) => {
+          console.error("Error during update:", error);
+          throw error;
         });
-      });
     })
     .catch((e) => {
-      console.error(e);
+      console.error("Book update error:", e);
       res.status(500).json({
         message:
           "Le livre n'a pas pu être mis à jour. Merci de réessayer dans quelques instants.",
+        error: e.message,
+        details: e.errors
+          ? e.errors.map((err) => err.message).join(", ")
+          : undefined,
       });
     });
 }
@@ -280,10 +356,7 @@ export function Latest(req, res) {
   Book.findAll({
     order: [["created", "DESC"]],
     limit: 5,
-    include: [
-      { model: Comment },
-      { model: Author }
-    ],
+    include: [{ model: Comment }, { model: Author }],
   })
     //prends la valeur trouver et la renvoie en format json avec un message de succès
     .then((books) => {

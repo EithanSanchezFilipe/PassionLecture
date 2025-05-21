@@ -37,7 +37,31 @@ export default {
       },
     })
   },
+  deleteBook(id) {
+    return apiClient.delete(`/book/${id}`)
+  },
+  updateBook(id, bookData) {
+    const formData = new FormData()
 
+    // Add basic fields
+    formData.append('name', bookData.name)
+    formData.append('passage', bookData.passage || '')
+    formData.append('summary', bookData.summary)
+    formData.append('editionYear', bookData.editionYear)
+    formData.append('pages', bookData.pages)
+    formData.append('category_fk', bookData.category_fk)
+
+    // Only append coverImage if it's a File object
+    if (bookData.coverImage && bookData.coverImage instanceof File) {
+      formData.append('coverImage', bookData.coverImage)
+    }
+
+    return apiClient.put(`/book/${id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+  },
   getLatestBooks() {
     return apiClient.get('/book/latest')
   },
