@@ -10,6 +10,7 @@ const books = [
     category_fk: 1,
     author_fk: 1,
     editor_fk: 1,
+    user_fk: 1,
   },
   {
     name: "Le Mystère de la Chambre Bleue",
@@ -22,6 +23,7 @@ const books = [
     category_fk: 1,
     author_fk: 1,
     editor_fk: 1,
+    user_fk: 1,
   },
   {
     name: "Le Mystère de la Chambre Verte",
@@ -34,6 +36,7 @@ const books = [
     category_fk: 1,
     author_fk: 1,
     editor_fk: 1,
+    user_fk: 1,
   },
   {
     name: "Les Misérables",
@@ -163,11 +166,11 @@ const categories = [
 ];
 
 const authors = [
-  { firstname: "Gaston", lastname: "Leroux" },
-  { firstname: "Victor", lastname: "Hugo" },
-  { firstname: "George", lastname: "Orwell" },
-  { firstname: "Paulo", lastname: "Coelho" },
-  { firstname: "Antoine", lastname: "de Saint-Exupéry" },
+  { firstname: "Gaston", lastname: "Leroux", user_fk: 1 },
+  { firstname: "Victor", lastname: "Hugo", user_fk: 1 },
+  { firstname: "George", lastname: "Orwell", user_fk: 1 },
+  { firstname: "Paulo", lastname: "Coelho", user_fk: 1 },
+  { firstname: "Antoine", lastname: "de Saint-Exupéry", user_fk: 1 },
   { firstname: "Albert", lastname: "Camus" },
   { firstname: "Marcel", lastname: "Proust" },
   { firstname: "Gustave", lastname: "Flaubert" },
@@ -192,7 +195,7 @@ const users = [
   {
     username: "admin",
     email: "admin@passionlecture.com",
-    password: "$2b$10$X7UrH5YxX5YxX5YxX5YxX.5YxX5YxX5YxX5YxX5YxX5YxX5YxX5YxX",
+    password: "$2b$10$WqqoJHSGXymFarXrHaRQJuB7DCpv66CTQp5jv3jpdBGTclwYLMjRG",
     admin: true,
   },
   {

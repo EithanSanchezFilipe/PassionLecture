@@ -6,7 +6,7 @@ import { CommentModel } from "../models/comment.mjs";
 import { EditorModel } from "../models/editor.mjs";
 import { UserModel } from "../models/user.mjs";
 import { initAssociations } from "../models/associations.mjs";
-import { books, authors, editors, categories } from "./data-mock.mjs";
+import { books, authors, editors, categories, users } from "./data-mock.mjs";
 
 // Create a new instance of Sequelize with the connection string to our database
 const sequelize = new Sequelize("db_passion_lecture", "root", "root", {
@@ -31,12 +31,13 @@ await initAssociations(User, Editor, Comment, Category, Book, Author);
 // Test the connection
 
 sequelize
-  .sync({ force: true })
+  .sync({ alter: true })
   .then((_) => {
-    initCat();
-    initEdi();
-    initAut();
-    initBook();
+    // initCat();
+    // initEdi();
+    // initAut();
+    // initBook();
+    // initUser();
     console.log("The database has been synchronized");
   })
   .catch((e) => {
@@ -65,6 +66,17 @@ const initAut = () => {
       id: author.id,
       lastname: author.lastname,
       firstname: author.firstname,
+    });
+  });
+};
+const initUser = () => {
+  users.map((user) => {
+    User.create({
+      id: user.id,
+      username: user.username,
+      password: user.password,
+      email: user.email,
+      admin: user.admin,
     });
   });
 };

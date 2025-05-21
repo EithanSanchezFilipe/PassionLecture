@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import Steps from 'primevue/steps'
 import Dialog from 'primevue/dialog'
 import InputText from 'primevue/inputtext'
@@ -11,6 +11,22 @@ import Button from 'primevue/button'
 const props = defineProps({
   visible: Boolean,
   categories: Array,
+  initialData: {
+    type: Object,
+    default: () => ({
+      name: '',
+      passage: '',
+      summary: '',
+      editionYear: new Date().getFullYear(),
+      pages: null,
+      coverImage: null,
+      category_fk: null,
+    }),
+  },
+  isEditing: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['update:visible', 'save'])
@@ -26,11 +42,42 @@ const formData = ref({
   category_fk: null,
 })
 
+// Watch for changes in initialData and update formData accordingly
+watch(
+  () => props.initialData,
+  (newValue) => {
+    if (newValue) {
+      formData.value = { ...newValue }
+    }
+  },
+  { immediate: true, deep: true },
+)
+
+// Watch for visibility changes - reset form when dialog is opened
+watch(
+  () => props.visible,
+  (newValue) => {
+    if (newValue && !props.isEditing) {
+      // Only reset if we're not editing
+      formData.value = {
+        name: '',
+        passage: '',
+        summary: '',
+        editionYear: new Date().getFullYear(),
+        pages: null,
+        coverImage: null,
+        category_fk: null,
+      }
+      activeIndex.value = 0
+    }
+  },
+)
+
 const SUMMARY_MAX_LENGTH = 2000
 const PASSAGE_MAX_LENGTH = 250
 
-const summaryLength = computed(() => formData.value.summary.length)
-const passageLength = computed(() => formData.value.passage.length)
+const summaryLength = computed(() => formData.value.summary?.length || 0)
+const passageLength = computed(() => formData.value.passage?.length || 0)
 
 const steps = ref([
   { label: 'Informations de base' },
@@ -67,15 +114,17 @@ const handleBack = () => {
 const handleSubmit = () => {
   emit('save', formData.value)
   emit('update:visible', false)
-  // Reset form
-  formData.value = {
-    name: '',
-    passage: '',
-    summary: '',
-    editionYear: new Date().getFullYear(),
-    pages: null,
-    coverImage: null,
-    category_fk: null,
+  // Only reset if we're not in edit mode
+  if (!props.isEditing) {
+    formData.value = {
+      name: '',
+      passage: '',
+      summary: '',
+      editionYear: new Date().getFullYear(),
+      pages: null,
+      coverImage: null,
+      category_fk: null,
+    }
   }
   activeIndex.value = 0
 }
@@ -97,6 +146,10 @@ const handleImageUpload = (event) => {
       :style="{ width: '50vw' }"
       class="custom-dialog"
     >
+      <template #header>
+        <h2 class="dialog-title">{{ isEditing ? 'Modifier le livre' : 'Ajouter un livre' }}</h2>
+      </template>
+
       <div class="dialog-content">
         <div class="steps-container">
           <Steps :model="steps" :activeIndex="activeIndex" />
@@ -214,6 +267,12 @@ const handleImageUpload = (event) => {
 .add-book-stepper {
   max-width: 800px;
   margin: 0 auto;
+}
+
+.dialog-title {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
 }
 
 .dialog-content {

@@ -3,10 +3,19 @@ import { onMounted, ref } from 'vue'
 import bookService from '@/services/bookService'
 import BookCard from '@/components/BookCard.vue'
 import BaseRating from '@/components/base/BaseRating.vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const books = ref([])
 const CACHE_KEY = 'latestBooksCache'
 const CACHE_TIME = 10 * 60 * 1000 // 10 minutes en ms
+
+function goToBook(id) {
+  router.push({
+    name: 'book-detail',
+    params: { id },
+  })
+}
 
 async function fetchLatestBooks() {
   // Vérifier le cache localStorage
@@ -56,7 +65,7 @@ onMounted(fetchLatestBooks)
   <section class="nouveautes-section">
     <h2 class="nouveautes-title">Nouveautés</h2>
     <div class="books-grid">
-      <div v-for="book in books" :key="book.id" class="book-card">
+      <div v-for="book in books" :key="book.id" class="book-card" @click="goToBook(book.id)">
         <template v-if="book.coverImage">
           <img :src="book.coverImage" :alt="book.name" class="book-cover" />
         </template>
