@@ -20,20 +20,11 @@ function goToBook(id) {
 
 async function fetchLatestBooks() {
   // Vérifier le cache localStorage
-  const cached = localStorage.getItem(CACHE_KEY)
-  if (cached) {
-    const { data, timestamp } = JSON.parse(cached)
-    if (Date.now() - timestamp < CACHE_TIME) {
-      books.value = data
-      return
-    }
-  }
+
   // Sinon, requête API
   try {
     const response = await bookService.getLatestBooks()
     let rawBooks = response.data.books || response.data
-    // Prendre les 5 derniers
-    rawBooks = rawBooks.slice(0, 5)
     // Gérer les images
     const processedBooks = await Promise.all(
       rawBooks.map(async (book) => {
@@ -44,8 +35,6 @@ async function fetchLatestBooks() {
       }),
     )
     books.value = processedBooks
-    // Mettre en cache
-    localStorage.setItem(CACHE_KEY, JSON.stringify({ data: processedBooks, timestamp: Date.now() }))
   } catch (err) {
     console.error(err)
   }
