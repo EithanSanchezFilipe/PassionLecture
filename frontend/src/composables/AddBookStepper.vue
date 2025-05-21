@@ -152,11 +152,37 @@ const handleImageUpload = (event) => {
 
       <div class="dialog-content">
         <div class="steps-container">
-          <Steps :model="steps" :activeIndex="activeIndex" />
-          <div
-            class="step-underline"
-            :style="{ transform: `translateX(${activeIndex * 100}%)` }"
-          ></div>
+          <div class="steps-progress-container">
+            <div class="steps-markers">
+              <div
+                v-for="(step, index) in steps"
+                :key="index"
+                class="step-marker-container"
+                @click="activeIndex = index"
+                :class="{ 'step-disabled': index > activeIndex && !isStepValid }"
+              >
+                <div
+                  class="step-marker"
+                  :class="{
+                    'step-active': index <= activeIndex,
+                    'step-completed': index < activeIndex,
+                  }"
+                >
+                  {{ index + 1 }}
+                  <div class="step-pulse" v-if="index === activeIndex"></div>
+                </div>
+                <div class="step-label" :class="{ 'active-label': index <= activeIndex }">
+                  {{ step.label }}
+                </div>
+
+                <!-- Ligne de connexion entre les cercles (sauf pour le dernier) -->
+                <div v-if="index < steps.length - 1" class="connector-line">
+                  <div class="connector-bg"></div>
+                  <div class="connector-progress" :class="{ filled: activeIndex > index }"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="step-content">
@@ -296,16 +322,126 @@ const handleImageUpload = (event) => {
   margin-bottom: 2rem;
 }
 
-.step-underline {
+.steps-progress-container {
+  position: relative;
+  width: 100%;
+  height: 110px;
+  margin: 20px 0 40px;
+}
+
+.steps-markers {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.steps-connector {
+  display: none; /* Removing the old connector */
+}
+
+.progress-line {
+  display: none; /* Removing the old progress line */
+}
+
+.step-marker-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  width: 110px;
+  z-index: 3;
+}
+
+.connector-line {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 3px;
+  top: 18px; /* Half height of marker to align with center */
+  left: 36px; /* Full width of the marker to start from its right edge */
+  width: calc(390px - 20px); /* Width extended to reach the next marker */
+  height: 4px;
+  z-index: 1;
+}
+
+.connector-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #e5e7eb;
+  border-radius: 4px;
+}
+
+.connector-progress {
+  position: absolute;
+  width: 0;
+  height: 100%;
   background: linear-gradient(90deg, #6366f1, #8b5cf6);
-  width: calc(100% / 3);
-  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  border-radius: 2px;
-  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+}
+
+.connector-progress.filled {
+  width: 100%;
+}
+
+.step-marker {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  background-color: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #6b7280;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.step-active {
+  border-color: #6366f1;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  transform: scale(1.2);
+  box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.2);
+}
+
+.step-completed {
+  border-color: #6366f1;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+}
+
+.step-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(99, 102, 241, 0.3);
+  z-index: -1;
+  animation: pulseAnimation 2s infinite;
+}
+
+@keyframes pulseAnimation {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.7);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.7);
+    opacity: 0;
+  }
 }
 
 /* Reset des styles PrimeVue */
@@ -344,20 +480,9 @@ const handleImageUpload = (event) => {
   border: 1px solid #eaeaea;
 }
 
+/* Hide PrimeVue Steps since we're replacing it with our custom UI */
 :deep(.p-steps) {
-  padding: 1rem;
-  background-color: transparent;
-  border-radius: 6px;
-  margin-bottom: 1.5rem;
-  box-shadow: none;
-}
-
-:deep(.p-steps-item) {
-  opacity: 0.7;
-}
-
-:deep(.p-steps-item.p-highlight) {
-  opacity: 1;
+  display: none;
 }
 
 .form-group {
@@ -656,5 +781,34 @@ input[type='file']:focus {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+.step-label {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6b7280;
+  transition: all 0.3s ease;
+  text-align: center;
+  max-width: 110px;
+}
+
+.active-label {
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+.step-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.step-disabled:hover .step-marker {
+  transform: none !important;
+}
+
+.step-marker-container:hover .step-marker:not(.step-active) {
+  border-color: #a5b4fc;
+  transform: scale(1.1);
 }
 </style>
