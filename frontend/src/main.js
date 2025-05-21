@@ -21,8 +21,7 @@ app.use(PrimeVue, {
     options: {
       darkModeSelector: 'none', // Force le mode clair par défaut
       cssLayer: false,
-      cssVariables: true
-      prefix: 'p',
+      cssVariables: true,
     },
   },
 })
