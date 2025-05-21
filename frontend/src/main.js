@@ -9,7 +9,6 @@ import ProgressSpinner from 'primevue/progressspinner'
 import Steps from 'primevue/steps'
 import 'primeicons/primeicons.css'
 import Aura from '@primeuix/themes/aura'
-
 import App from './App.vue'
 import router from './router'
 
@@ -22,7 +21,8 @@ app.use(PrimeVue, {
     options: {
       darkModeSelector: 'none', // Force le mode clair par défaut
       cssLayer: false,
-      cssVariables: true,
+      cssVariables: true
+      prefix: 'p',
     },
   },
 })

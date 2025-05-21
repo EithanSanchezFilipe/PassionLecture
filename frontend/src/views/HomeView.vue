@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import bookService from '@/services/bookService'
 import BookCard from '@/components/BookCard.vue'
 import BaseRating from '@/components/base/BaseRating.vue'
+import { Skeleton } from 'primevue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -70,7 +71,7 @@ onMounted(fetchLatestBooks)
           <img :src="book.coverImage" :alt="book.name" class="book-cover" />
         </template>
         <template v-else>
-          <div class="book-cover skeleton-cover"></div>
+          <Skeleton class="book-cover skeleton-cover" />
         </template>
         <div class="book-info">
           <h3>{{ book.name }}</h3>
