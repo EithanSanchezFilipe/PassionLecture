@@ -158,7 +158,6 @@ const handleImageUpload = (event) => {
                 v-for="(step, index) in steps"
                 :key="index"
                 class="step-marker-container"
-                @click="activeIndex = index"
                 :class="{ 'step-disabled': index > activeIndex && !isStepValid }"
               >
                 <div
@@ -167,6 +166,11 @@ const handleImageUpload = (event) => {
                     'step-active': index <= activeIndex,
                     'step-completed': index < activeIndex,
                   }"
+                  @click="
+                    index <= activeIndex || (index === activeIndex + 1 && isStepValid)
+                      ? (activeIndex = index)
+                      : null
+                  "
                 >
                   {{ index + 1 }}
                   <div class="step-pulse" v-if="index === activeIndex"></div>
@@ -359,7 +363,7 @@ const handleImageUpload = (event) => {
   position: absolute;
   top: 18px; /* Half height of marker to align with center */
   left: 36px; /* Full width of the marker to start from its right edge */
-  width: calc(390px - 20px); /* Width extended to reach the next marker */
+  width: calc(100% + 100% + 100% + 50%); /* Extended further to reach the next marker */
   height: 4px;
   z-index: 1;
 }
@@ -400,6 +404,7 @@ const handleImageUpload = (event) => {
   color: #6b7280;
   z-index: 2;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .step-active {
@@ -791,6 +796,7 @@ input[type='file']:focus {
   transition: all 0.3s ease;
   text-align: center;
   max-width: 110px;
+  pointer-events: none; /* Rend le label non-cliquable */
 }
 
 .active-label {
