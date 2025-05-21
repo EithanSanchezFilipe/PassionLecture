@@ -153,6 +153,15 @@ const handleImageUpload = (event) => {
       <div class="dialog-content">
         <div class="steps-container">
           <div class="steps-progress-container">
+            <!-- Ligne horizontale continue -->
+            <div class="progress-line-container">
+              <div class="progress-line-bg"></div>
+              <div
+                class="progress-line-filled"
+                :style="{ width: activeIndex === 0 ? '0%' : activeIndex === 1 ? '50%' : '100%' }"
+              ></div>
+            </div>
+
             <div class="steps-markers">
               <div
                 v-for="(step, index) in steps"
@@ -177,12 +186,6 @@ const handleImageUpload = (event) => {
                 </div>
                 <div class="step-label" :class="{ 'active-label': index <= activeIndex }">
                   {{ step.label }}
-                </div>
-
-                <!-- Ligne de connexion entre les cercles (sauf pour le dernier) -->
-                <div v-if="index < steps.length - 1" class="connector-line">
-                  <div class="connector-bg"></div>
-                  <div class="connector-progress" :class="{ filled: activeIndex > index }"></div>
                 </div>
               </div>
             </div>
@@ -333,19 +336,39 @@ const handleImageUpload = (event) => {
   margin: 20px 0 40px;
 }
 
+/* Nouvelle ligne horizontale continue */
+.progress-line-container {
+  position: absolute;
+  top: 18px;
+  left: 5%;
+  width: 90%;
+  height: 4px;
+  z-index: 1;
+}
+
+.progress-line-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #e5e7eb;
+  border-radius: 4px;
+}
+
+.progress-line-filled {
+  position: absolute;
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+}
+
 .steps-markers {
   position: relative;
   display: flex;
   justify-content: space-between;
   width: 100%;
-}
-
-.steps-connector {
-  display: none; /* Removing the old connector */
-}
-
-.progress-line {
-  display: none; /* Removing the old progress line */
+  z-index: 3;
 }
 
 .step-marker-container {
@@ -357,37 +380,6 @@ const handleImageUpload = (event) => {
   transition: transform 0.3s ease;
   width: 110px;
   z-index: 3;
-}
-
-.connector-line {
-  position: absolute;
-  top: 18px; /* Half height of marker to align with center */
-  left: 36px; /* Full width of the marker to start from its right edge */
-  width: calc(100% + 100% + 100% + 50%); /* Extended further to reach the next marker */
-  height: 4px;
-  z-index: 1;
-}
-
-.connector-bg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: #e5e7eb;
-  border-radius: 4px;
-}
-
-.connector-progress {
-  position: absolute;
-  width: 0;
-  height: 100%;
-  background: linear-gradient(90deg, #6366f1, #8b5cf6);
-  border-radius: 4px;
-  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
-}
-
-.connector-progress.filled {
-  width: 100%;
 }
 
 .step-marker {
