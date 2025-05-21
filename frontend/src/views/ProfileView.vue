@@ -58,6 +58,11 @@ onMounted(async () => {
     const response = await authService.getProfile()
     userProfile.value = response.data.user
 
+    // Récupérer les commentaires directement depuis la réponse API
+    if (userProfile.value && userProfile.value.t_comments) {
+      userComments.value = userProfile.value.t_comments
+    }
+
     // Utiliser directement les livres inclus dans la réponse du profil
     if (
       userProfile.value &&
@@ -71,31 +76,11 @@ onMounted(async () => {
             book.coverImage = await bookService.bufferToBase64(book.coverImage)
           }
           // Par défaut, considérons qu'un livre a été lu s'il a une note moyenne (à ajuster selon votre logique métier)
-          book.isRead = book.avg > 0
+          // Ou si l'attribut isRead est défini à true
+          book.isRead = book.isRead || book.avg > 0
           return book
         }),
       )
-
-      // Récupérer les commentaires de l'utilisateur pour tous ses livres
-      const commentsPromises = userBooks.value.map((book) =>
-        bookService
-          .getBookComments(book.id)
-          .then((response) => {
-            const comments = response.data.comments || []
-            // Filtrer pour ne garder que les commentaires de l'utilisateur actuel
-            return comments.filter((comment) => comment.user_fk === userProfile.value.id)
-          })
-          .catch((error) => {
-            console.error(
-              `Erreur lors du chargement des commentaires pour le livre ${book.id}:`,
-              error,
-            )
-            return []
-          }),
-      )
-
-      const allCommentsArrays = await Promise.all(commentsPromises)
-      userComments.value = allCommentsArrays.flat()
     }
   } catch (error) {
     console.error('Erreur lors du chargement du profil:', error)
@@ -120,7 +105,18 @@ const setActiveTab = (tab) => {
 
 // Trouver un livre par son ID
 const findBookById = (bookId) => {
-  return userBooks.value.find((book) => book.id === bookId)
+  // Si l'ID n'est pas dans les livres de l'utilisateur, essayer de le trouver dans t_books du userProfile
+  if (userProfile.value && userProfile.value.t_books) {
+    // Vérifier si les livres ont des IDs
+    if (userProfile.value.t_books.some((book) => book.id)) {
+      return userProfile.value.t_books.find((book) => book.id === bookId) || null
+    } else {
+      // Si aucun livre n'a d'ID, utiliser l'index comme approximation
+      // Dans ce cas, on suppose que le book_fk - 1 pourrait correspondre à l'index (à adapter selon votre modèle de données)
+      return userProfile.value.t_books[bookId - 1] || null
+    }
+  }
+  return null
 }
 </script>
 
@@ -208,7 +204,12 @@ const findBookById = (bookId) => {
 
         <!-- Section des livres selon le filtre actif -->
         <div class="user-books">
-          <div v-if="filteredBooks.length === 0" class="no-books">
+          <div
+            v-if="
+              filteredBooks.length === 0 && !(activeTab === 'commented' && userComments.length > 0)
+            "
+            class="no-books"
+          >
             <p v-if="activeTab === 'all'">Vous n'avez pas encore ajouté de livres.</p>
             <p v-else-if="activeTab === 'read'">
               Vous n'avez pas encore marqué de livres comme lus.
@@ -264,10 +265,10 @@ const findBookById = (bookId) => {
                 <h4>{{ findBookById(comment.book_fk)?.name || 'Livre inconnu' }}</h4>
                 <BaseRating :modelValue="comment.note" :readonly="true" class="comment-rating" />
                 <span class="comment-date">{{
-                  new Date(comment.updatedAt).toLocaleDateString()
+                  new Date(comment.createdAt).toLocaleDateString()
                 }}</span>
               </div>
-              <p class="comment-text">{{ comment.text }}</p>
+              <p class="comment-text">{{ comment.message || comment.text || '' }}</p>
               <button class="view-book-btn" @click="goToBook(comment.book_fk)">
                 Voir le livre
               </button>
@@ -637,9 +638,6 @@ const findBookById = (bookId) => {
 
 /* Comments section styles */
 .comments-section {
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid #ddd;
   width: 100%;
   max-width: 1200px;
   margin-left: auto;
@@ -676,7 +674,7 @@ const findBookById = (bookId) => {
 
 .comment-header {
   margin-bottom: 1rem;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #eee;
   padding-bottom: 0.75rem;
 }
 
