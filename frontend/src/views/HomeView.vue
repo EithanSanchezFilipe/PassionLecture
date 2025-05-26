@@ -19,8 +19,6 @@ function goToBook(id) {
 }
 
 async function fetchLatestBooks() {
-  // Vérifier le cache localStorage
-
   // Sinon, requête API
   try {
     const response = await bookService.getLatestBooks()
