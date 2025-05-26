@@ -183,8 +183,52 @@ const goToBook = (id) => router.push(`/book/${id}`)
   display: flex;
 }
 #sideBar {
-  background-color: #f9f9f9;
-  width: 10%;
+  background-color: #f4f4f4;
+  padding: 2rem 1rem;
+  width: 250px;
+  min-height: 100vh;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+#note,
+#categoryFilter {
+  display: flex;
+  flex-direction: column;
+}
+
+#note h3,
+#categoryFilter h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+  border-left: 4px solid #3498db;
+  padding-left: 0.5rem;
+}
+
+.single-input {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  gap: 0.5rem;
+}
+
+.single-input input[type='checkbox'] {
+  accent-color: #3498db;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  cursor: pointer;
+}
+
+.single-input label {
+  font-size: 0.95rem;
+  color: #34495e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 .category-header {
   width: 100%;
