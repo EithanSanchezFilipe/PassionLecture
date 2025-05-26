@@ -111,7 +111,7 @@ nav a:hover {
     transform 0.2s ease;
 }
 .logout-btn:hover {
-  background-color: #dcdcdc;
+  background-color: #e74c3c;
   transform: scale(1.05);
 }
 .logout-btn:focus {
