@@ -6,7 +6,16 @@ import AutoComplete from 'primevue/autocomplete'
 import SearchService from '@/services/SearchService'
 
 const router = useRouter()
-const props = defineProps(['modelValue'])
+const props = defineProps({
+  modelValue: {
+    type: [String, Object],
+    default: ''
+  },
+  redirectOnSelect: {
+    type: Boolean,
+    default: true
+  }
+})
 const emit = defineEmits(['update:modelValue'])
 
 const value = ref('')
@@ -64,17 +73,13 @@ const handleKeyDown = async (event) => {
       const res = await SearchService.search(searchTerm, 'book')
       const results = res.data || []
 
-      if (results.length === 1) {
-        // Si un seul livre trouvé, redirection vers sa page détaillée
-        router.push(`/book/${results[0].id}`).then(() => {
-          window.location.reload()
-        })
-      } else if (results.length > 1) {
-        // Si plusieurs livres trouvés, redirection vers la page de filtrage
-        router.push(`/books/filter?search=${encodeURIComponent(searchTerm)}&searchType=book`)
-      } else {
-        // Aucun résultat trouvé
-        console.log('Aucun livre trouvé pour cette recherche')
+      // Pour la vue catégorie, on émet juste l'événement de sélection
+      if (searchTerm && !value.value.id) {
+        emit('update:modelValue', searchTerm)
+      }
+
+      if (value.value && value.value.id) {
+        router.push(`/book/${value.value.id}`)
       }
     } catch (err) {
       console.warn('Erreur de recherche :', err)
@@ -84,10 +89,15 @@ const handleKeyDown = async (event) => {
   }
 }
 
-// Simplifie le watch pour éviter les rechargements de page inutiles
+// Gère la mise à jour de la valeur
 watch(value, (newValue) => {
   if (newValue && typeof newValue === 'object' && newValue.id) {
-    router.push(`/book/${newValue.id}`)
+    // Si on est dans la vue catégorie et qu'on ne veut pas de redirection
+    if (!props.redirectOnSelect) {
+      emit('update:modelValue', newValue.name)
+    } else {
+      router.push(`/book/${newValue.id}`)
+    }
   }
 })
 </script>
