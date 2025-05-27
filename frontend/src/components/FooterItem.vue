@@ -26,9 +26,19 @@ const icons = ref({
         </RouterLink>
 
         <div class="footer__info">
+          <div class="confidential">
           <h2>À propos de nous</h2>
+          <p>MID2A & CID2A</p>
+          </div>
+          <div class="name">
           <h2>Qui sommes-nous ?</h2>
+          <p>Ryan & Eithan </p>
+          </div>
+          <div class="contact">
           <h2>Nous contacter</h2>
+          <a href="mailto:ryan.depina@eduvaud.ch">ryan.depina@eduvaud.ch</a>
+          <a href="mailto:eithan.sanchez@eduvaud.ch">eithan.sanchez@eduvaud.ch</a>
+          </div>
         </div>
       </div>
 
@@ -89,5 +99,12 @@ const icons = ref({
 
 .footer__socials img {
   width: 40px;
+  height: 40px;
+  transition: transform 0.3s ease;
+}
+.contact a {
+  text-decoration: none;
+  display: block;
+  flex-direction: column;
 }
 </style>
