@@ -1,4 +1,9 @@
 # Introduction
+## 📚 PassionLecture
+
+**PassionLecture** est une application web fullstack dédiée aux amateurs de lecture. Elle permet aux utilisateurs de consulter, ajouter, commenter, modifier et supprimer des ouvrages selon leurs droits d'accès. Le site propose une interface intuitive pour explorer les livres par catégorie et suivre les dernières publications. Un espace administrateur permet également une gestion complète de la plateforme.
+
+L'application est construite avec **Node.js** pour le backend, un **frontend web moderne**, et utilise **Docker** pour la gestion des services. Elle est conçue pour être facilement déployée et documentée.
 
 # Analyse
 ## Rappel de la base de données
@@ -105,6 +110,19 @@ On a utilisé GitHub pour gérer le projet :
 # Test
 
 ## Stratégie de tests
+
+Pour s'assurer que tout fonctionne correctement, on a surtout misé sur des tests manuels tout au long du développement. Chaque fonctionnalité a été vérifiée plusieurs fois, à différents moments. Cela nous a permis de détecter et corriger rapidement les erreurs. On a aussi testé le comportement de l'application selon les rôles (utilisateur classique, admin, non connecté) pour s'assurer que chacun ait bien accès uniquement à ce qu'il est censé voir ou faire.
+
+* Tests faits à la main pendant le développement.
+* Vérification de la connexion/déconnexion.
+* Vérification de l’affichage des livres (accueil et catégories).
+* Test de l’ajout d’un livre (utilisateur connecté).
+* Test de la modification/suppression par le créateur uniquement.
+* Test de l’ajout de commentaires et de notes.
+* Vérification que les boutons/menus s’affichent correctement selon si on est connecté ou pas.
+* Vérification que les utilisateurs non connectés n’ont pas accès aux pages réservées.
+* Test que seul le créateur peut modifier ou supprimer ses livres.
+* Test que l’admin peut tout faire.
 # Conclusion
 
 ## Conclusion générale
