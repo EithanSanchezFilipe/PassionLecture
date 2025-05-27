@@ -70,6 +70,40 @@ Le dossier `frontend` suit une bonne pratique standard Vue/Vite :
 
 
   # Réalisation
+  # Réalisation
+
+## Sécurité
+
+On a mis en place plusieurs protections pour sécuriser l’application :
+
+- L’utilisateur doit être connecté pour ajouter, modifier ou supprimer un ouvrage.
+- Seuls les créateurs peuvent modifier ou supprimer leurs propres ouvrages.
+- L’administrateur a tous les droits.
+- Les champs de formulaire sont contrôlés pour éviter les injections ou les erreurs.
+- Le site utilise HTTPS pour sécuriser les échanges de données.
+- Les routes sensibles sont protégées avec des vérifications d’authentification côté serveur.
+
+## Fonctionnalités principales
+
+Voici comment on a mis en place les fonctionnalités demandées :
+
+- Une page d’accueil visible par tout le monde, avec une explication du site et les 5 derniers livres ajoutés.
+- Une page avec les livres classés par catégories (certains liens sont désactivés si l’utilisateur n’est pas connecté).
+- Un formulaire pour ajouter un livre, accessible uniquement après connexion.
+- Une page pour modifier ou supprimer un livre, mais seulement si on est l’auteur.
+- Une page pour voir les détails d’un livre, où un utilisateur connecté peut mettre une note et un commentaire.
+- Le pied-de-page mentionne le nom du créateur et propose un moyen de contact.
+
+## Organisation avec Git/GitHub
+
+On a utilisé GitHub pour gérer le projet :
+
+- On a créé un dépôt partagé avec une branche principale.
+- Chaque membre créait sa branche pour travailler sur une fonctionnalité.
+- Avant de fusionner dans la branche principale, on faisait des pull requests.
+- On s’est réparti les tâches avec des issues.
+- On faisait des commits réguliers pour suivre l’avancement.
+
   ## Mesures de sécurité
 
   ## Explication sur chaque fonctionnalité demandée
