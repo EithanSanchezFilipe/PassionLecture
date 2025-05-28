@@ -126,5 +126,10 @@ Pour s'assurer que tout fonctionne correctement, on a surtout misé sur des test
 # Conclusion
 
 ## Conclusion générale
+Ce projet nous a permis de mettre en pratique plusieurs compétences liées au développement web, que ce soit côté frontend ou backend. On a appris à organiser une application complète, à gérer des rôles utilisateurs, à sécuriser les accès, et à rendre l’expérience simple pour les utilisateurs. Le fait d’utiliser des outils modernes comme GitHub, Docker nous a également donné un aperçu de comment les utiliser dans un petit groupe. Globalement, le site fonctionne bien et remplit toutes les fonctionnalités demandées.
 
 ## Conclusion personnelles
+***Ryan***
+Ce projet m’a permis d’approfondir mes connaissances, en particulier sur la gestion des routes, des rôles, et l’organisation du code. Travailler en groupe m’a aussi appris à mieux communiquer et à organiser le travail de manière efficace. Même si parfois c’était un peu stressant ou flou, c’était motivant de voir le site prendre forme petit à petit. J’ai bien aimé cette partie pratique où on construit vraiment quelque chose de concret.
+## Critique sur la planification
+La planification n’a pas toujours été optimale. Au début, nous ne savions pas exactement comment utiliser GitHub de manière efficace, ce qui nous a parfois fait perdre du temps. Cependant, au fil du projet, nous avons réussi à mieux nous organiser et à suivre un rythme de travail plus régulier. Il a parfois manqué un peu de coordination, notamment pour déterminer quelles fonctionnalités devaient être prioritaires ou livrées rapidement à l’enseignant. Malgré cela, nous avons bien progressé et notre collaboration s’est améliorée au fur et à mesure.
