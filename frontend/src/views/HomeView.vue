@@ -63,11 +63,15 @@ onMounted(fetchLatestBooks)
         <div class="book-info">
           <h3>{{ book.name }}</h3>
           <BaseRating
-            v-if="book.rating || book.avg"
-            :modelValue="book.rating || book.avg"
+            v-if="
+              (book.rating !== undefined && book.rating !== null) ||
+              (book.avg !== undefined && book.avg !== null)
+            "
+            :modelValue="book.rating ?? book.avg"
             :readonly="true"
             class="book-rating"
           />
+
           <p class="book-author">
             {{
               book.t_author
