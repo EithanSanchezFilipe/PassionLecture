@@ -33,7 +33,7 @@ cd PassionLecture
    docker-compose up -d
    ```
    **Variables d'environnement**  
-   Copiez le fichier .env.exemple et remplacez la variables suivantes :
+   Copiez le fichier .env.exemple et renommer le .env et inserer la variables suivantes :
    ```
    privateKey=CLE_SECRETE
    ```
