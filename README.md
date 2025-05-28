@@ -45,11 +45,11 @@ cd PassionLecture
    ```
 
    ### Frontend
-
+   Ouvrez un nouveau terminal dans le dossier frontend
+   
    **Installer les dépendances**  
    Exécutez les commandes :
    ```sh
-   cd ../frontend
    npm install
 ```
    **Démarrer le frontend**  
