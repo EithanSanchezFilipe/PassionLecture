@@ -61,9 +61,10 @@ watch(searchTerm, async (newValue) => {
     router.push({ name: 'book-detail', params: { id: newValue.id } })
   }
 })
+
 const pdf = computed(() => {
-  if (!book.value || !book.value.summary) return ''
-  return `http://localhost:443${book.value.summary}`
+  if (!book.value || !book.value.passage) return ''
+  return `http://localhost:443${book.value.passage}`
 })
 onMounted(async () => {
   try {
@@ -260,10 +261,10 @@ const handleUpdateBook = async (updatedBookData) => {
 
           <div class="summary-section">
             <h2>Résumé</h2>
-            <iframe :src="pdf" class="summary" frameborder="0"
-    width="100%"
-    height="600px"></iframe>
-            <p class="no-summary">Aucun résumé disponible</p>
+            <p v-if="book.summary" class="summary">{{ book.summary }}</p>
+            <p v-else class="no-summary">Aucun résumé disponible</p>
+           <h2>Extrait</h2>
+            <a :href="pdf" class="passage" frameborder="0" width="100%" height="100%">Lien Vers L'Extrait</a>
           </div>
         </div>
 
@@ -493,7 +494,25 @@ h3 {
   font-size: 1.2rem;
   max-width: 900px;
 }
+a.passage {
+  display: inline-block;
+  padding: 0.75rem 2.1rem;
+  width: 200px;
+  background-color: #3498db; 
+  color: white;               
+  text-decoration: none;          
+  border-radius: 6px;          
+}
+a.passage:hover,
+a.passage:focus {
+  background-color: #2980b9;     
+  color: #e0e0e0;
+  outline: none;                
+}
 
+a.passage:active {
+  background-color: #1c5980;
+}
 .comments-section {
   background-color: white;
   border-radius: 12px;

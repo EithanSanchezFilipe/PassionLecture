@@ -27,21 +27,17 @@ const BookModel = (sequelize, DataTypes) => {
         },
       },
       passage: {
-        type: DataTypes.STRING(250),
-        validate: {
-          is: {
-            args: /^[\p{L}\p{P}\s\d]*$/u,
-            msg: "Seules les lettres, les accents, les espaces, les virgules et les points sont autorisés",
-          },
-          len: {
-            args: [0, 250],
-            msg: "Le passage ne peut pas dépasser 250 caractères",
-          },
-        },
+        type: DataTypes.STRING(),
       },
       summary: {
-        type: DataTypes.STRING(),
+        type: DataTypes.STRING(2000),
         allowNull: false,
+        validate: {
+          len: {
+            args: [1, 2000],
+            msg: "Le résumé doit faire entre 1 et 2000 caractères",
+          },
+        },
       },
       editionYear: {
         type: DataTypes.INTEGER,

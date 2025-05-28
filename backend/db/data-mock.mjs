@@ -1,9 +1,10 @@
 const books = [
   {
-    name: "Jeanne de Belleville",
+    name: "Le Mystère de la Chambre Jaune",
     passage:
-      "Il était une fois, dans une vieille maison de campagne, un cri perça la nuit...",
-    summary: "/uploads/extraits/Extrait-Jeanne-de-Belleville.pdf",
+      "/uploads/extraits/Extrait-Jeanne-de-Belleville.pdf",
+    summary:
+      "Dans ce roman policier, le jeune détective François de la Roche résout une série de mystères autour d'une chambre mystérieuse.",
     editionYear: 1907,
     pages: 320,
     category_fk: 1,
@@ -12,11 +13,11 @@ const books = [
     user_fk: 1,
   },
   {
-    name: "Mais qui donc est Lico ?",
+    name: "Le Mystère de la Chambre Bleue",
     passage:
-      "Dans une villa au bord de la mer, une chambre bleue cache un terrible secret...",
+      "/uploads/extraits/Extrait-Mais-qui-donc-est-Lico.pdf", 
     summary:
-      "/uploads/extraits/Extrait-Mais-qui-donc-est-Lico.pdf",
+      "Suite du Mystère de la Chambre Jaune, ce roman policier nous entraîne dans une nouvelle enquête palpitante.",
     editionYear: 1908,
     pages: 350,
     category_fk: 1,
@@ -25,11 +26,11 @@ const books = [
     user_fk: 1,
   },
   {
-    name: "Si tu savais ma vie",
+    name: "Le Mystère de la Chambre Verte",
     passage:
-      "Une villa isolée, une chambre verte, et un nouveau mystère à résoudre...",
+       "/uploads/extraits/Extrait-Si-tu-savais-ma-vie.pdf", 
     summary:
-      "/uploads/extraits/Extrait-Si-tu-savais-ma-vie.pdf",
+      "Troisième volet de la série des chambres mystérieuses, ce roman nous plonge dans une nouvelle énigme.",
     editionYear: 1909,
     pages: 330,
     category_fk: 1,
@@ -38,11 +39,11 @@ const books = [
     user_fk: 1,
   },
   {
-    name: "Chat'pitre 1",
+    name: "Les Misérables",
     passage:
-      "Il dort. Quoique le sort fût pour lui bien étrange, il ne vivait que pour le bien d'autrui.",
+       "/uploads/extraits/Extrait-Chat'pitre-1.pdf",    
     summary:
-      "/uploads/extraits/Extrait-Chat'pitre-1.pdf",
+      "L'histoire de Jean Valjean, un ancien forçat, qui cherche la rédemption tout en étant poursuivi par l'inspecteur Javert. Un roman qui explore la misère sociale et la justice.",
     editionYear: 1862,
     pages: 1500,
     category_fk: 2,
@@ -50,10 +51,10 @@ const books = [
     editor_fk: 2,
   },
   {
-    name: "Recit insolite d'une jeunesse ordinaire",
-    passage: "Une version condensée du chef-d'œuvre de Victor Hugo...",
+    name: "Les Misérables - Version Abrégée",
+    passage: "/uploads/extraits/Extrait-Recit-insolite-dune-jeunesse-ordinaire.pdf",   
     summary:
-      "/uploads/extraits/Extrait-Recit-insolite-dune-jeunesse-ordinaire.pdf",
+      "Version abrégée du célèbre roman, adaptée pour les jeunes lecteurs.",
     editionYear: 2010,
     pages: 400,
     category_fk: 2,

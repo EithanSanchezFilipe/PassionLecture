@@ -3,11 +3,12 @@ import { ValidationError, where } from "sequelize";
 import { Op } from "sequelize";
 import path from "path";
 import fs from "fs";
+import axios from "axios";
+
 
 export async function Create(req, res) {
   try {
-    const { name, passage, summary, editionYear, pages, category_fk } =
-      req.body;
+    const { name, passage, summary, editionYear, pages, category_fk } = req.body;
     const userId = req.user?.id;
 
     // Vérifier si l'utilisateur a déjà un auteur associé
@@ -27,35 +28,71 @@ export async function Create(req, res) {
 
     const bookData = {
       name,
-      passage,
       summary,
       editionYear: parseInt(editionYear),
       pages: parseInt(pages),
       category_fk: parseInt(category_fk),
       user_fk: userId,
-      author_fk: author.id, // Utiliser l'ID de l'auteur
+      author_fk: author.id,
     };
 
+    // Gérer l'image de couverture uploadée
     if (req.files?.coverImage) {
       bookData.coverImage = req.files.coverImage.data;
     }
-   if (req.files?.summary) {
-  const file = req.files.summary;
-  const bookNameSanitized = name.replace(/[^a-z0-9]/gi, "_").toLowerCase(); // Nettoyage du nom du livre
-  const filePath = `uploads/extraits/Extrait-${bookNameSanitized}.pdf`;
 
-  // Crée le dossier s'il n'existe pas
-  const folder = path.dirname(filePath);
-  if (!fs.existsSync(folder)) {
-    fs.mkdirSync(folder, { recursive: true });
-  }
+    // Gestion du passage PDF
+    if (req.files?.passage) {
+      // Si passage est uploadé en fichier
+      const file = req.files.passage;
+      const bookNameSanitized = name.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+      const filePath = path.resolve("uploads", "extraits", `Extrait-${bookNameSanitized}.pdf`);
 
-  // Sauvegarde le fichier
-  fs.writeFileSync(filePath, file.data);
+      // Crée le dossier s'il n'existe pas
+      const folder = path.dirname(filePath);
+      if (!fs.existsSync(folder)) {
+        fs.mkdirSync(folder, { recursive: true });
+      }
 
-  // Enregistre le chemin relatif en base
-  bookData.summary = filePath;
-}
+      // Sauvegarde le fichier uploadé
+      fs.writeFileSync(filePath, file.data);
+
+      // Enregistre le chemin relatif (pour servir en statique)
+      bookData.passage = `/uploads/extraits/Extrait-${bookNameSanitized}.pdf`;
+    } else if (passage && passage.startsWith("http")) {
+      // Si passage est une URL externe, télécharger le PDF
+
+      const bookNameSanitized = name.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+      const filePath = path.resolve("uploads", "extraits", `Extrait-${bookNameSanitized}.pdf`);
+
+      // Crée le dossier s'il n'existe pas
+      const folder = path.dirname(filePath);
+      if (!fs.existsSync(folder)) {
+        fs.mkdirSync(folder, { recursive: true });
+      }
+
+      // Téléchargement du PDF
+      const response = await axios({
+        url: passage,
+        method: "GET",
+        responseType: "stream",
+      });
+
+      // Sauvegarde en local
+      const writer = fs.createWriteStream(filePath);
+      response.data.pipe(writer);
+
+      await new Promise((resolve, reject) => {
+        writer.on("finish", resolve);
+        writer.on("error", reject);
+      });
+
+      bookData.passage = `/uploads/extraits/Extrait-${bookNameSanitized}.pdf`;
+    } else {
+      // Pas de fichier ou URL : on garde passage tel quel (ou null)
+      bookData.passage = passage || null;
+    }
+
     const book = await Book.create(bookData);
     res.status(201).json(book);
   } catch (e) {
@@ -69,6 +106,7 @@ export async function Create(req, res) {
     });
   }
 }
+
 export function Reach(req, res) {
   const id = req.params.id;
   if (id) {

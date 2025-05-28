@@ -73,11 +73,6 @@ watch(
   },
 )
 
-const SUMMARY_MAX_LENGTH = 2000
-const PASSAGE_MAX_LENGTH = 250
-
-const summaryLength = computed(() => formData.value.summary?.length || 0)
-const passageLength = computed(() => formData.value.passage?.length || 0)
 
 const steps = ref([
   { label: 'Informations de base' },
@@ -90,13 +85,14 @@ const isStepValid = computed(() => {
     case 0:
       return formData.value.name && formData.value.category_fk
     case 1:
-      return (
-        formData.value.summary &&
-        summaryLength.value <= SUMMARY_MAX_LENGTH &&
-        (!formData.value.passage || passageLength.value <= PASSAGE_MAX_LENGTH)
-      )
+      return !!formData.value.summary
     case 2:
-      return formData.value.editionYear && formData.value.pages
+      return (
+        formData.value.editionYear &&
+        formData.value.pages &&
+        formData.value.editionYear <= new Date().getFullYear() &&
+        formData.value.pages > 0
+      )
     default:
       return false
   }
@@ -219,42 +215,21 @@ const handleImageUpload = (event) => {
                       v-model="formData.summary"
                       rows="5"
                       autoResize
-                      :maxlength="SUMMARY_MAX_LENGTH"
-                      :class="{ 'p-invalid': summaryLength > SUMMARY_MAX_LENGTH }"
                       placeholder="Écrivez le résumé du livre..."
                     />
-                    <span
-                      class="char-count"
-                      :class="{ 'count-error': summaryLength > SUMMARY_MAX_LENGTH }"
-                    >
-                      {{ summaryLength }}/{{ SUMMARY_MAX_LENGTH }}
-                    </span>
                   </div>
-                  <small v-if="summaryLength > SUMMARY_MAX_LENGTH" class="p-error">
-                    Le résumé ne peut pas dépasser {{ SUMMARY_MAX_LENGTH }} caractères
-                  </small>
                 </div>
                 <div class="form-group appear-animation" style="animation-delay: 0.1s">
                   <label>Passage</label>
                   <div class="textarea-container">
                     <Textarea
+                      type="url"
                       v-model="formData.passage"
-                      rows="3"
-                      autoResize
-                      :maxlength="PASSAGE_MAX_LENGTH"
-                      :class="{ 'p-invalid': passageLength > PASSAGE_MAX_LENGTH }"
-                      placeholder="Écrivez un passage marquant du livre..."
+                      rows="1"
+                      pattern="https?://.+\.pdf$"
+                      placeholder="Mettre un lien du passage du livre..."
                     />
-                    <span
-                      class="char-count"
-                      :class="{ 'count-error': passageLength > PASSAGE_MAX_LENGTH }"
-                    >
-                      {{ passageLength }}/{{ PASSAGE_MAX_LENGTH }}
-                    </span>
                   </div>
-                  <small v-if="passageLength > PASSAGE_MAX_LENGTH" class="p-error">
-                    Le passage ne peut pas dépasser {{ PASSAGE_MAX_LENGTH }} caractères
-                  </small>
                 </div>
               </template>
 
