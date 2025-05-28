@@ -4,13 +4,19 @@ import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./swagger.mjs";
 import cors from "cors";
 import fileUpload from "express-fileupload";
-
+import path from "path";
+import { fileURLToPath } from "url";
 // Create app
 const app = express();
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
 app.use(fileUpload());
+
+// Set up __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(
   cors({

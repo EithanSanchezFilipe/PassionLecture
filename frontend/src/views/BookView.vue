@@ -61,7 +61,10 @@ watch(searchTerm, async (newValue) => {
     router.push({ name: 'book-detail', params: { id: newValue.id } })
   }
 })
-
+const pdf = computed(() => {
+  if (!book.value || !book.value.summary) return ''
+  return `http://localhost:443${book.value.summary}`
+})
 onMounted(async () => {
   try {
     // Load categories
@@ -257,8 +260,10 @@ const handleUpdateBook = async (updatedBookData) => {
 
           <div class="summary-section">
             <h2>Résumé</h2>
-            <p v-if="book.summary" class="summary">{{ book.summary }}</p>
-            <p v-else class="no-summary">Aucun résumé disponible</p>
+            <iframe :src="pdf" class="summary" frameborder="0"
+    width="100%"
+    height="600px"></iframe>
+            <p class="no-summary">Aucun résumé disponible</p>
           </div>
         </div>
 

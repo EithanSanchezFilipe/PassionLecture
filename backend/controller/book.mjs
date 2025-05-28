@@ -1,6 +1,8 @@
 import { Book, Category, Comment, User, Author } from "../db/sequelize.mjs";
 import { ValidationError, where } from "sequelize";
 import { Op } from "sequelize";
+import path from "path";
+import fs from "fs";
 
 export async function Create(req, res) {
   try {
@@ -37,10 +39,23 @@ export async function Create(req, res) {
     if (req.files?.coverImage) {
       bookData.coverImage = req.files.coverImage.data;
     }
-    if (req.files?.summary){
-      const filepath = "uploads/extraits/" + req.files.filename;
-      bookData.summary = filepath;
-    }
+   if (req.files?.summary) {
+  const file = req.files.summary;
+  const bookNameSanitized = name.replace(/[^a-z0-9]/gi, "_").toLowerCase(); // Nettoyage du nom du livre
+  const filePath = `uploads/extraits/Extrait-${bookNameSanitized}.pdf`;
+
+  // Crée le dossier s'il n'existe pas
+  const folder = path.dirname(filePath);
+  if (!fs.existsSync(folder)) {
+    fs.mkdirSync(folder, { recursive: true });
+  }
+
+  // Sauvegarde le fichier
+  fs.writeFileSync(filePath, file.data);
+
+  // Enregistre le chemin relatif en base
+  bookData.summary = filePath;
+}
     const book = await Book.create(bookData);
     res.status(201).json(book);
   } catch (e) {
