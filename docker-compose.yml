@@ -1,28 +1,4 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: passion_lecture_app
-    user: "node"
-    working_dir: /home/node/backend
-    environment:
-      - NODE_ENV=development
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASSWORD=root
-      - DB_NAME=db_passion_lecture
-      - DB_PORT=3306
-    volumes:
-      - ./backend:/home/node/backend
-      - /home/node/backend/node_modules
-    ports:
-      - "443:443"
-    networks:
-      - app-network
-    depends_on:
-      - db
-
   db:
     image: mysql:8.0.30
     container_name: passion_lecture_db
