@@ -9,11 +9,11 @@ const CommentModel = (sequelize, DataTypes) => {
           msg: 'La note doit être un entier valide.',
         },
         min: {
-          args: 1,
-          msg: 'La note minimale est 1',
+          args: [0],
+          msg: 'La note minimale est 0',
         },
         max: {
-          args: 5,
+          args: [5],
           msg: 'La note maximale est 5',
         },
         notNull: {

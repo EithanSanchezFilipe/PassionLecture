@@ -23,7 +23,7 @@ const onSubmit = () => {
 
   bookService
     .addBookComment(props.id, {
-      note: note.value,
+      note: note.value ? note.value : 0,
       commentaire: commentaire.value,
     })
     .then(() => {
