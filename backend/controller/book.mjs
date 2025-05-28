@@ -37,7 +37,10 @@ export async function Create(req, res) {
     if (req.files?.coverImage) {
       bookData.coverImage = req.files.coverImage.data;
     }
-
+    if (req.files?.summary){
+      const filepath = "uploads/extraits/" + req.files.filename;
+      bookData.summary = filepath;
+    }
     const book = await Book.create(bookData);
     res.status(201).json(book);
   } catch (e) {

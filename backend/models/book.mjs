@@ -40,14 +40,8 @@ const BookModel = (sequelize, DataTypes) => {
         },
       },
       summary: {
-        type: DataTypes.STRING(2000),
+        type: DataTypes.STRING(),
         allowNull: false,
-        validate: {
-          len: {
-            args: [1, 2000],
-            msg: "Le résumé doit faire entre 1 et 2000 caractères",
-          },
-        },
       },
       editionYear: {
         type: DataTypes.INTEGER,

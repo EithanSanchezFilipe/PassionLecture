@@ -1,10 +1,9 @@
 const books = [
   {
-    name: "Le Mystère de la Chambre Jaune",
+    name: "Jeanne de Belleville",
     passage:
       "Il était une fois, dans une vieille maison de campagne, un cri perça la nuit...",
-    summary:
-      "Dans ce roman policier, le jeune détective François de la Roche résout une série de mystères autour d'une chambre mystérieuse.",
+    summary: "/uploads/extraits/Extrait-Jeanne-de-Belleville.pdf",
     editionYear: 1907,
     pages: 320,
     category_fk: 1,
@@ -13,11 +12,11 @@ const books = [
     user_fk: 1,
   },
   {
-    name: "Le Mystère de la Chambre Bleue",
+    name: "Mais qui donc est Lico ?",
     passage:
       "Dans une villa au bord de la mer, une chambre bleue cache un terrible secret...",
     summary:
-      "Suite du Mystère de la Chambre Jaune, ce roman policier nous entraîne dans une nouvelle enquête palpitante.",
+      "/uploads/extraits/Extrait-Mais-qui-donc-est-Lico.pdf",
     editionYear: 1908,
     pages: 350,
     category_fk: 1,
@@ -26,11 +25,11 @@ const books = [
     user_fk: 1,
   },
   {
-    name: "Le Mystère de la Chambre Verte",
+    name: "Si tu savais ma vie",
     passage:
       "Une villa isolée, une chambre verte, et un nouveau mystère à résoudre...",
     summary:
-      "Troisième volet de la série des chambres mystérieuses, ce roman nous plonge dans une nouvelle énigme.",
+      "/uploads/extraits/Extrait-Si-tu-savais-ma-vie.pdf",
     editionYear: 1909,
     pages: 330,
     category_fk: 1,
@@ -39,11 +38,11 @@ const books = [
     user_fk: 1,
   },
   {
-    name: "Les Misérables",
+    name: "Chat'pitre 1",
     passage:
       "Il dort. Quoique le sort fût pour lui bien étrange, il ne vivait que pour le bien d'autrui.",
     summary:
-      "L'histoire de Jean Valjean, un ancien forçat, qui cherche la rédemption tout en étant poursuivi par l'inspecteur Javert. Un roman qui explore la misère sociale et la justice.",
+      "/uploads/extraits/Extrait-Chat'pitre-1.pdf",
     editionYear: 1862,
     pages: 1500,
     category_fk: 2,
@@ -51,10 +50,10 @@ const books = [
     editor_fk: 2,
   },
   {
-    name: "Les Misérables - Version Abrégée",
+    name: "Recit insolite d'une jeunesse ordinaire",
     passage: "Une version condensée du chef-d'œuvre de Victor Hugo...",
     summary:
-      "Version abrégée du célèbre roman, adaptée pour les jeunes lecteurs.",
+      "/uploads/extraits/Extrait-Recit-insolite-dune-jeunesse-ordinaire.pdf",
     editionYear: 2010,
     pages: 400,
     category_fk: 2,
