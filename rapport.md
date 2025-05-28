@@ -131,5 +131,3 @@ Ce projet nous a permis de mettre en pratique plusieurs compétences liées au d
 ## Conclusion personnelles
 ***Ryan***
 Ce projet m’a permis d’approfondir mes connaissances, en particulier sur la gestion des routes, des rôles, et l’organisation du code. Travailler en groupe m’a aussi appris à mieux communiquer et à organiser le travail de manière efficace. Même si parfois c’était un peu stressant ou flou, c’était motivant de voir le site prendre forme petit à petit. J’ai bien aimé cette partie pratique où on construit vraiment quelque chose de concret.
-## Critique sur la planification
-La planification n’a pas toujours été optimale. Au début, nous ne savions pas exactement comment utiliser GitHub de manière efficace, ce qui nous a parfois fait perdre du temps. Cependant, au fil du projet, nous avons réussi à mieux nous organiser et à suivre un rythme de travail plus régulier. Il a parfois manqué un peu de coordination, notamment pour déterminer quelles fonctionnalités devaient être prioritaires ou livrées rapidement à l’enseignant. Malgré cela, nous avons bien progressé et notre collaboration s’est améliorée au fur et à mesure.
