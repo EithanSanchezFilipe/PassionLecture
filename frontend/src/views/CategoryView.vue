@@ -1,5 +1,5 @@
 <script setup>
-import SearchBar from '@/composables/SearchBarCat.vue'
+import SearchBar from '@/composables/SearchBarBook.vue'
 import { useCategorySearch } from '@/composables/CategorySearch'
 import { computed, onMounted, ref, watch } from 'vue'
 import Carousel from 'primevue/carousel'
@@ -12,19 +12,32 @@ const FilterCat = ref([])
 const bookByCat = ref({})
 const router = useRouter()
 
-const { filteredCategories, booksByCategory, searchTerm, isLoading, error } = useCategorySearch()
+const { categories, booksByCategory, searchTerm, isLoading, error } = useCategorySearch()
 
 const filterBooks = () => {
   const filtered = {}
 
   for (const [catId, books] of Object.entries(booksByCategory.value)) {
-    const category = filteredCategories.value.find((c) => c.id.toString() === catId)
+    // On prend la catégorie depuis la liste complète
+    const category = categories.value.find((c) => c.id.toString() === catId)
 
     if (FilterCat.value.length > 0 && (!category || !FilterCat.value.includes(category.name))) {
       continue
     }
 
-    let matchingBooks = books
+    let matchingBooks = [...books]
+
+    // Filtrer par terme de recherche livres
+    if (searchTerm.value) {
+      matchingBooks = matchingBooks.filter((book) => {
+        const bookName = book.name.toLowerCase()
+        const searchTermLower = searchTerm.value.toLowerCase()
+        const authorName = book.t_author 
+          ? `${book.t_author.firstname} ${book.t_author.lastname}`.toLowerCase()
+          : ''
+        return bookName.includes(searchTermLower) || authorName.includes(searchTermLower)
+      })
+    }
 
     if (FilterNote.value.length > 0) {
       matchingBooks = matchingBooks.filter((book) => FilterNote.value.includes(book.avg))
@@ -38,6 +51,7 @@ const filterBooks = () => {
   bookByCat.value = filtered
 }
 
+watch(searchTerm, filterBooks)
 watch([FilterNote, FilterCat], filterBooks)
 
 onMounted(() => {
@@ -45,7 +59,7 @@ onMounted(() => {
 })
 
 const categoriesWithBooks = computed(() =>
-  filteredCategories.value.filter((cat) => (bookByCat.value[cat.id] || []).length > 0),
+  categories.value.filter((cat) => (bookByCat.value[cat.id] || []).length > 0),
 )
 
 const getLimitedBooks = (books) => books.slice(0, 8)
@@ -74,7 +88,7 @@ const goToBook = (id) => router.push(`/book/${id}`)
 
       <div id="categoryFilter">
         <h3>Filtrer par catégorie</h3>
-        <div class="single-input" v-for="cat in filteredCategories" :key="cat.id">
+        <div class="single-input" v-for="cat in categories" :key="cat.id">
           <input
             type="checkbox"
             v-model="FilterCat"
@@ -90,7 +104,7 @@ const goToBook = (id) => router.push(`/book/${id}`)
       <div class="category-header">
         <h1>Catégories</h1>
         <div class="search-container">
-          <SearchBar v-model="searchTerm" />
+          <SearchBar v-model="searchTerm" :redirect-on-select="false" />
         </div>
       </div>
       <section id="category">
