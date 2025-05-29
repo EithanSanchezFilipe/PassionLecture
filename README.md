@@ -61,9 +61,9 @@ cd PassionLecture
 
 ### Backend 
 **Journaux de travail**  
-[Eithan](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa78gum_eduvaud_ch/EXyTaG0eWktAltjx45jCM6sBtY5Tc4lE-WQMA7lrDXvYRw?e=YTKTRd)  
-[Ryan](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa70iyc_eduvaud_ch/EatkGd8gbgJEvDbWn2eamcIBSZ9HPzXZIbhsjyqWFnkxqw?e=EX442t)
-
+[Eithan][backend](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa78gum_eduvaud_ch/EXyTaG0eWktAltjx45jCM6sBtY5Tc4lE-WQMA7lrDXvYRw?e=YTKTRd)  
+[Ryan][backend](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa70iyc_eduvaud_ch/EatkGd8gbgJEvDbWn2eamcIBSZ9HPzXZIbhsjyqWFnkxqw?e=EX442t)
+      [frontend](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa70iyc_eduvaud_ch/EU7B2LwpNp9Ej0IDH7o7xTkB3yu-vN163RtLW6-LEcyBow?e=eM97Bk)
 **MCD/MLD**  
    [MCD](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/db/MCD.png)  
    [MLD](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/db/MLD.png)
