@@ -131,3 +131,6 @@ Ce projet nous a permis de mettre en pratique plusieurs compétences liées au d
 ## Conclusion personnelles
 ***Ryan***
 Ce projet m’a permis d’approfondir mes connaissances, en particulier sur la gestion des routes, des rôles, et l’organisation du code. Travailler en groupe m’a aussi appris à mieux communiquer et à organiser le travail de manière efficace. Même si parfois c’était un peu stressant ou flou, c’était motivant de voir le site prendre forme petit à petit. J’ai bien aimé cette partie pratique où on construit vraiment quelque chose de concret.
+
+***Eithan***
+Ce projet m’a permis d’apprendre à utiliser Vue.js. Je trouve que c’est un très bon framework, bien adapté aux applications de toute taille. Le travail en groupe m’a également permis d’améliorer ma communication et de mieux utiliser Git. Je pense que le site est globalement réussi, même si je n’ai pas eu le temps d’ajouter les images via une URL.
