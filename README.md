@@ -58,28 +58,10 @@ cd PassionLecture
    npm run dev
    ```
 ## Documentation
-
-### Backend 
 **Journaux de travail**  
 Eithan: [backend](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa78gum_eduvaud_ch/EXyTaG0eWktAltjx45jCM6sBtY5Tc4lE-WQMA7lrDXvYRw?e=YTKTRd)  
 Ryan: [backend](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa70iyc_eduvaud_ch/EatkGd8gbgJEvDbWn2eamcIBSZ9HPzXZIbhsjyqWFnkxqw?e=EX442t)
       [frontend](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa70iyc_eduvaud_ch/EU7B2LwpNp9Ej0IDH7o7xTkB3yu-vN163RtLW6-LEcyBow?e=eM97Bk)
 
-**MCD/MLD**  
-   [MCD](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/db/MCD.png)  
-   [MLD](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/db/MLD.png)
-
-
-**Schéma d'interactions**  
-   [Schéma](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/doc/Schema-interaction.png)
-
-   **Checklist des routes**  
-   [Checklist](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/doc/CheckListRoutes.png)
-
-   **Liste des routes**  
-   [Liste](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/app/backend/doc/routes.md)
-
-   ### Frontend
-
-   **Bilan de fonctionnalitées 80%**  
-    [Bilan](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/frontend/bilanfonc80%25.md)
+**Rapport**
+[Rapport](https://github.com/EithanSanchezFilipe/PassionLecture/blob/main/rapport.md)
