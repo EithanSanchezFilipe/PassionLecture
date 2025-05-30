@@ -59,7 +59,8 @@ cd PassionLecture
    ```
 ## Documentation
 **Journaux de travail**  
-Eithan: [backend](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa78gum_eduvaud_ch/EXyTaG0eWktAltjx45jCM6sBtY5Tc4lE-WQMA7lrDXvYRw?e=YTKTRd)  
+Eithan: [backend](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa78gum_eduvaud_ch/EXyTaG0eWktAltjx45jCM6sBtY5Tc4lE-WQMA7lrDXvYRw?e=YTKTRd)
+        [frontend](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa78gum_eduvaud_ch/ERL2Wfx928lEkkA_G_QemzoBPRPbZrMUtmDVgyzXTfVFwA?e=mBbCxf)
 Ryan: [backend](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa70iyc_eduvaud_ch/EatkGd8gbgJEvDbWn2eamcIBSZ9HPzXZIbhsjyqWFnkxqw?e=EX442t)
       [frontend](https://eduvaud-my.sharepoint.com/:x:/g/personal/pa70iyc_eduvaud_ch/EU7B2LwpNp9Ej0IDH7o7xTkB3yu-vN163RtLW6-LEcyBow?e=eM97Bk)
 
